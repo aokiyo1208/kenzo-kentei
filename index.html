@@ -738,7 +738,9 @@ function renderDash(){
     state.examKind=isFde?"kenzo":"fde";render();
   });
   swBtn.style.marginTop="24px";
-  content.append(swBtn);
+  const logoutBtn=btn("back-btn","← ログアウト / トップへ戻る",()=>logout());
+  logoutBtn.style.cssText="margin-top:10px;background:transparent;color:var(--gr);border:1px solid var(--bd);";
+  content.append(swBtn,logoutBtn);
   return content;
 }
 
@@ -1063,6 +1065,9 @@ function renderHist(){
     tbody.append(tr);
   }
   tbl.append(thead,tbody);c.append(tbl);
+  const backBtn=btn("back-btn","← ダッシュボードへ",()=>goPage("dash"));
+  backBtn.style.marginTop="20px";
+  c.append(backBtn);
   return c;
 }
 
@@ -1142,6 +1147,9 @@ function renderAllHist(){
     }
     c.append(ucard);
   }
+  const backBtn=btn("back-btn","← 管理者画面へ",()=>goPage("admin"));
+  backBtn.style.marginTop="20px";
+  c.append(backBtn);
   return c;
 }
 
@@ -1194,6 +1202,9 @@ function renderAdmin(){
     }
     tbl.append(thead,tbody);c.append(tbl);
   }
+  const logoutBtnA=btn("back-btn","← ログアウト / トップへ戻る",()=>logout());
+  logoutBtnA.style.cssText="margin-top:28px;background:transparent;color:var(--gr);border:1px solid var(--bd);";
+  c.append(logoutBtnA);
   return c;
 }
 
