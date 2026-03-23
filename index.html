@@ -686,7 +686,7 @@ function renderDash(){
   const content=div("main");
   if(state.timeLeft!==null&&!state.done&&state.examMode==="exam"){
     const wb=div("warn-bar");
-    wb.append(el("span",{style:{fontSize:"11px",color:"#C05050"}},"⚠️ 試験が進行中です"));
+    wb.append(el("span",{style:{fontSize:"11px",color:"#C05050"}},"⚠️ 試験が進行中です。他の試験は開始できません。"));
     const rb=btn("","試験に戻る →",()=>goPage("exam"));
     rb.style.cssText="background:#C05050;color:#fff;border:none;border-radius:2px;font-size:10px;padding:5px 12px;cursor:pointer";
     wb.append(rb);content.append(wb);
@@ -707,8 +707,10 @@ function renderDash(){
   content.append(div("stit","試験・学習を選択"));
   const lgrid=div("lgrid");
   for(const lv of getCurrentLevels()){
-    const card=el("div",{cls:"lcard"+(lv.ok?"":" dis"),style:{"--lc":lv.color},onClick:()=>{
+    const examInProgress=state.timeLeft!==null&&!state.done&&state.examMode==="exam";
+    const card=el("div",{cls:"lcard"+(lv.ok&&!examInProgress?"":" dis"),style:{"--lc":lv.color},onClick:()=>{
       if(!lv.ok)return;
+      if(examInProgress){goPage("exam");return;}
       if(isFde&&lv.lv===4)goPage("fde4sel");
       else if(isFde&&lv.lv===3)goPage("fde3sel");
       else if(lv.lv===4)goPage("l4sel");
@@ -1225,6 +1227,11 @@ function loginAdmin(){
 function logout(){stopTimer();state.authMode="top";state.currentUser=null;state.examKind=null;state.page="top";render();}
 
 function startExam(lv,wk="all",mode=state.examMode){
+  if(mode==="exam"&&state.timeLeft!==null&&!state.done&&state.examMode==="exam"){
+    alert("⚠️ 試験が進行中です。\n現在の試験を完了または中断してから新しい試験を開始してください。");
+    goPage("exam");
+    return;
+  }
   state.examLv=lv;state.examWk=wk;state.examMode=mode;
   state.qIdx=0;state.sel=null;state.openTxt="";state.answered=false;
   state.session=[];state.done=false;state.timedOut=false;
