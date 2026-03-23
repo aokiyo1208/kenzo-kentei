@@ -1073,6 +1073,35 @@ function renderHist(){
   return c;
 }
 
+// ========== CSV Export ==========
+function exportCSV(){
+  const examResults=state.results.filter(r=>r.mode!=="study");
+  if(examResults.length===0){alert("エクスポートするデータがありません");return;}
+  const rows=[["受験者名","メールアドレス","検定種別","級","受験日","正答数","総問題数","正答率(%)","合否","タイムアウト"]];
+  for(const r of examResults){
+    const kind=r.kind==="fde"?"建設FDE検定":"KENZO検定";
+    const rate=r.autoTotal>0?Math.round(r.autoCorrect/r.autoTotal*100):"";
+    const passed=r.passed===true?"合格":r.passed===false?"不合格":"未採点";
+    rows.push([r.userName||"不明",r.userEmail||"",kind,r.level||"",r.date||"",r.autoCorrect||0,r.autoTotal||0,rate,passed,r.timedOut?"はい":"いいえ"]);
+  }
+  if(state.pending.length>0){
+    rows.push([]);
+    rows.push(["【記述式回答一覧】"]);
+    rows.push(["受験者名","メールアドレス","提出日","問題","回答","模範解答","採点済み","得点(0-10)"]);
+    for(const p of state.pending){
+      rows.push([p.userName||"不明",p.userEmail||"",p.date||"",p.qText||"",p.answer||"",p.modelAnswer||"",p.scored?"はい":"いいえ",p.scored?(p.score||0):""]);
+    }
+  }
+  const csv="\uFEFF"+rows.map(row=>row.map(v=>{const s=String(v==null?"":v);return s.includes(",")||s.includes("\n")||s.includes('"')?'"''+s.replace(/"/g,'""')+'"':s;}).join(",")).join("\n");
+  const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  const today=new Date().toLocaleDateString("ja-JP",{year:"numeric",month:"2-digit",day:"2-digit"}).replace(/\//g,"");
+  a.href=url;a.download="kenzo_kentei_results_"+today+".csv";
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 // ========== Render: Admin ==========
 function renderAllHist(){
   const c=div("main");
@@ -1204,8 +1233,11 @@ function renderAdmin(){
     }
     tbl.append(thead,tbody);c.append(tbl);
   }
+  const exportBtn=btn("back-btn","📊 採点結果をCSVでエクスポート",()=>exportCSV());
+  exportBtn.style.cssText="margin-top:28px;background:var(--ok);color:var(--wh);border:none;font-weight:700;";
+  c.append(exportBtn);
   const logoutBtnA=btn("back-btn","← ログアウト / トップへ戻る",()=>logout());
-  logoutBtnA.style.cssText="margin-top:28px;background:transparent;color:var(--gr);border:1px solid var(--bd);";
+  logoutBtnA.style.cssText="margin-top:10px;background:transparent;color:var(--gr);border:1px solid var(--bd);";
   c.append(logoutBtnA);
   return c;
 }
