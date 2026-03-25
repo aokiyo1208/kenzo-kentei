@@ -465,7 +465,8 @@ let state={
   results:[], pending:[],
   scoreIn:{},
   uName:"", uEmail:"", uErr:"",
-  adminPin:"", adminPinErr:false
+  adminPin:"", adminPinErr:false,
+  sheetsUrl:""
 };
 
 // ===== データ永続化: localStorageから読み込み =====
@@ -474,6 +475,7 @@ try{
   const p=localStorage.getItem("kp");
   if(r)state.results=JSON.parse(r);
   if(p)state.pending=JSON.parse(p);
+  const su=localStorage.getItem("ks_url");if(su)state.sheetsUrl=su;
 }catch(e){}
 
 function saveData(){
@@ -481,6 +483,16 @@ function saveData(){
     localStorage.setItem("kr",JSON.stringify(state.results));
     localStorage.setItem("kp",JSON.stringify(state.pending));
   }catch(e){}
+}
+function saveSheetsUrl(url){state.sheetsUrl=url;try{localStorage.setItem("ks_url",url);}catch(e){}}
+function sendToSheets(r){
+  if(!state.sheetsUrl)return;
+  const kn=r.kind==="fde"?"建設FDE検定":"KENZO検定";
+  const rt=r.autoTotal>0?Math.round(r.autoCorrect/r.autoTotal*100):"";
+  const ps=r.passed===true?"合格":r.passed===false?"不合格":"未採点";
+  const tk=r.passed===true?kn+" "+r.level+"級 合格認定":"—";
+  const sl=state.results.filter(x=>x.userEmail===r.userEmail&&x.kind===r.kind&&x.level===r.level&&x.mode!=="study");
+  fetch(state.sheetsUrl,{method:"POST",body:JSON.stringify({受験者名:r.userName||"不明",メールアドレス:r.userEmail||"",検定種別:kn,級:r.level+"級",受験日:r.date||"",受験回数:sl.length,正答数:r.autoCorrect||0,総問題数:r.autoTotal||0,"正答率(%)":rt,合否:ps,"認定・特典":tk})}).catch(()=>{});
 }
 
 let timerInterval=null;
@@ -514,6 +526,8 @@ function handleTimeout(){
   state.results=[nr,...state.results];
   state.timeLeft=null;state.timedOut=true;state.done=true;
   saveData();
+  sendToSheets(nr);
+  sendToSheets(nr);
   if(u&&u.email)openResultMailto(u.email,u.name,state.examLv,corr,total,0,rate>=80,true);
   render();
 }
@@ -1240,6 +1254,14 @@ function renderAdmin(){
     }
     tbl.append(thead,tbody);c.append(tbl);
   }
+  c.append(el("div",{cls:"stit",style:{marginTop:"28px"}},"📋 Google スプレッドシート連携"));
+  const sn=el("div",{style:{fontSize:"11px",color:"var(--gr)",marginBottom:"10px",lineHeight:"1.7"}},"試験完了時に自動でGoogle スプレッドシートへ送信。Apps Script ウェブアプリ URLを貿り付けてください。");c.append(sn);
+  const sr=el("div",{style:{display:"flex",gap:"8px",alignItems:"center",marginBottom:"8px"}});
+  const si2=el("input",{type:"text",placeholder:"Apps Script URLをここに入力",value:state.sheetsUrl||"",style:{flex:"1",padding:"8px 10px",border:"1px solid var(--bd)",borderRadius:"2px",fontSize:"11px",background:"var(--wh)"}});
+  const sv2=btn("sbtn","保存",()=>{saveSheetsUrl(si2.value.trim());alert(si2.value.trim()?"✅ URLを保存しました":"⚠️ URLをクリアしました");render();});
+  const st2=btn("sbtn","テスト送信",()=>{const u=si2.value.trim();if(!u){alert("入力ください");return;}fetch(u,{method:"POST",body:JSON.stringify({受験者名:"テスト",メールアドレス:"test@example.com",検定種別:"KENZO検定",級:"3級",受験日:new Date().toLocaleDateString("ja-JP"),受験回数:1,正答数:10,総問題数:15,"正答率(%)":67,合否:"テスト","認定・特典":"テスト実行"})}).then(()=>alert("✅ テスト送信成功！")).catch(e=>alert("❌ 失敗:"+e));});
+  sr.append(si2,sv2,st2);c.append(sr);
+  if(state.sheetsUrl){const cb=el("div",{style:{fontSize:"10px",color:"var(--ok)",marginBottom:"16px"}});cb.textContent="✅ 連携設定済—試験完了時に自動送信";c.append(cb);}
   const exportBtn=btn("back-btn","📊 全受験結果をExcelでエクスポート",()=>exportXLSX());
   exportBtn.style.cssText="margin-top:28px;background:var(--ok);color:var(--wh);border:none;font-weight:700;";
   c.append(exportBtn);
@@ -1321,6 +1343,7 @@ function nextQ(){
       const u=state.currentUser;
       const nr={id:Date.now(),date:new Date().toLocaleDateString("ja-JP"),level:state.examLv,week:state.examWk,autoCorrect:corr,autoTotal:total2,openCount:0,total:qs.length,passed:corr/qs.length>=0.8,userName:u?u.name:"不明",userEmail:u?u.email:"",mode:"exam",kind:state.examKind};
       state.results=[nr,...state.results];saveData();stopTimer();state.done=true;
+      sendToSheets(nr);
       if(state.currentUser&&state.currentUser.email){
         openResultMailto(state.currentUser.email,state.currentUser.name,state.examLv,corr,total2,0,nr.passed,false);
       }
