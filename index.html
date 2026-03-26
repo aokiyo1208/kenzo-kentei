@@ -770,14 +770,13 @@ function renderDash(){
 // 建設FDE検定 4級（旧5級）
 function renderFde4Sel(){
   const c=div("main");
-  c.append(div("pt","建設FDE検定 4級 ─ 受験範囲を選択"),div("ps","制限時間：30分（試験）／ 合格ライン80%"));
+  c.append(div("pt","建設FDE検定 4級"),div("ps","全30問｜制限時間：30分（試験）／ 合格ライン80%"));
   c.append(renderModeSwitch());
-  const tabs=div("wtabs");
-  const wkLabel=state.examMode==="study"?"で学習する":"を受験する";
-  for(const[k,l]of[["all","全問（30問）"],["Week1","Week1 現場理解"],["Week2","Week2 IT基礎"],["Week3","Week3 AI活用"],["Week4","Week4 総合"]]){
-    tabs.append(btn("wtab",l+wkLabel,()=>startExam(4,k,state.examMode)));
-  }
-  c.append(tabs,btn("back-btn","← 戻る",()=>goPage("dash")));
+  const startLabel=state.examMode==="study"?"学習を開始する →":"受験を開始する →";
+  const sb=btn("pbtn",startLabel,()=>startExam(4,"all",state.examMode));
+  sb.style.marginBottom="11px";
+  if(state.examMode==="study")sb.style.background="var(--st)";
+  c.append(sb,btn("back-btn","← 戻る",()=>goPage("dash")));
   return c;
 }
 
