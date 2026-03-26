@@ -490,9 +490,8 @@ function sendToSheets(r){
   const kn=r.kind==="fde"?"建設FDE検定":"KENZO検定";
   const rt=r.autoTotal>0?Math.round(r.autoCorrect/r.autoTotal*100):"";
   const ps=r.passed===true?"合格":r.passed===false?"不合格":"未採点";
-  const tk=r.passed===true?kn+" "+r.level+"級 合格認定":"—";
   const sl=state.results.filter(x=>x.userEmail===r.userEmail&&x.kind===r.kind&&x.level===r.level&&x.mode!=="study");
-  fetch(state.sheetsUrl,{method:"POST",body:JSON.stringify({受験者名:r.userName||"不明",メールアドレス:r.userEmail||"",検定種別:kn,級:r.level+"級",受験日:r.date||"",受験回数:sl.length,正答数:r.autoCorrect||0,総問題数:r.autoTotal||0,"正答率(%)":rt,合否:ps,"認定・特典":tk})}).catch(()=>{});
+  fetch(state.sheetsUrl,{method:"POST",body:JSON.stringify({受験者名:r.userName||"不明",メールアドレス:r.userEmail||"",検定種別:kn,級:r.level+"級",受験日:r.date||"",受験回数:sl.length,正答数:r.autoCorrect||0,総問題数:r.autoTotal||0,"正答率(%)":rt,合否:ps})}).catch(()=>{});
 }
 
 let timerInterval=null;
@@ -1100,16 +1099,15 @@ function exportXLSX(tgt){
   if(!fl.length&&!state.pending.length){alert("データがありません");return;}
   const am={},sc=[...fl].sort((a,b)=>a.id-b.id);
   for(const r of sc){const k=(r.userEmail||r.userName)+"|"+r.kind+"|"+r.level;am[r.id]=(am[k]=(am[k]||0)+1);}
-  const h=[["受験者名","メールアドレス","検定種別","級","受験日","受験回数","正答数","総問題数","正答率(%)","合否","認定・特典"]];
+  const h=[["受験者名","メールアドレス","検定種別","級","受験日","受験回数","正答数","総問題数","正答率(%)","合否"]];
   for(const r of fl){
     const kn=r.kind==="fde"?"建設FDE検定":"KENZO検定";
     const rt=r.autoTotal>0?Math.round(r.autoCorrect/r.autoTotal*100):"";
     const ps=r.passed===true?"合格":r.passed===false?"不合格":"未採点";
-    const tk=r.passed===true?kn+" "+r.level+"級 合格認定":"—";
-    h.push([r.userName||"不明",r.userEmail||"" ,kn,r.level?r.level+"級":"",r.date||"",am[r.id]||"",r.autoCorrect||0,r.autoTotal||0,rt,ps,tk]);
+    h.push([r.userName||"不明",r.userEmail||"" ,kn,r.level?r.level+"級":"",r.date||"",am[r.id]||"",r.autoCorrect||0,r.autoTotal||0,rt,ps]);
   }
   const wb=XLSX.utils.book_new(),ws=XLSX.utils.aoa_to_sheet(h);
-  ws["!cols"]=[{wch:15},{wch:28},{wch:15},{wch:8},{wch:12},{wch:8},{wch:8},{wch:8},{wch:10},{wch:8},{wch:25}];
+  ws["!cols"]=[{wch:15},{wch:28},{wch:15},{wch:8},{wch:12},{wch:8},{wch:8},{wch:8},{wch:10},{wch:8}];
   XLSX.utils.book_append_sheet(wb,"受験履歴",ws);
   const pd=tgt?state.pending.filter(p=>p.userEmail===tgt):state.pending;
   if(pd.length){
@@ -1259,7 +1257,7 @@ function renderAdmin(){
   const sr=el("div",{style:{display:"flex",gap:"8px",alignItems:"center",marginBottom:"8px"}});
   const si2=el("input",{type:"text",placeholder:"Apps Script URLをここに入力",value:state.sheetsUrl||"",style:{flex:"1",padding:"8px 10px",border:"1px solid var(--bd)",borderRadius:"2px",fontSize:"11px",background:"var(--wh)"}});
   const sv2=btn("sbtn","保存",()=>{saveSheetsUrl(si2.value.trim());alert(si2.value.trim()?"✅ URLを保存しました":"⚠️ URLをクリアしました");render();});
-  const st2=btn("sbtn","テスト送信",()=>{const u=si2.value.trim();if(!u){alert("入力ください");return;}fetch(u,{method:"POST",body:JSON.stringify({受験者名:"テスト",メールアドレス:"test@example.com",検定種別:"KENZO検定",級:"3級",受験日:new Date().toLocaleDateString("ja-JP"),受験回数:1,正答数:10,総問題数:15,"正答率(%)":67,合否:"テスト","認定・特典":"テスト実行"})}).then(()=>alert("✅ テスト送信成功！")).catch(e=>alert("❌ 失敗:"+e));});
+  const st2=btn("sbtn","テスト送信",()=>{const u=si2.value.trim();if(!u){alert("入力ください");return;}fetch(u,{method:"POST",body:JSON.stringify({受験者名:"テスト",メールアドレス:"test@example.com",検定種別:"KENZO検定",級:"3級",受験日:new Date().toLocaleDateString("ja-JP"),受験回数:1,正答数:10,総問題数:15,"正答率(%)":67,合否:"テスト"})}).then(()=>alert("✅ テスト送信成功！")).catch(e=>alert("❌ 失敗:"+e));});
   sr.append(si2,sv2,st2);c.append(sr);
   if(state.sheetsUrl){const cb=el("div",{style:{fontSize:"10px",color:"var(--ok)",marginBottom:"16px"}});cb.textContent="✅ 連携設定済—試験完了時に自動送信";c.append(cb);}
   const exportBtn=btn("back-btn","📊 全受験結果をExcelでエクスポート",()=>exportXLSX());
