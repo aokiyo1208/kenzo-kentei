@@ -423,7 +423,7 @@ function getCurrentLevels(){return state.examKind==="fde"?FDE_LEVELS:KENZO_LEVEL
 const OPT=["A","B","C","D"];
 // 制限時間：kind別に管理
 function getTimeLimit(lv){
-  if(state.examKind==="fde")return {3:60*60,4:30*60}[lv]||60*60;
+  if(state.examKind==="fde")return {3:40*60,4:30*60}[lv]||60*60;
   return {4:15*60,3:20*60,2:30*60}[lv]||30*60;
 }
 const TLAB={c:"選択式",tf:"正誤式",f:"穴埋め",o:"記述式"};
@@ -778,7 +778,7 @@ function renderFde4Sel(){
 // 建設FDE検定 3級
 function renderFde3Sel(){
   const c=div("main");
-  c.append(div("pt","建設FDE検定 3級 ─ 受験範囲を選択"),div("ps","全100問｜制限時間：60分（試験）／ 合格ライン80%"));
+  c.append(div("pt","建設FDE検定 3級 ─ 受験範囲を選択"),div("ps","全100問｜制限時間：40分（試験）／ 合格ライン80%"));
   c.append(renderModeSwitch());
   const startLabel=state.examMode==="study"?"学習を開始する →":"受験を開始する →";
   const sb=btn("pbtn",startLabel,()=>startExam(3,"all",state.examMode));
