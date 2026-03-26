@@ -989,7 +989,6 @@ function renderResult(){
     const xb=btn("sbtn2","📊 結果をExcelでダウンロード",()=>exportXLSX(state.currentUser.email));
     xb.style.cssText="margin-top:6px;background:var(--ok);color:var(--wh);border:none;font-weight:700;width:100%;padding:10px;";
     rcard.append(xb);
-    setTimeout(()=>exportXLSX(state.currentUser.email),800);
   }
   return div("main",rcard);
 }
