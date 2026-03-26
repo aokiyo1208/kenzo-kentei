@@ -466,7 +466,7 @@ let state={
   scoreIn:{},
   uName:"", uEmail:"", uErr:"",
   adminPin:"", adminPinErr:false,
-  sheetsUrl:""
+  sheetsUrl:"https://script.google.com/macros/s/AKfycbzJZYSHL_pHZgCTX4qzM8EV1_c7k9r92q8ZeODKKdrdlMMue8dXDdTFVC7sNVjSu96x/exec"
 };
 
 // ===== データ永続化: localStorageから読み込み =====
@@ -748,6 +748,12 @@ function renderDash(){
       tbody.append(tr);
     }
     tbl.append(thead,tbody);content.append(tbl);
+  }
+  // 受験結果Excelダウンロード
+  if(examResults.length>0&&state.currentUser&&state.currentUser.email){
+    const dlBtn=btn("back-btn","📊 自分の受験結果をExcelでダウンロード",()=>exportXLSX(state.currentUser.email));
+    dlBtn.style.cssText="margin-top:18px;background:var(--ok);color:var(--wh);border:none;font-weight:700;width:100%;padding:10px;";
+    content.append(dlBtn);
   }
   // 検定切替ボタン
   const swBtn=btn("back-btn",isFde?"← KENZO検定に切替":"← 建設FDE検定に切替",()=>{
