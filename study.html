@@ -1,1 +1,678 @@
-�PNG
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KENZO検定 学習モード</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bk:#1a1a1a;--dk:#2C2C2C;--gd:#C8A96E;--gl:#E8CFA0;--cr:#F5F0E8;--wh:#FAFAF7;--gr:#8A8A8A;--bd:#D8D0C4;--ok:#4A7C59;--ng:#8B3A3A;--pd:#5A6A7A;--st:#3A6B8A}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--cr);color:var(--dk);min-height:100vh}
+#app{min-height:100vh}
+.hdr{background:var(--bk);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(200,169,110,.3)}
+.logo{font-family:'Noto Serif JP',serif;font-size:19px;font-weight:700;letter-spacing:.15em;color:var(--gd)}
+.logo span{color:rgba(255,255,255,.4);font-weight:300;font-size:11px;margin-left:9px}
+.back-link{color:rgba(255,255,255,.4);font-size:10px;text-decoration:none;border:1px solid rgba(255,255,255,.15);padding:4px 11px;border-radius:2px;transition:all .2s}
+.back-link:hover{color:var(--gd);border-color:rgba(200,169,110,.4)}
+.main{padding:32px 24px;max-width:820px;margin:0 auto;width:100%}
+/* Top screen */
+.top-wrap{min-height:calc(100vh - 56px);display:flex;align-items:center;justify-content:center;flex-direction:column;padding:32px 24px}
+.top-title{font-family:'Noto Serif JP',serif;font-size:28px;font-weight:300;color:var(--dk);margin-bottom:6px;text-align:center}
+.top-sub{font-size:11px;color:var(--gr);margin-bottom:36px;text-align:center;letter-spacing:.1em}
+.filter-box{background:var(--wh);border:1px solid var(--bd);border-radius:2px;padding:24px 28px;width:100%;max-width:560px;margin-bottom:20px}
+.filter-title{font-size:9px;color:var(--gr);letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px}
+.check-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-bottom:16px}
+.check-item{display:flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid var(--bd);border-radius:2px;cursor:pointer;transition:all .2s;background:var(--cr)}
+.check-item:hover{border-color:var(--gd)}
+.check-item.checked{border-color:var(--gd);background:rgba(200,169,110,.08)}
+.check-item input[type=checkbox]{display:none}
+.ckmark{width:16px;height:16px;border:1px solid var(--bd);border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;font-size:10px}
+.check-item.checked .ckmark{background:var(--gd);border-color:var(--gd);color:var(--dk)}
+.ck-label{font-size:11px;flex:1}
+.ck-count{font-size:9px;color:var(--gr)}
+.start-area{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.q-count-info{font-size:11px;color:var(--gr)}
+.q-count-info strong{color:var(--dk);font-size:13px}
+.start-btn{background:var(--dk);color:var(--wh);border:none;font-family:'Noto Sans JP',sans-serif;font-size:13px;font-weight:500;padding:11px 28px;cursor:pointer;border-radius:2px;transition:all .2s;margin-left:auto}
+.start-btn:hover{background:var(--gd);color:var(--dk)}
+.start-btn:disabled{opacity:.4;cursor:not-allowed}
+/* Exam bar */
+.ebar{display:flex;align-items:center;gap:13px;margin-bottom:22px}
+.elv{font-family:'Noto Serif JP',serif;font-size:15px;font-weight:700;color:var(--gd)}
+.pbar{flex:1;height:3px;background:var(--bd);border-radius:2px;overflow:hidden}
+.pfill{height:100%;background:linear-gradient(90deg,var(--gd),var(--gl));transition:width .4s}
+.ptxt{font-size:10px;color:var(--gr);white-space:nowrap}
+/* Question card */
+.qcard{background:var(--wh);border:1px solid var(--bd);border-radius:2px;padding:28px 32px;margin-bottom:14px;animation:fu .3s ease}
+@keyframes fu{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.qmeta{display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.qcat{font-size:9px;color:var(--gd);letter-spacing:.2em;text-transform:uppercase}
+.qsrc{font-size:9px;padding:2px 7px;border-radius:2px;background:rgba(58,107,138,.1);color:var(--st)}
+.ttag{font-size:9px;padding:2px 6px;border-radius:2px;background:rgba(0,0,0,.06);color:var(--gr)}
+.qtxt{font-family:'Noto Serif JP',serif;font-size:17px;line-height:1.7;margin-bottom:20px}
+.opts{display:flex;flex-direction:column;gap:7px}
+.obtn{display:flex;align-items:center;gap:11px;padding:11px 15px;border:1px solid var(--bd);background:var(--wh);cursor:pointer;border-radius:2px;transition:all .2s;text-align:left;width:100%;font-family:'Noto Sans JP',sans-serif;font-size:12px}
+.obtn:hover:not(:disabled){border-color:var(--gd)}
+.obtn:disabled{cursor:default}
+.obtn.ok{border-color:var(--ok)!important;background:rgba(74,124,89,.08)!important}
+.obtn.ng{border-color:var(--ng)!important;background:rgba(139,58,58,.08)!important}
+.obtn.sh{border-color:var(--ok)!important;background:rgba(74,124,89,.04)!important}
+.okey{width:24px;height:24px;border-radius:50%;border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0}
+.obtn.ok .okey,.obtn.sh .okey{background:var(--ok);border-color:var(--ok);color:#fff}
+.obtn.ng .okey{background:var(--ng);border-color:var(--ng);color:#fff}
+.tfrow{display:flex;gap:9px}
+.tfbtn{flex:1;padding:14px;border:1px solid var(--bd);background:var(--wh);cursor:pointer;border-radius:2px;font-family:'Noto Serif JP',serif;font-size:17px;transition:all .2s;text-align:center}
+.tfbtn:hover:not(:disabled){border-color:var(--gd)}
+.tfbtn:disabled{cursor:default}
+.tfbtn.tf-ok{border-color:var(--ok)!important;background:rgba(74,124,89,.1)!important}
+.tfbtn.tf-ng{border-color:var(--ng)!important;background:rgba(139,58,58,.1)!important}
+.tfbtn.tf-sh{border-color:var(--ok)!important;background:rgba(74,124,89,.05)!important}
+textarea.oarea{width:100%;min-height:90px;border:1px solid var(--bd);border-radius:2px;padding:11px;font-family:'Noto Sans JP',sans-serif;font-size:12px;resize:vertical;background:var(--wh);outline:none;display:block}
+textarea.oarea:focus{border-color:var(--gd)}
+.osbtn{background:var(--dk);color:var(--wh);border:none;font-family:'Noto Sans JP',sans-serif;font-size:12px;padding:9px 22px;cursor:pointer;border-radius:2px;margin-top:8px}
+.osbtn:hover{background:var(--gd);color:var(--dk)}
+.osbtn:disabled{opacity:.4;cursor:not-allowed}
+.mans{margin-top:12px;padding:12px;background:rgba(74,124,89,.07);border:1px solid rgba(74,124,89,.2);border-radius:2px;font-size:11px;color:var(--ok);line-height:1.6}
+.mansl{font-size:9px;font-weight:700;margin-bottom:3px}
+.fb{padding:11px 16px;border-radius:2px;margin-bottom:14px;font-size:12px}
+.fb.ok-fb{background:rgba(74,124,89,.12);color:var(--ok)}
+.fb.ng-fb{background:rgba(139,58,58,.12);color:var(--ng)}
+.fb.pd-fb{background:rgba(90,106,122,.1);color:var(--pd)}
+.exp{padding:11px 16px;background:rgba(200,169,110,.08);border:1px solid rgba(200,169,110,.25);border-radius:2px;margin-bottom:14px;font-size:11px;line-height:1.8}
+.expl{font-size:9px;font-weight:700;color:var(--gd);display:block;margin-bottom:3px}
+.nxt{background:var(--dk);color:var(--wh);border:none;font-family:'Noto Sans JP',sans-serif;font-size:12px;padding:11px 26px;cursor:pointer;border-radius:2px;display:block;margin-left:auto}
+.nxt:hover{background:var(--gd);color:var(--dk)}
+/* Result */
+.rcard{background:var(--wh);border:1px solid var(--bd);border-radius:2px;padding:48px 32px;text-align:center}
+.ricon{font-size:44px;margin-bottom:11px}
+.rgold{width:32px;height:2px;background:var(--gd);margin:0 auto 14px}
+.rtit{font-family:'Noto Serif JP',serif;font-size:22px;font-weight:300;margin-bottom:4px}
+.rscore{font-family:'Noto Serif JP',serif;font-size:52px;font-weight:700;color:var(--gd);line-height:1;margin:14px 0}
+.rscore span{font-size:16px;color:var(--gr);font-weight:300}
+.racts{display:flex;gap:8px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+.pbtn{background:var(--dk);color:var(--wh);border:none;font-family:'Noto Sans JP',sans-serif;font-size:11px;padding:9px 20px;cursor:pointer;border-radius:2px}
+.pbtn:hover{background:var(--gd);color:var(--dk)}
+.sbtn2{background:none;color:var(--dk);border:1px solid var(--bd);font-family:'Noto Sans JP',sans-serif;font-size:11px;padding:9px 20px;cursor:pointer;border-radius:2px}
+.sbtn2:hover{border-color:var(--dk)}
+.score-detail{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0;text-align:center}
+.sd-card{padding:12px;background:var(--cr);border:1px solid var(--bd);border-radius:2px}
+.sd-num{font-family:'Noto Serif JP',serif;font-size:24px;font-weight:700}
+.sd-num.ok-c{color:var(--ok)}
+.sd-num.ng-c{color:var(--ng)}
+.sd-lbl{font-size:9px;color:var(--gr);margin-top:2px}
+.empty{text-align:center;padding:48px 20px;color:var(--gr);font-size:13px}
+.badge{display:inline-block;padding:2px 7px;border-radius:2px;font-size:9px;font-weight:500}
+.bi{background:rgba(200,169,110,.15);color:#8B6A30}
+.bst{background:rgba(58,107,138,.15);color:var(--st)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const ALL_Q=[{src:"KENZO 4級",id:1,cat:"ユーザー登録",type:"c",q:"招待URLの有効期限は？",o:["24時間","1週間","3日","1か月"],a:"B",ex:"セキュリティと利便性のバランスから1週間です。"},
+{src:"KENZO 4級",id:2,cat:"ユーザー登録",type:"c",q:"登録時にチェックが必要な項目は？",o:["利用規約に同意する","メルマガ購読","位置情報の共有","端末認証"],a:"A",ex:"法的拘束力を持つのは利用規約への同意です。"},
+{src:"KENZO 4級",id:3,cat:"ユーザー登録",type:"c",q:"会員登録完了後にできることは？",o:["契約書が自動生成","物件が自動作成","取引先が自動登録","建設PADへログイン"],a:"D",ex:"登録完了＝利用権限の付与です。"},
+{src:"KENZO 4級",id:4,cat:"ユーザー登録",type:"c",q:"登録した基本情報は何に反映？",o:["注文書等の基本情報","CSV出力条件","契約書の条項","ストレージ容量"],a:"A",ex:"発注書・契約書に自動反映されます。"},
+{src:"KENZO 4級",id:5,cat:"プロフィール編集",type:"c",q:"組織情報編集はどこから？",o:["契約書","請求関連","組織・ユーザー","CSV出力"],a:"C",ex:"組織管理領域に配置されています。"},
+{src:"KENZO 4級",id:6,cat:"プロフィール編集",type:"c",q:"組織情報編集の注意点は？",o:["（必須）は必ず入力","（任意）も必ず入力","半角数字は不可","住所は入力不可"],a:"A",ex:"必須項目は書面生成に必要な情報です。"},
+{src:"KENZO 4級",id:7,cat:"通知情報",type:"c",q:"通知情報はどこから操作？",o:["契約書","HOME","組織・ユーザー","注文書・請書"],a:"B",ex:"全体横断情報なのでHOMEに配置。"},
+{src:"KENZO 4級",id:8,cat:"二段階認証",type:"c",q:"二段階認証はどこから開く？",o:["物件作成・更新","見積関連","HOME","ストレージ"],a:"C",ex:"アカウント全体の管理なのでHOMEです。"},
+{src:"KENZO 4級",id:9,cat:"二段階認証",type:"c",q:"二段階認証の操作は？",o:["事前設定パスワードを入力","取引先コードを入力","物件名を入力","ワンタイムパスワード"],a:"A",ex:"建設PADでは事前設定した二段階パスワードで認証します。"},
+{src:"KENZO 4級",id:10,cat:"二段階認証",type:"c",q:"パスワードを忘れた場合は？",o:["アカウント削除","パスワードを忘れた方はこちら","取引先を招待","PDFで確認"],a:"B",ex:"リカバリー導線は標準UI設計です。"},
+{src:"KENZO 4級",id:11,cat:"取引先招待",type:"c",q:"取引先招待で何が可能になる？",o:["自動入金","自動請求","自動施工","電子取引"],a:"D",ex:"招待の目的は電子書面のやり取りです。"},
+{src:"KENZO 4級",id:12,cat:"取引先招待",type:"c",q:"招待メール送信画面はどこ？",o:["取引先管理→招待する","契約・注文書→契約書","請求関連→一般通知書","見積関連→見積り依頼"],a:"A",ex:"関係構築フェーズなので取引先管理メニューです。"},
+{src:"KENZO 4級",id:13,cat:"取引先招待",type:"c",q:"招待先メールアドレスについて正しいのは？",o:["後から変更できる","招待メールが送られる","会社住所として使われる","CSV出力先になる"],a:"B",ex:"入力＝送信先指定です。"},
+{src:"KENZO 4級",id:14,cat:"取引先招待",type:"c",q:"取引先側でメールアドレス変更は？",o:["できない","できる","管理者だけできる","月1回できる"],a:"A",ex:"セキュリティ上、変更不可です。"},
+{src:"KENZO 4級",id:15,cat:"取引先招待",type:"c",q:"メールアドレス変更が必要な場合は？",o:["CSV出力から申請","取引先がプロフィール編集","サポートセンターに依頼","物件をクローズ"],a:"C",ex:"中央管理（サポートセンター）が妥当です。"},
+{src:"KENZO 4級",id:16,cat:"取引先招待",type:"c",q:"複数招待でフォームを増やすボタンは？",o:["追加","更新","編集","ダウンロード"],a:"A",ex:"フォーム増設は「追加」ボタンです。"},
+{src:"KENZO 4級",id:17,cat:"物件登録",type:"c",q:"物件作成画面はどこから？",o:["Home→通知情報","物件作成・更新→物件作成","契約・注文書→契約書","CSV出力→詳細検索"],a:"B",ex:"物件は契約より前段階の「土台」です。"},
+{src:"KENZO 4級",id:18,cat:"物件登録",type:"c",q:"物件情報の必須項目例は？",o:["CSVの検索条件・ダウンロード先","取引先コード・支払通知番号","工事案件名・工事場所","二段階パスワード・部署名"],a:"C",ex:"工事案件名・工事場所は建設取引の特定要素です。"},
+{src:"KENZO 4級",id:19,cat:"物件登録",type:"c",q:"取引先を物件に参加させる操作は？",o:["ダウンロードを押す","メールアドレスを削除","PDFで確認するを押す","取引先を選択し>>追加を押す"],a:"D",ex:"選択→追加で紐付けます。"},
+{src:"KENZO 4級",id:20,cat:"契約書",type:"c",q:"契約書作成画面はどこから？",o:["契約書→契約書作成","請求関連→一般通知書","見積関連→見積り依頼","Home→スタッフ招待"],a:"A",ex:"機能名と一致した構造です。"},
+{src:"KENZO 4級",id:21,cat:"契約書",type:"c",q:"契約書準備方法は何通り？",o:["1通り","2通り","3通り","4通り"],a:"B",ex:"テンプレート利用とアップロード型の2種類です。"},
+{src:"KENZO 4級",id:22,cat:"契約書",type:"c",q:"発注側情報はどこから自動入力？",o:["物件の工事案件名","CSV出力の検索条件","ユーザー登録時の組織情報","通知情報の設定"],a:"C",ex:"登録済み組織データから自動反映されます。"},
+{src:"KENZO 4級",id:23,cat:"契約書",type:"c",q:"契約書送信の条件は？",o:["チェックボックスにチェック","メールアドレスを変更","物件をクローズ","CSVをダウンロード"],a:"A",ex:"チェックは送信許可の意思確認です。"},
+{src:"KENZO 4級",id:24,cat:"契約書",type:"c",q:"まとめて送信するには？",o:["通知情報を空にする","送信する契約書にチェック","二段階認証を無効化","ストレージへアップロード"],a:"B",ex:"チェックで対象を明確化してから実行します。"},
+{src:"KENZO 4級",id:25,cat:"注文書・請書",type:"c",q:"注文書・請書作成画面はどこ？",o:["見積関連→見積り依頼","契約・注文書→契約書","請求関連→一般通知書","注文書・請書→作成"],a:"D",ex:"注文書は独立したメニューに配置。"},
+{src:"KENZO 4級",id:26,cat:"注文書・請書",type:"c",q:"注文書作成の最初の操作は？",o:["二段階認証を設定","会社情報を編集","CSV出力を選択","物件選択で物件を選ぶ"],a:"D",ex:"注文は必ず特定物件に紐づきます。"},
+{src:"KENZO 4級",id:27,cat:"注文書・請書",type:"c",q:"発注内容入力の注意点は？",o:["必須は任意で全角入力","必須は必ず入力し半角入力","必須は不要","必須は画像で入力"],a:"B",ex:"半角入力が基本。全角はシステムエラーの元です。"},
+{src:"KENZO 4級",id:28,cat:"注文書・請書",type:"c",q:"約款添付時の拡張子の注意は？",o:[".pdf（小文字）を確認",".PDF（大文字）のみ",".docxのみ","何でもよい"],a:"A",ex:"拡張子の大文字・小文字は処理に影響します。"},
+{src:"KENZO 4級",id:29,cat:"建設業基礎",type:"c",q:"発注者と直接契約し全体責任を負うのは？",o:["施主","元請","設計事務所","デベロッパー"],a:"B",ex:"発注者と直接契約し全体責任を負うのが元請です。"},
+{src:"KENZO 4級",id:30,cat:"建設業基礎",type:"c",q:"建設業の主な2分類は？",o:["建築と設備","建築と土木","建築と不動産","建築と管理"],a:"B",ex:"建設業の大分類は「建築」と「土木」です。"},,
+{src:"建設FDE 4級",id:1,wk:"W1",cat:"現場理解",type:"c",q:"元請と下請の関係は？",o:["下請が全体責任","元請と下請は対等","元請が全体責任・下請は専門工事","下請同士が直接契約"],a:"C",ex:"元請が全体責任を担い、専門工事を下請に分離発注します。"},
+{src:"建設FDE 4級",id:2,wk:"W1",cat:"現場理解",type:"c",q:"金額が正式確定するのはいつ？",o:["見積書提出時","請求書送付時","注文書締結時","代金受領時"],a:"C",ex:"注文書の締結によって契約金額が正式確定します。"},
+{src:"建設FDE 4級",id:3,wk:"W1",cat:"現場理解",type:"c",q:"建設業法19条はどの工程の規制？",o:["施工品質","契約内容の明確化","代金支払期限","安全管理"],a:"B",ex:"建設業法19条は契約書面の記載事項を規定し、取引の明確化を図ります。"},
+{src:"建設FDE 4級",id:4,wk:"W1",cat:"現場理解",type:"c",q:"出来高とは？",o:["完了した工事量の割合","発注金額の合計","未払う残高","工期の残り日数"],a:"A",ex:"出来高は工事の進捗を金額換算した指標です。"},
+{src:"建設FDE 4級",id:5,wk:"W1",cat:"現場理解",type:"c",q:"「工種」の説明として適切なのは？",o:["工事の発注単位","現場責任者の役職名","工事分類の単位","施工期間の呼称"],a:"C",ex:"工種は工事の種類・分類を表す単位です（例：型枠工事、鉄筋工事）。"},
+{src:"建設FDE 4級",id:6,wk:"W1",cat:"現場理解",type:"tf",q:"協力会社は元請の指示なら何でも従わなければならない。",a:"false",ex:"協力会社にも法令遵守義務があり、違法な指示には従う必要がありません。"},
+{src:"建設FDE 4級",id:7,wk:"W1",cat:"IT基礎",type:"tf",q:"インボイス制度では、登録番号の記載が必須である。",a:"true",ex:"2023年10月施行のインボイス制度では、適格請求書に登録番号の記載が必須です。"},
+{src:"建設FDE 4級",id:8,wk:"W1",cat:"現場理解",type:"f",q:"元請は工事全体の ______ を負う。",o:["費用","責任","利益","日程"],a:"B",ex:"元請は発注者に対して工事全体の責任を負います。"},
+{src:"建設FDE 4級",id:9,wk:"W1",cat:"現場理解",type:"f",q:"建設業は「 ______ 」文化で動くことが多い。",o:["顧客ファースト","本社ファースト","現場ファースト","効率ファースト"],a:"C",ex:"建設業は現場の判断・状況を最優先にする「現場ファースト」文化が根付いています。"},
+{src:"建設FDE 4級",id:10,wk:"W1",cat:"現場理解",type:"o",q:"現場の朝礼で確認される3つのポイントを挙げよ。",ma:"安全 ／ 工程 ／ 品質"},
+{src:"建設FDE 4級",id:11,wk:"W1",cat:"現場理解",type:"o",q:"協力会社が請求書を夜に送ってくる背景を説明せよ。",ma:"日中は現場作業で事務対応が夜になるため"},
+{src:"建設FDE 4級",id:12,wk:"W2",cat:"IT基礎",type:"c",q:"SaaSの説明として最も近いものは？",o:["自社サーバーにインストール","パッケージソフトを購入","クラウド経由でサービス利用","ハードウェアを借りる"],a:"C",ex:"SaaS（Software as a Service）はクラウド経由でソフトウェアを提供するモデルです。"},
+{src:"建設FDE 4級",id:13,wk:"W2",cat:"IT基礎",type:"c",q:"APIの役割は？",o:["データを削除","システム同士をつなぐ","ファイルを印刷","パスワードを管理"],a:"B",ex:"APIはシステム間でデータをやり取りするための接続インターフェースです。"},
+{src:"建設FDE 4級",id:14,wk:"W2",cat:"IT基礎",type:"c",q:"権限管理で最優先すべき概念は？",o:["利便性の最大化","コスト削減","最小権限","全員への開放"],a:"C",ex:"最小権限の原則：業務に必要な最低限の権限のみ付与することがセキュリティの基本です。"},
+{src:"建設FDE 4級",id:15,wk:"W2",cat:"IT基礎",type:"tf",q:"メールアドレスは個人情報ではない。",a:"false",ex:"メールアドレスは特定の個人を識別できる情報であり、個人情報保護法の対象です。"},
+{src:"建設FDE 4級",id:16,wk:"W2",cat:"IT基礎",type:"tf",q:"Webhookは「自動通知」の仕組みである。",a:"true",ex:"Webhookはあるイベントが起きたとき、指定URLへ自動でデータを送る仕組みです。"},
+{src:"建設FDE 4級",id:17,wk:"W2",cat:"データ構造",type:"f",q:"データにミスが起きる最大の原因は「 ______ 」",o:["システム障害","ネットワーク","人（ヒューマンエラー）","設計ミス"],a:"C",ex:"データ入力・転記ミスなど、人的要因がデータ品質低下の最大の原因です。"},
+{src:"建設FDE 4級",id:18,wk:"W2",cat:"IT基礎",type:"o",q:"API連携のメリットを1つ説明せよ。",ma:"システム間の二重入力を削減でき、ミスを防げる"},
+{src:"建設FDE 4級",id:19,wk:"W2",cat:"IT基礎",type:"o",q:"データ整備がDXに必要な理由を説明せよ。",ma:"データが正しくなければ自動化や分析が破綻するため"},
+{src:"建設FDE 4級",id:20,wk:"W3",cat:"AI活用",type:"c",q:"プロンプト設計で最重要なのは？",o:["できるだけ短く","仕様（業務要件）の明確化","感情的な表現","AIに全て任せる"],a:"B",ex:"AIへの指示は業務要件を明確に記述することが高品質な出力への近道です。"},
+{src:"建設FDE 4級",id:21,wk:"W3",cat:"AI活用",type:"c",q:"RAGの役割は？",o:["画像を生成","必要情報を検索し回答の根拠とする","ユーザーを認証","データを削除"],a:"B",ex:"RAG（Retrieval-Augmented Generation）は社内データ等を検索し回答根拠とする技術です。"},
+{src:"建設FDE 4級",id:22,wk:"W3",cat:"AI活用",type:"c",q:"AIの判断の最終責任者は？",o:["AIシステム","開発会社","クラウド事業者","人間（担当者）"],a:"D",ex:"AIはあくまでツールであり、最終判断・責任は必ず人間が負います。"},
+{src:"建設FDE 4級",id:23,wk:"W3",cat:"AI活用",type:"tf",q:"AIが検出した差異はすべて正しい。",a:"false",ex:"AIには誤検知・見落としがあるため、人間による最終確認が必要です。"},
+{src:"建設FDE 4級",id:24,wk:"W3",cat:"AI活用",type:"tf",q:"AIは曖昧な指示でも正しく解釈できる。",a:"false",ex:"AIは曖昧な指示では期待する出力を生成できません。具体的・明確な指示が重要です。"},
+{src:"建設FDE 4級",id:25,wk:"W3",cat:"AI活用",type:"o",q:"AIとの役割分担でFDEが担うべき点を1つ述べよ。",ma:"最終判断・検証・現場との調整"},
+{src:"建設FDE 4級",id:26,wk:"W4",cat:"総合",type:"c",q:"現場からの依頼に即レスできない場合は？",o:["後で返答","無視する","遅れる理由と新期限を即伝える","別の担当者に任せる"],a:"C",ex:"レスポンスの速さと誠実さが現場との信頼関係を作ります。"},
+{src:"建設FDE 4級",id:27,wk:"W4",cat:"総合",type:"c",q:"誤差が出たらまず確認すべきは？",o:["担当者のスケジュール","データ・帳票の元情報","システムのバージョン","他社の事例"],a:"B",ex:"誤差の原因究明は元データの確認から始めます。"},
+{src:"建設FDE 4級",id:28,wk:"W4",cat:"総合",type:"tf",q:"失敗を共有することで再発防止につながる。",a:"true",ex:"失敗事例の共有はナレッジ化され、組織全体の学習につながります。"},
+{src:"建設FDE 4級",id:29,wk:"W4",cat:"総合",type:"o",q:"「課題」と「要望」の違いを説明せよ。",ma:"課題＝目的を阻害している状態、要望＝相手が望んでいること"},
+{src:"建設FDE 4級",id:30,wk:"W4",cat:"改善設計",type:"o",q:"DX推進が孤立しやすい理由と回避策を説明せよ。",ma:"現場と乖離した推進になるため、当事者を巻き込む共創型で進める"},,
+{src:"KENZO 3級",id:1,sec:"A",cat:"KENZO基礎",type:"o",q:"KENZOが提供する3つの主要サービスを挙げなさい。",ma:"建設PAD、AIソリューション（OUKAGAI）、建設FDE"},
+{src:"KENZO 3級",id:2,sec:"A",cat:"KENZO基礎",type:"f",q:"KENZOのビジョン「建設会社が〇〇に集中できる環境をつくる」。〇〇は？",o:["コスト削減","本業（現場の施工）","DX推進","採用活動"],a:"B",ex:"KENZOは建設会社が本業（現場の施工）に専念できるよう、バックオフィス業務を支援します。"},
+{src:"KENZO 3級",id:3,sec:"A",cat:"KENZO基礎",type:"f",q:"建設PADの主なターゲットはどの会社層か。",o:["大手ゼネコン","中堅ゼネコン","個人事業主","行政機関"],a:"B",ex:"建設PADは中堅ゼネコン・準大手を主なターゲットとしています。"},
+{src:"KENZO 3級",id:4,sec:"B",cat:"建設PAD",type:"o",q:"建設PADが対応している法律を2つ挙げなさい。",ma:"建設業法、電子帳簿保存法"},
+{src:"KENZO 3級",id:5,sec:"B",cat:"建設PAD",type:"o",q:"建設PADの基本機能を3つ挙げなさい。",ma:"発注機能、基本契約機能、取引先管理機能"},
+{src:"KENZO 3級",id:6,sec:"B",cat:"建設PAD",type:"f",q:"見積・請求の関係として正しいものは？",o:["見積書から請求書に直接反映","見積書→発注書を介して請求書","完全に別管理","請求書を先に作成"],a:"B",ex:"建設PADでは見積書→発注書を経て請求書へと書類が連携されます。"},
+{src:"KENZO 3級",id:7,sec:"B",cat:"建設PAD",type:"tf",q:"取引先（下請・協力会社）も有料で使う必要がある。",a:"false",ex:"建設PADは元請側が導入し、取引先は無料で利用できる設計です。"},
+{src:"KENZO 3級",id:8,sec:"B",cat:"建設PAD",type:"o",q:"導入時に活用できる国の補助金の名称を答えなさい。",ma:"IT導入補助金"},
+{src:"KENZO 3級",id:9,sec:"C",cat:"競合比較",type:"o",q:"建設PADの競合となるサービスを3つ挙げなさい。",ma:"デジタルビルダー、BtoBプラットフォーム、CINETなど"},
+{src:"KENZO 3級",id:10,sec:"D",cat:"AIソリューション",type:"o",q:"KENZOが提供するAIソリューションを3つ挙げなさい。",ma:"建築積算AI、工事実績管理、施工計画書AIなど"},
+{src:"KENZO 3級",id:11,sec:"E",cat:"DX BPO",type:"o",q:"DX BPOの「BPO」とは何の略か。",ma:"Business Process Outsourcing"},
+{src:"KENZO 3級",id:12,sec:"F",cat:"導入・運用",type:"tf",q:"建設PADは1つの現場だけで試すことができる。",a:"true",ex:"スモールスタートが可能なため、1物件から試験導入できます。"},
+{src:"KENZO 3級",id:13,sec:"F",cat:"導入・運用",type:"f",q:"電子発注機能で見込める工程削減は？",o:["約30%以上","約50%以上","約70%以上","約90%以上"],a:"C",ex:"建設PAD導入により、発注業務の工程を約70%以上削減できるとされています。"},
+{src:"KENZO 3級",id:14,sec:"G",cat:"業界基礎",type:"o",q:"元請と下請の関係を一言で説明しなさい。",ma:"元請が発注者から工事を請け負い、下請に分離発注する関係"},
+{src:"KENZO 3級",id:15,sec:"G",cat:"業界基礎",type:"f",q:"建設業の工種（許可区分）は全部でいくつあるか。",o:["19工種","25工種","29工種","35工種"],a:"C",ex:"建設業法に基づく許可区分は29工種（業種）に分類されます。"},
+// 発注業務 Q16-35
+{src:"KENZO 3級",id:16,sec:"H",cat:"発注業務",type:"f",q:"発注業務において最も重要な原則はどれか？",o:["スピード優先","属人化","権限と責任の一致","部門分離"],a:"C",ex:"発注業務では、権限（誰が発注できるか）と責任（原価・品質の結果責任）が一致していることが最も重要です。"},
+{src:"KENZO 3級",id:17,sec:"H",cat:"発注業務",type:"f",q:"中小企業において現場監督が発注業務を担う主な理由はどれか？",o:["ガバナンス強化","スピード確保","内部統制","分業体制"],a:"B",ex:"中小企業では専門の購買部門がなく、現場の状況を最もよく把握している現場監督がスピード重視で発注を担うことが多いです。"},
+{src:"KENZO 3級",id:18,sec:"H",cat:"発注業務",type:"f",q:"企業規模が拡大した際に購買機能を分離する主な目的はどれか？",o:["現場負担増加","原価の個別最適","原価の全体最適化","工期短縮"],a:"C",ex:"企業規模が大きくなると、現場ごとのバラバラな発注では原価管理が難しくなるため、購買機能を集約して全体最適を図ります。"},
+{src:"KENZO 3級",id:19,sec:"H",cat:"発注業務",type:"f",q:"現場が発注を行い、本社が原価責任を持つ場合のリスクはどれか？",o:["スピード向上","原価の可視化","責任の不一致","品質向上"],a:"C",ex:"発注する現場と原価責任を負う本社が分離していると、誰がコストをコントロールすべきか曖昧になり、責任の不一致が生じます。"},
+{src:"KENZO 3級",id:20,sec:"H",cat:"発注業務",type:"f",q:"実務上、協力会社の選定を担うことが多いのはどれか？",o:["営業","積算","現場監督","経理"],a:"C",ex:"実務では現場の状況・工程・品質を最もよく把握している現場監督が、協力会社の選定・手配を行うケースが多いです。"},
+{src:"KENZO 3級",id:21,sec:"H",cat:"発注業務",type:"f",q:"原価統制の観点から協力会社の単価を管理すべき部門はどれか？",o:["営業","積算","現場監督","購買"],a:"D",ex:"原価統制の理想形は、専門知識と全社視点を持つ購買部門が単価交渉・管理を一元的に担うことです。"},
+{src:"KENZO 3級",id:22,sec:"H",cat:"発注業務",type:"f",q:"現場監督に発注権限を持たせる最大のメリットはどれか？",o:["原価安定","スピード向上","標準化","内部統制"],a:"B",ex:"現場監督が発注権限を持つ最大のメリットは、現場の変化に即応できるスピードです。ただし原価管理や標準化は課題となります。"},
+{src:"KENZO 3級",id:23,sec:"H",cat:"発注業務",type:"f",q:"現場主導型組織で最も起こりやすい課題はどれか？",o:["柔軟性低下","原価のブラックボックス化","工期遅延","人員過多"],a:"B",ex:"現場が個別に発注を行うと、単価や取引先の情報が本社に集まらず、原価がブラックボックス化しやすくなります。"},
+{src:"KENZO 3級",id:24,sec:"H",cat:"発注業務",type:"f",q:"購買部門を設置することで最も実現できるものはどれか？",o:["個別最適","属人化","単価の標準化","現場裁量拡大"],a:"C",ex:"購買部門が単価交渉・管理を集約することで、現場ごとにバラバラだった単価を会社全体で標準化できます。"},
+{src:"KENZO 3級",id:25,sec:"H",cat:"発注業務",type:"f",q:"購買主導型組織のデメリットとして最も適切なのはどれか？",o:["原価不明確","スピード低下","利益不安定","品質低下"],a:"B",ex:"購買部門を経由した承認・発注プロセスが加わることで、現場の緊急ニーズへの対応が遅れるスピード低下が生じやすいです。"},
+{src:"KENZO 3級",id:26,sec:"H",cat:"発注業務",type:"f",q:"発注業務を現場と購買で分担する場合に最も重要なことはどれか？",o:["曖昧な役割分担","属人化","明確なルール設計","スピード優先"],a:"C",ex:"現場と購買が連携するには、どちらが何をどこまで担うかを明確なルールとして設計・共有することが不可欠です。"},
+{src:"KENZO 3級",id:27,sec:"H",cat:"発注業務",type:"f",q:"現場ごとに単価がバラバラな状態で起こる問題はどれか？",o:["利益安定","原価のばらつき","工期短縮","品質向上"],a:"B",ex:"同じ工種・作業でも現場によって単価が異なると、会社全体の原価が不安定になり、利益予測や原価改善が困難になります。"},
+{src:"KENZO 3級",id:28,sec:"H",cat:"発注業務",type:"f",q:"発注業務のDXで最も解決すべき課題はどれか？",o:["現場人数削減","原価データの一元化","工期短縮","安全管理"],a:"B",ex:"発注DXの核心は、FAXや紙・電話でバラバラに行われていた発注情報をシステムに集約し、原価データを一元管理することです。"},
+{src:"KENZO 3級",id:29,sec:"H",cat:"発注業務",type:"f",q:"現場に権限を持たせつつ統制を効かせるために最も有効な方法はどれか？",o:["完全自由化","紙運用","システムによる可視化","属人化"],a:"C",ex:"システムで発注データを記録・可視化することで、現場の裁量を保ちながら本社も原価状況をリアルタイムで把握できます。"},
+{src:"KENZO 3級",id:30,sec:"H",cat:"発注業務",type:"f",q:"発注権限を本社に集中させる主な目的はどれか？",o:["現場効率化","原価統制","スピード向上","現場裁量強化"],a:"B",ex:"本社集中型の発注体制は、単価の交渉力強化・不正防止・原価の全社管理を目的とした原価統制が主な狙いです。"},
+{src:"KENZO 3級",id:31,sec:"H",cat:"発注業務",type:"f",q:"発注ルールが存在しない場合に最も起こりやすい問題はどれか？",o:["利益最大化","原価統一","不正・ミス増加","工期短縮"],a:"C",ex:"発注ルールがなければ、担当者の判断に委ねられるため、誤発注・水増し・癒着などの不正やミスが発生しやすくなります。"},
+{src:"KENZO 3級",id:32,sec:"H",cat:"発注業務",type:"f",q:"現場と購買の役割が曖昧な場合に起こる問題はどれか？",o:["スピード向上","責任不明確","品質向上","工期短縮"],a:"B",ex:"役割が曖昧だと「誰が最終承認するはか」「誰が原価に責任を持つはか」が不明確になり、トラブル時の対応が遅れます。"},
+{src:"KENZO 3級",id:33,sec:"H",cat:"発注業務",type:"f",q:"全社的な原価改善を実現するために最も重要なことはどれか？",o:["現場任せ","単価の標準化","属人化","個別最適"],a:"B",ex:"現場ごとにバラバラな単価を統一・標準化することが、全社的な原価改善の基盤となります。"},
+{src:"KENZO 3級",id:34,sec:"H",cat:"発注業務",type:"f",q:"現場が独自に協力会社を固定化することで起こりやすい問題はどれか？",o:["柔軟性向上","競争原理の低下","品質向上","工期短縮"],a:"B",ex:"特定の協力会社との固定的な関係が続くと、見積りの競争が生まれず、単価が適正水準より高止まりする競争原理の低下が起きます。"},
+{src:"KENZO 3級",id:35,sec:"H",cat:"発注業務",type:"f",q:"現場主導と購買主導の最適な関係はどれか？",o:["完全に現場任せ","完全に本社管理","権限と統制のバランス","属人化"],a:"C",ex:"現場のスピード・柔軟性と、購買の原価統制・標準化を両立させる「権限と統制のバランス」が最も理想的な組織設計です。"},,
+{src:"KENZO 2級",id:1,cat:"建設PAD機能",type:"o",q:"建設PADの主な機能を4つ答えよ。",ma:"電子契約、電子取引、電子見積り、電子請求"},
+{src:"KENZO 2級",id:2,cat:"料金体系",type:"tf",q:"建設PADの利用料金は従量課金型である。",a:"false",ex:"従量課金ではなく、定額のサブスクリプション型です。"},
+{src:"KENZO 2級",id:3,cat:"料金体系",type:"tf",q:"受注する側にも、やり取りする量によって金額が発生する。",a:"false",ex:"受注側（取引先・下請け企業）は無料で利用できます。"},
+{src:"KENZO 2級",id:4,cat:"電子署名",type:"tf",q:"受発注に際し、改ざん防止のタイムスタンプはシステム内でしか確認できない。",a:"false",ex:"PDFにタイムスタンプが付与されるため、ダウンロードしたPDFの署名欄でも確認できます。"},
+{src:"KENZO 2級",id:5,cat:"電子受発注",type:"o",q:"建設PADの受発注において、電子締結が完了するのはいつのタイミングか。",ma:"受注側が承認で返信した時"},
+{src:"KENZO 2級",id:6,cat:"電子署名",type:"o",q:"電子受発注する際に改ざんされない仕組みで付与するものを2つ答えよ。",ma:"タイムスタンプと電子証明書"},
+{src:"KENZO 2級",id:7,cat:"法令",type:"o",q:"グレーゾーン解消制度で明確化された建設業法の技術的要件が記載されているのは、建設業法施工規則 何条の何 第何項か。（例：◯条の◯第◯項）",ma:"13条の2第2項"},
+{src:"KENZO 2級",id:8,cat:"取引先管理",type:"tf",q:"建設PADで招待・登録できる取引先数には制限がある。",a:"false",ex:"取引先の招待・登録数に制限はありません。"},
+{src:"KENZO 2級",id:9,cat:"取引先管理",type:"tf",q:"建設PADで取引先招待を送る際、受注側は招待時に発注側が指定したメールアドレスでしか登録できない。",a:"true",ex:"招待時に指定したメールアドレスは固定で、変更はできません。"},
+{src:"KENZO 2級",id:10,cat:"法令",type:"o",q:"建設PADに関わる重要な法律名を3つ答えよ。",ma:"建設業法、電子帳簿保存法、労働基準法（36条）"},
+{src:"KENZO 2級",id:11,cat:"法令",type:"o",q:"建設PADで電子的な受発注を行う上で、建設業法上の要件として「当てはまらないもの」を全て選べ。\na.本人性　b.証明性　c.見読性　d.再現性　e.保全性　f.原本性",ma:"a（本人性）、c（見読性）、f（原本性）。建設業法上の要件はb.証明性、d.再現性、e.保全性の3つです。",ga:"a c f"},
+{src:"KENZO 2級",id:12,cat:"ユーザー管理",type:"tf",q:"ユーザーが招待・登録できるスタッフ数には制限がある。",a:"false",ex:"スタッフ数の登録に制限はありません。"},
+{src:"KENZO 2級",id:13,cat:"ユーザー管理",type:"tf",q:"マスターアカウント画面にてユーザー招待できるのは発注側と受注側どちらも可能である。",a:"false",ex:"ユーザー（スタッフ）招待は発注側のマスターアカウントのみが可能です。"},
+{src:"KENZO 2級",id:14,cat:"権限管理",type:"tf",q:"スタッフに付与できる権限で、注文書の作成ができる権限は2つある。",a:"true",ex:"管理者アカウントと作成者アカウントの2権限が注文書を作成できます。"},
+{src:"KENZO 2級",id:15,cat:"権限管理",type:"tf",q:"スタッフに付与できる権限で、注文書を送信できる権限はない。",a:"false",ex:"管理者アカウントは注文書の送信が可能です。"},
+{src:"KENZO 2級",id:16,cat:"権限管理",type:"tf",q:"スタッフ権限のユーザーが取引先を招待することは可能である。",a:"false",ex:"取引先の招待はマスターユーザーのみが行えます。"},
+{src:"KENZO 2級",id:17,cat:"権限管理",type:"tf",q:"スタッフ権限のユーザーが自社の情報を自由に変更できる。",a:"false",ex:"スタッフ権限では振込先等の任意情報を含め、自社情報の編集はできません。"},
+{src:"KENZO 2級",id:18,cat:"取引先管理",type:"tf",q:"マスターアカウントは取引先一覧画面にて、取引コード・支払い条件・社会保険加入・備考の4つが編集可能である。",a:"true",ex:"この4項目はマスターアカウントが取引先一覧画面から編集できます。"},
+{src:"KENZO 2級",id:19,cat:"検索機能",type:"tf",q:"スタッフや取引先の検索はカタカナや任意で設定した番号でも出来る。",a:"true",ex:"カタカナ表記や任意の管理番号での検索に対応しています。"},
+{src:"KENZO 2級",id:20,cat:"利用環境",type:"o",q:"建設PADを利用する際に最低限必要な環境と、ワンタイムキーを用いる法的理由を、建設業法の文言を使って答えよ。",ma:"最低限必要な環境：インターネットが開けるデバイス・インターネット環境・メール受信環境。ワンタイムキーは建設業法における「本人性」の確認のために必須。"},
+{src:"KENZO 2級",id:21,cat:"物件管理",type:"tf",q:"物件作成をするページでは取引先を参加させることはできない。",a:"false",ex:"物件作成ページでも取引先を参加させることができます。"},
+{src:"KENZO 2級",id:22,cat:"権限管理",type:"c",q:"権限を有するスタッフは何通りあるか（マスターアカウントを除く）",o:["1通り","2通り","3通り","4通り"],a:"C",ex:"マスターを除くスタッフ権限は管理者・作成者・閲覧者の3通りです。"},
+{src:"KENZO 2級",id:23,cat:"取引先管理",type:"tf",q:"招待した取引先（下請け企業）のマスターアカウントはスタッフを招待できる。",a:"false",ex:"招待した取引先のマスターアカウントはスタッフを招待できません。"},
+{src:"KENZO 2級",id:24,cat:"料金体系",type:"c",q:"2023年4月現在、有料オプション機能は何個あるか。",o:["2つ","3つ","4つ","5つ"],a:"C",ex:"CSV・ワークフロー・見積依頼・請求管理の4つが有料機能です。"},
+{src:"KENZO 2級",id:25,cat:"料金体系",type:"o",q:"建設PADの料金プランを5つ答えよ。",ma:"ライト、ベーシック、ビジネス、プロフェッショナル、エンタープライズ"},
+{src:"KENZO 2級",id:26,cat:"テンプレート",type:"o",q:"テンプレート作成できる項目を2つ答えよ。",ma:"注文条項と支払条件"},
+{src:"KENZO 2級",id:27,cat:"注文書・請書",type:"tf",q:"注文書を取引先に送信後、取引先は請書を別途作成して返信しないと契約締結にならない。",a:"false",ex:"注文書と請書は一体型のため、注文書の送信で請書も同時に発行されます。"},
+{src:"KENZO 2級",id:28,cat:"注文書作成",type:"tf",q:"注文書は取引先登録が完了していれば作成できる。",a:"false",ex:"注文書の作成には取引先登録に加え、物件情報の登録も必要です。"},
+{src:"KENZO 2級",id:29,cat:"物件管理",type:"tf",q:"物件の担当スタッフ設定画面におうで、請求書のみを受信させるスタッフを選択できる。",a:"false",ex:"現行はこの設定はできません（将来対応予定）。"},
+{src:"KENZO 2級",id:30,cat:"権限管理",type:"tf",q:"管理者アカウントは物件情報の作成・注文書の作成及び送信・取引先の招待の全てができる。",a:"false",ex:"管理者アカウントは取引先の招待はできませんが、スタッフ招待は可能です。"},,
+// ストラテジ Q1-35
+{src:"建設FDE 3級",id:1,sec:"ストラテジ",cat:"DX・経営",type:"c",q:"DX（デジタルトランスフォーメーション）の目的として最も適切なものはどれか。",o:["最新技術を導入すること","紙をゼロにすることだけを目的にすること","デジタル技術を活用し、ビジネスモデルや業務プロセスを変革すること","IT部門の人員を削減すること"],a:"C",ex:"DX＝紙廃止ではなく、デジタル技術でビジネスモデル・業務・組織を変えること。A・Bは手段の一部。"},
+{src:"建設FDE 3級",id:2,sec:"ストラテジ",cat:"建設DX",type:"c",q:"建設会社が建設PADのようなクラウド型受発注システムを導入する主な効果として最も適切なのはどれか。",o:["現場の安全パトロールが不要になる","見積・発注・請求情報の一元管理と、取引先とのやり取りの可視化","現場での墨出し作業が早くなる","原価計算が不要になる"],a:"B",ex:"見積・発注・請求・支払の情報一元管理と可視化がメイン。現場安全パトロールとは別領域。"},
+{src:"建設FDE 3級",id:3,sec:"ストラテジ",cat:"ITパスポート",type:"c",q:"ITパスポート試験でいう「ストラテジ系」に含まれる内容として適切なのはどれか。",o:["CPUの動作クロック","企業活動・経営戦略・法務","メモリの種類","ネットワークプロトコル"],a:"B",ex:"ストラテジ系＝経営・企業活動・法務・経営戦略など。CPU・メモリ・ネットワークはテクノロジ系。"},
+{src:"建設FDE 3級",id:4,sec:"ストラテジ",cat:"経営戦略",type:"c",q:"SWOT分析における「O（Opportunity）」の例として最も適切なのはどれか。",o:["自社に若手人材が少ない","新たに建設DX補助金制度が始まった","主要な取引先が倒産した","コア社員の退職が続いている"],a:"B",ex:"外部環境のプラス要因が「機会(O)」。建設DX補助金スタートはまさに外部チャンス。"},
+{src:"建設FDE 3級",id:5,sec:"ストラテジ",cat:"ビジネスモデル",type:"c",q:"サブスクリプション型（SaaS）の料金モデルの特徴として適切なのはどれか。",o:["一度購入すれば永続的に利用できる","月額／年額の継続課金で、常に最新版を利用できる","導入時の一括買い切りのみ","利用ユーザ数は料金に影響しない"],a:"B",ex:"SaaS型の典型：月額・年額継続課金で常に最新版が使える。買い切りは旧パッケージモデル。"},
+{src:"建設FDE 3級",id:6,sec:"ストラテジ",cat:"ビジネスモデル",type:"c",q:"BtoB取引に該当するものはどれか。",o:["施主から注文住宅を請け負う","ECサイトで個人がDIY用の建材を買う","ゼネコンが専門工事会社に工事を発注する","個人が建築系YouTuberに課金する"],a:"C",ex:"ゼネコンと専門工事会社の企業間取引がBtoB。コンビニや個人向けはBtoC。"},
+{src:"建設FDE 3級",id:7,sec:"ストラテジ",cat:"建設DX",type:"c",q:"建設会社における「情報の非対称性」を減らす施策として最も適切なのはどれか。",o:["口頭でしか情報を伝えない","FAXのみでやり取りする","クラウド上で見積・契約・図面・写真などを共有する","現場ごとに独自ルールで管理する"],a:"C",ex:"クラウドで情報共有すると発注側・受注側の情報ギャップが減る。FAXや口頭では逆効果。"},
+{src:"建設FDE 3級",id:8,sec:"ストラテジ",cat:"AI・RPA",type:"c",q:"RPAが最も得意とする業務はどれか。",o:["施工計画の立案","作業員の配置計画","定型的な請求書入力や転記作業","クレーム対応の電話応対"],a:"C",ex:"決まりきった事務作業の自動化がRPAの得意技。判断・交渉・設計は人やAIの仕事。"},
+{src:"建設FDE 3級",id:9,sec:"ストラテジ",cat:"経営指標",type:"c",q:"IT投資の効果を測る指標として適切なのはどれか。",o:["ROE（自己資本利益率）","ROI（投資収益率）","PBR（株価純資産倍率）","PER（株価収益率）"],a:"B",ex:"投資額に対してどれだけリターンがあったかを見るのがROI(Return on Investment)。"},
+{src:"建設FDE 3級",id:10,sec:"ストラテジ",cat:"システム",type:"c",q:"ERPパッケージの説明として最も適切なのはどれか。",o:["画像編集専用ソフトウェア","建築CADソフト","財務・人事・販売など基幹業務を統合管理するシステム","現場監督向けチャットアプリ"],a:"C",ex:"ERP＝会計・人事・販売など基幹システムを統合管理するプラットフォーム。"},
+{src:"建設FDE 3級",id:11,sec:"ストラテジ",cat:"ワークフロー",type:"c",q:"OUKAGAIのようなワークフローシステムを導入する主な狙いとして最も適切なのはどれか。",o:["稟議のプロセスを属人化すること","稟議・決裁の経路を標準化し、承認状況を可視化すること","稟議の証跡を残さないこと","稟議書をすべて紙と電子で両立する"],a:"B",ex:"稟議経路を標準化し「誰のところで止まっているか」まで可視化。属人化・紙台帳からの卒業。"},
+{src:"建設FDE 3級",id:12,sec:"ストラテジ",cat:"AI・機械学習",type:"c",q:"機械学習（Machine Learning）の説明として最も適切なのはどれか。",o:["人がすべてのルールをプログラムに書き込む方式","データからパターンを学習し、予測や分類を行う方式","OSの更新機能の一種","ネットワーク帯域を自動調整する仕組み"],a:"B",ex:"データからパターンを学ぶ。ルールをすべて人が書くif文の山とは別物。"},
+{src:"建設FDE 3級",id:13,sec:"ストラテジ",cat:"AI・機械学習",type:"c",q:"生成AI（Generative AI）の典型的な活用例として最も適切なのはどれか。",o:["コンクリートの配合設計計算のみ","既存のメールを自動で削除する","工事写真から説明文（キャプション）を自動生成する","現場のモルタルを自動で練る"],a:"C",ex:"テキスト・画像など「新しいコンテンツを生む」のが生成AI。工事写真→キャプション自動生成が好例。"},
+{src:"建設FDE 3級",id:14,sec:"ストラテジ",cat:"AI・機械学習",type:"\",q:"AI導入時に考慮すべき「バイアス」の説明として最も適切なのはどれか。",o:["OSのバージョン差","学習データの偏りにより、不公平な結果が出てしまうこと","ネットワークの遅延","CPUクロックのばらつき"],a:"B",ex:"偏ったデータで学習すると不公平な判断が出る。「AIだから公平」は危険な思い込み。"},
+{src:"建設FDE 3級",id:15,sec:"ストラテジ",cat:"AI倫理",type:"c",q:"「人間中心のAI」の考え方として最も適切なのはどれか。",o:["AIが人間の判断をすべて置き換えるべき","人間はAIに完全に従うべき","AIの設計・利用は、人間の尊厳・権利を尊重して行うべき","AIは倫理とは無関係でよい"],a:"C",ex:"AIはツール。主役は人。人権・尊厳・説明責任などを尊重して設計・運用する思想。"},
+{src:"建設FDE 3級",id:16,sec:"ストラテジ",cat:"法令・情報管理",type:"c",q:"個人情報保護法において「個人情報」に該当するものはどれか。",o:["工事名だけ","施工場所だけ","氏名と住所の組み合わせ","鉄筋の径"],a:"C",ex:"「個人を識別できる情報の組み合わせ」が個人情報。氏名＋住所はその典型。"},
+{src:"建設FDE 3級",id:17,sec:"ストラテジ",cat:"法令・情報管理",type:"c",q:"電子帳簿保存法に対応したシステム運用として適切なのはどれか。",o:["取引データをPDFにして保存するが、検索機能は持たない","取引データを削除してもバックアップは取らない","日付や金額などで検索できる形で電磁的記録を保存する","電子データは毎年プリントアウトして保存する"],a:"C",ex:"日付・金額・相手先で検索できる形の保存が要件の一つ。紙に戻せばOKではない。"},
+{src:"建設FDE 3級",id:18,sec:"ストラテジ",cat:"法令・情報管理",type:"c",q:"マイナンバーを取り扱う事業者に求められる対応として最も適切なのはどれか。",o:["社内の誰でも閲覧可能にする","メールで自由に送付する","利用目的を限定し、安全管理措置を講じる","紙に印刷して机の上に置いておく"],a:"C",ex:"利用目的の限定＋アクセス制御・保管・廃棄などの安全管理措置が必要。"},
+{src:"建設FDE 3級",id:19,sec:"ストラテジ",cat:"法令・情報管理",type:"c",q:"著作権侵害に該当する行為はどれか。",o:["フリー素材サイトの利用規約を守って画像を使う","自社で撮影した写真を自社資料に使う","他人が作成した有料CADデータを、許可なく配布する","パブリックドメインの資料を利用する"],a:"C",ex:"他人の有料CADデータを無断配布は著作権侵害。フリー素材・パブリックドメインは条件を守ればOK。"},
+{src:"建設FDE 3級",id:20,sec:"ストラテジ",cat:"情報セキュリティ",type:"c",q:"情報セキュリティの3要素「CIA」のうち、C（Confidentiality）が意味するものはどれか。",o:["完全性","可用性","機密性","継続性"],a:"C",ex:"CIA：C(機密性)＝見ていい人だけが見られる、I(完全性)＝改ざんなし、A(可用性)＝必要なときに使える。"},
+{src:"建設FDE 3級",id:21,sec:"ストラテジ",cat:"BCP・リスク管理",type:"c",q:"BCP（事業継続計画）の説明として最も適切なのはどれか。",o:["新規事業を立ち上げる計画","災害・障害時にも重要業務を継続または早期復旧するための計画","コスト削減のための計画","人員削減計画"],a:"B",ex:"BCP＝事業継続計画。災害・障害等でも重要業務を止めない・早期回復するための準備。"},
+{src:"建設FDE 3級",id:22,sec:"ストラテジ",cat:"BCP・リスク管理",type:"c",q:"建設会社でBCPを考える際に、ITシステムに関して重要な観点はどれか。",o:["図面フォーマットの統一","社内LANの配線色","クラウドサービスやバックアップを活用したデータの冗長化","PCの色を揃えること"],a:"C",ex:"クラウド・バックアップ・冗長構成でデータとシステムを守る設計が最重要。"},
+{src:"建設FDE 3級",id:23,sec:"ストラテジ",cat:"ITガバナンス",type:"c",q:"ITガバナンスの目的として最も適切なのはどれか。",o:["IT投資を現場に任せる","組織全体としてIT活用を経営目標に沿って最適化・統制すること","ITを使わない文化を守ること","IT部門だけぬ意思決定すること"],a:"B",ex:"IT活用を経営戦略と整合させ、組織全体でコントロールすること。野良SaaS乱立の逆。"},
+{src:"建設FDE 3級",id:24,sec:"ストラテジ",cat:"経営指標",type:"c",q:"KPI（重要業績評価指標）の説明として最も適切なのはどれか。",o:["経営理念そのもの","最終的なゴール（KGI）","KGI達成に向けて進捗を測るための中間指標","社員の年齢"],a:"C",ex:"KGI＝最終ゴール、KPI缝そこへの途中の進捗指標。例：KGI「電子契約率80%」→KPI「今月の電子契約件数」。"},
+{src:"建設FDE 3級",id:25,sec:"ストラテジ",cat:"建設DX",type:"c",q:"建設PADの導入効果を測るKPIとして適切なのはどれか。",o:["現場の騒音レベル","FAX送受信枚数の減少","人員の削減数","営業車のガソリン代"],a:"B",ex:"FAX枚数の減少で電子化の進捗が数字で見える。騒音・ガソリン代・人員数は直接的なDX進捗指標にならない。"},
+{src:"建設FDE 3級",id:26,sec:"ストラテジ",cat:"ビジネスモデル",type:"c",q:"新規ITサービスのビジネスモデルとして「プラットフォーム型」に該当するものはどれか。",o:["ユーザー同士をマッチングし、取引の場を提供する","物販のみ行う","受託開発のみ行う","営業を行わない"],a:"A",ex:"Uberやマッチングサービスのように「場を提供して両者をつなぐ」のがプラットフォーム型。"},
+{src:"建設FDE 3級",id:27,sec:"ストラテジ",cat:"ソフトウェア",type:"c",q:"OSS（オープンソースソフトウェア）の特徴として最も適切なのはどれか。",o:["ソースコードが公開され、ライセンスに従えば改変・再配布可能","必ず無料で、ライセンスも不要","商用利用は禁止されている","ソースコードは非公開"],a:"A",ex:"ソースコード公開＋ライセンス条件を守れば改変・再配布OK。「完全無料・権利ゼロ」ではない。"},
+{src:"建設FDE 3級",id:28,sec:"ストラテジ",cat:"建設FDE",type:"c",q:"「デジタルデバイド」解消に向けた建設FDEの役割として最も適切なのはどれか。",o:["ITが苦手な社員を放置する","現場や事務社員に寄り添って、ツール導入や教育を支援する","システム部門だけで完結する","「分からない人が悪い」と伝える"],a:"B",ex:"現場に寄り添うインストラクター＋設計者がFDE。切り捨ては逆効果。"},
+{src:"建設FDE 3級",id:29,sec:"ストラテジ",cat:"ITパスポート",type:"c",q:"ITパスポート試験の合格イメージとして最も適切なのはどれか。",o:["プロのプログラマーとして即戦力","企業活動全般で通用するITの基礎リテラシーを持っている","サーバ構築の専門家","ネットワーク設計の専門家"],a:"B",ex:"「会社でITの会話についていける基礎リテラシー」レベル。エンジニアのスペシャリストではなくIT教養。"},
+{src:"建設FDE 3級",id:30,sec:"ストラテジ",cat:"建設FDE",type:"c",q:"KENZOの建設FDEに特に求められるスタンスとして最も適切なのはどれか。",o:["コードだけ書ければよく、現場理解は不要","建設業の業務を理解しつつ、ITと現場の橋渡し役を担う","ITツールの批判だけする","ベンダー任せでよい"],a:"B",ex:"建設業務を分からずITだけでは役立たない。業務×ITの橋渡しこそFDEの仕事。"},
+{src:"建設FDE 3級",id:31,sec:"ストラテジ",cat:"ビジネス思考",type:"c",q:"「プロダクトアウト」の説明として適切なのはどれか。",o:["市場ニーズから発想して商品開発する","技術起点で作りたいものを作り、市場に出す","顧客の声を聞かない","原価だけを見て設計する"],a:"B",ex:"「うちの技術でこれ作れるから売ろう」がプロダクトアウト。マーケットインはその懺。"},
+{src:"建設FDE 3級",id:32,sec:"ストラテジ",cat:"ビジネス思考",type:"c",q:"「マーケットイン」の説明として適切なのはどれか。",o:["技術的に面白いものを優先する","社内事情だけで決める","顧客のニーズから逆算して商品・サービスを設計する","原価を最小にすることだけ考える"],a:"C",ex:"「顧客の困りごとから逆算してサービス設計」。DX文脈ではマーケットインが推奨されがち。"},
+{src:"建設FDE 3級",id:33,sec:"ストラテジ",cat:"ITパスポート",type:"c",q:"ITパスポート試験で「テクノロジ系」に分類される内容はどれか。",o:["経営戦略","会計","情報セキュリティ・ネットワーク・データベース","会社法"],a:"C",ex:"情報セキュリティ・ネットワーク・DB・ハード・ソフトなどの「技術要素」がテクノロジ系。"},
+{src:"建設FDE 3級",id:34,sec:"ストラテジ",cat:"AI・DX",type:"c",q:"AIチャットボットを社内問い合わせ対応に導入する主なメリットとして最も適切なのはどれか。",o:["問い合わせ履歴が一切残らなくなる","深夜や休日でも基本的な質問に対応できる","人事評価が不要になる","社員数を必ず減らせる"],a:"B",ex:"24時間365日よくある質問を捌いてくれるのが強み。人をゼロにするわけではない。"},
+{src:"建設FDE 3級",id:35,sec:"ストラテジ",cat:"DX推進",type:"c",q:"建設会社のDX推進において、最も避けるべき状態はどれか。",o:["現場の課題をヒアリングしてツール導入を検討する","形だけシステムを入れて、誰も使っていない","パイロット導入から始める","小さな成功例を社内で共有する"],a:"B",ex:"「システムだけ入れて誰も使わない」が最もよくある失敗。小さな成功を積み上げるのが王道。"},
+// マネジメント Q36-55
+{src:"建設FDE 3級",id:36,sec:"マネジメント",cat:"プロジェクト管理",type:"c",q:"プロジェクトマネジメントで「スコープ」とは何を指すか。",o:["プロジェクトメンバーの人数","プロジェクトの予算","プロジェクトで実施する作業の範囲","会議の回数"],a:"C",ex:"スコープ＝「どこからどこまでやるか」の範囲。ここがブレると工期・コスト双方に影響する。"},
+{src:"建設FDE 3級",id:37,sec:"マネジメント",cat:"プロジェクト管理",type:"c",q:"WBS（Work Breakdown Structure）の目的として最も適切なのはどれか。",o:["作業を大きくまとめる","作業を階層的に分解し、抜け漏れをなくす","責任者を一人に集中させる","仕様変更を容易にする"],a:"B",ex:"大きな仕事を「木の枝」のように分解し、抜け漏れを減らす技法。"},
+{src:"建設FDE 3級",id:38,sec:"マネジメント",cat:"開発手法",type:"c",q:"ウォーターフォール型開発の特徴として最も適切なのはどれか。",o:["仕様変更を前提に、小さく繰り返す","要件定義→設計→実装→テストの順に上から下へ進む","ドキュメントはほとんど作成しない","リリースを毎日行う"],a:"B",ex:"要件→設計→実装→テストを「流れ落ちる」ように進める。後戻りコストが高いのが特徴。"},
+{src:"建設FDE 3級",id:39,sec:"マネジメント",cat:"開発手法",type:"c",q:"アジャイル開発の特徴として最も適切なのはどれか。",o:["一度決めた仕様は変更しない","小さく作って動かし、フィードバックを得ながら改善を繰り返す","ウォーターフォールよりもテストが不要","顧客とのコミュニケーションを減らす"],a:"B",ex:"小さく作ってユーザーに見せてフィードバックしながら回す。「完璧に決�てから作る」の逆。"},
+{src:"建設FDE 3級",id:40,sec:"マネジメント",cat:"開発・運用",type:"c",q:"DevOpsの考え方として最も適切なのはどれか。",o:["開発と運用を分断する","開発と運用が連携し、継続的な改善・自動化を行う","運用部門を廃止する","テストを省略する"],a:"B",ex:"Dev(開発)とOps(運用)が一体となって自動化・継続改善する。「作って投げる」文化からの卒業。"},
+{src:"建設FDE 3級",id:41,sec:"マネジメント",cat:"ITサービス管理",type:"c",q:"ITサービスマネジメントにおいて「インシデント管理」が扱うのはどれか。",o:["新機能の企画","システム障害やサービス中断への対処","販促キャンペーンの計画","中期経営計画"],a:"B",ex:"実際に起きた障害に対処するプロセス。問題管理は根本原因を潰すほう。"},
+{src:"建設FDE 3級",id:42,sec:"マネジメント",cat:"ITサービス管理",type:"c",q:"変更管理の目的として最も適切なのはどれか。",o:["変更を口頭で素早く行う","影響評価や承認を行い、無秩序な変更を防ぐ","記録を残さない","現場の判断で勝手に変更させる"],a:"B",ex:"テストや承認なしに本番を変えると事故るので、変更を統制するためのプロセス。"},
+{src:"建設FDE 3級",id:43,sec:"マネジメント",cat:"テスト・移行",type:"c",q:"システム移行プロジェクトにおいて特に重要なテストはどれか。",o:["画面の色味テスト","データ移行テスト","インストール時間テスト","キーボード入力テスト"],a:"B",ex:"正しくデータが移っているか（件数・項目・値）を検証しないと、後で地獄を見る。"},
+{src:"建設FDE 3級",id:44,sec:"マネジメント",cat:"ITサービス管理",type:"c",q:"SLA（サービスレベル合意）で定義される内容として最も適切なのはどれか。",o:["社員の給与水準","取締役の人数","稼働率・応答時間などサービス品質の目標値","株主構成"],a:"C",ex:"稼働率・応答時間・復旧目標時間(RTO)など「どのレベルのサービスか」の約束。"},
+{src:"建設FDE 3級",id:45,sec:"マネジメント",cat:"プロジェクト管理",type:"c",q:"プロジェクトのクリティカルパスとは何を意味するか。",o:["最も費用が高いタスクの集合","並行して実行できるタスク群","遅れると全体の工期に直接影響するタスクの経路","管理しなくてよいタスクの集合"],a:"C",ex:"ここが遅れると工期全体が遅延する「肝」の経路。ここを守るために他を調整する。"},
+{src:"建設FDE 3級",id:46,sec:"マネジメント",cat:"品質管理",type:"c",q:"品質保証活動として適切なのはどれか。",o:["本番でユーザに使わせてから直す","レビューやテストを通じて欠陥を早期に発見・是正する","不具合を隠す","品質をコストでしか判断しない"],a:"B",ex:"レビュー・テストで早めにバグを捕まえるのが基本。「本番でテスト」は冗談。"},
+{src:"建設FDE 3級",id:47,sec:"マネジメント",cat:"テスト・移行",type:"c",q:"受入テスト（ユーザ受入テスト）の主な目的として最も適切なのはどれか。",o:["ベンダ側の都合で仕様を調整する","利用者側の観点で、要件通りに動作するか確認する","ネットワーク速度を測る","サーバ室の温度を測る"],a:"B",ex:"「ユーザー視点で要件通りか」を確認するフェーズ。ベンダ側単体の都合ではない。"},
+{src:"建設FDE 3級",id:48,sec:"マネジメント",cat:"インフラ",type:"c",q:"ITサービスの可用性を高�る手段として最も適切なのはどれか。",o:["単一サーバ構成にする","冗長構成（クラスタリング・多重化）をとる","バックアップを取らない","停止時間を記録しない"],a:"B",ex:"サーバを冗長化して、どれかが死んでも全体が止まらないようにする。"},
+{src:"建設FDE 3級",id:49,sec:"マネジメント",cat:"ITサービス管理",type:"c",q:"障害対応における「初動」で最も優先すべきことはどれか。",o:["責任を追及する","影響範囲と重要度を把握し、関係者にエスカレーションする","障害を隠す","すぐに再起動だけを繰り返す"],a:"B",ex:"何がどこまで影響しているかを把握し、関係者に共有＆エスカレーション。原因追及はその後。"},
+{src:"建設FDE 3級",id:50,sec:"マネジメント",cat:"ワークフロー",type:"c",q:"OUKAGAIでの稟議フロー変更をプロジェクトとして実施する場合に、最も重要なポイントはどれか。",o:["一部の人だけに仕様を説明する","現場ユーザーの業務をヒアリングし、承認経路・権限を整理する","とりあえず現在の紙の流れをそのまま画面化する","システム部門だけで決める"],a:"B",ex:"紙の流れを鵜呑みにせず、現場・総務・経理などからヒアリングして「あるべき承認経路」を整理する。"},
+{src:"建設FDE 3級",id:51,sec:"マネジメント",cat:"ITサービス管理",type:"c",q:"ITサービスマネジメントにおける「問題管理」の役割はどれか。",o:["個別障害への即時対応","障害の根本原因分析と再発防止策の検討","新規機能の企画","利用料金の請求"],a:"B",ex:"同じ障害を繰り返さないよう「なぜ？」を深掘りして恒久対策を打つプロセス。"},
+{src:"建設FDE 3級",id:52,sec:"マネジメント",cat:"プロジェクト管理",type:"c",q:"プロジェクトで「スコープ・クリープ」が発生している状態として最も適切なのはどれか。",o:["当初合意していない要件が次々と追加されていく","当初計画どおりに進んでいる","予算が余っている","工期が短縮されている"],a:"A",ex:"「ついでにこれも」と合意していない要件が肥大していく状態。早期に変更管理プロセスを使う。"},
+{src:"建設FDE 3級",id:53,sec:"マネジメント",cat:"建設FDE",type:"c",q:"IT人材育成の観点から、建設FDE研修でやるべきこととして最も適切なのはどれか。",o:["現場には行かず、座学だけ行う","建設業の業務理解と、IT基礎（クラウド・セキュリティ・AIなど）をセットで学ぶ","ツールの操作だけを覚える","プログラミング言語だけ学ぶ"],a:"B",ex:"業務理解＋IT基礎をセットで学ぶことで、現場と話ができる人材になる。"},
+{src:"建設FDE 3級",id:54,sec:"マネジメント",cat:"ITサービス管理",type:"c",q:"SLAの「稼働率99.9%」のおおりその年間停止許容時間として最も近いものはどれか。",o:["約87.6時間","約8.8時間","約1時間","約0.1時間"],a:"B",ex:"1年≒8760時間 → 0.1%≒8.76時間。だいたい「9時間弱」がSLA 99.9%の意味。"},
+{src:"建設FDE 3級",id:55,sec:"マネジメント",cat:"IT導入・運用",type:"c",q:"IT導入後の「定着化フェーズ」で行うべき活動として最も適切なのはどれか。",o:["トレーニングやFAQ整備、運用ルールの見直し","導入したら放置する","利用状況を見ない","クレームだけ集める"],a:"A",ex:"マニュアル・FAQ・研修・ルール見直しなど「使われる状態」を作るのが定着化フェーズ。"},
+// テクノロジ Q56-80
+{src:"建設FDE 3級",id:56,sec:"テクノロジ",cat:"ハードウェア",type:"c",q:"CPUの主な役割として最も適切なのはどれか。",o:["データを長期保存する","プログラムの命令を解釈・実行する","画面に色を付ける","電源を供給する"],a:"B",ex:"CPUはコンピュータの「頭脳」。命令を読んで実行する。"},
+{src:"建設FDE 3級",id:57,sec:"テクノロジ",cat:"ハードウェア",type:"c",q:"RAMの特徴として最も適切なのはどれか。",o:["電源を切っても内容が保持される","電源を切ると内容が消える","ディスクとして使われる","ネットワーク機器である"],a:"B",ex:"RAMは電源を切ると消える「作業用机」。HDD/SSDは「倉庫」。"},
+{src:"建設FDE 3級",id:58,sec:"テクノロジ",cat:"ハードウェア",type:"c",q:"SSDとHDDの違いとして適切なのはどれか。",o:["SSDは回転する円盤、HDDはメモリチップ","SSDは機械的動作なしで高速、HDDは回転磁気ディスク","どちらも同じ構造","SSDはデータ保存不可"],a:"B",ex:"SSD＝フラッシュメモリで高速・衝撃に強い。HDD＝回転ディスク＋磁気ヘッド。"},
+{src:"建設FDE 3級",id:59,sec:"テクノロジ",cat:"ネットワーク",type:"c",q:"ネットワークにおけるIPアドレスの役割として正しいものはどれか。",o:["PCの性能を表す指標","端末や機器を一意に識別するための番号","暗号化の鍵","OSのバージョン"],a:"B",ex:"IPアドレス＝ネットワーク上の「住所」。PCやサーバを識別するための番号。"},
+{src:"建設FDE 3級",id:60,sec:"テクノロジ",cat:"ネットワーク",type:"c",q:"DNSの役割として最も適切なのはどれか。",o:["IPアドレスとドメイン名を相互に変換する","暗号化を行う","メールを保存する","ディスク容量を管理する"],a:"A",ex:"DNS＝「人間向けの住所(ドメイン名)」と「機械向けの住所(IP)」を変換する電話帳。"},
+{src:"建設FDE 3級",id:61,sec:"テクノロジ",cat:"ネットワーク",type:"c",q:"TCP/IPの説明として最も適切なのはどれか。",o:["ディスプレイの規格","インターネット等で使われる標準的な通信プロトコル群","ハードディスクの種類","CPUのソケット規格"],a:"B",ex:"インターネットの標準プロトコル群。ほぼすべてのネットワーク通信がこれ前提。"},
+{src:"建設FDE 3級",id:62,sec:"テクノロジ",cat:"セキュリティ",type:"c",q:"ファイアウォールの主な役割として正しいものはどれか。",o:["不正な通信を遮断する","電源を安定化する","ディスクを冷却する","ディスプレイの明るさを調整する"],a:"A",ex:"ファイアウォール＝怪しい通信を壁で止める番人。ポートやIPでフィルタリング。"},
+{src:"建設FDE 3級",id:63,sec:"テクノロジ",cat:"セキュリティ",type:"c",q:"情報セキュリティの3要素において「A（Availability）」が意味するものはどれか。",o:["機密性","可用性","完全性","継続性"],a:"B",ex:"CIAのA＝Availability(可用性)：必要なときにちゃんと使えること。"},
+{src:"建設FDE 3級",id:64,sec:"テクノロジ",cat:"セキュリティ",type:"c",q:"ハッシュ関数の特徴として最も適切なのはどれか。",o:["元のデータを必ず復元できる","同じ入力に対しては同じ値が得られる","暗号化と同じである","画像専用である"],a:"B",ex:"同じ入力→同じハッシュ値。逆算は現実的に困難。改ざん検知などに活用される。"},
+{src:"建設FDE 3級",id:65,sec:"テクノロジ",cat:"暗号・認証",type:"c",q:"共通鍵暗号方式の特徴として正しいものはどれか。",o:["暗号化と復号に同じ鍵を用いる","暗号化鍵と復号鍵が異なる","鍵を使わない","通信相手ごとに必ず異なるアルゴリズムを使う"],a:"A",ex:"送信・受信で同じ鍵を使う方式。鍵の受け渡しが課題。"},
+{src:"建設FDE 3級",id:66,sec:"テクノロジ",cat:"暗号・認証",type:"c",q:"公開鍵暗号方式の特徴として最も適切なのはどれか。",o:["1本の鍵で暗号化・復号する","公開鍵で暗号化し、秘密鍵で復号する","鍵を使わない","送信者と受信者で同じ秘密鍵を共有する"],a:"B",ex:"公開鍵で暗号化→秘密鍵で復号。インターネットの鍵交換の土台。"},
+{src:"建設FDE 3級",id:67,sec:"テクノロジ",cat:"データベース",type:"c",q:"データベースにおいて「主キー（Primary Key）」が担う役割はどれか。",o:["レコードを一意に識別する","データを圧縮する","データの履歴を保存する","データの暗号化を行う"],a:"A",ex:"主キー＝行(レコード)を一意に識別するキー。重複やNULLはNG。"},
+{src:"建設FDE 3級",id:68,sec:"テクノロジ",cat:"データベース",type:"c",q:"SQLで、テーブル users の全データを取得する文として適切なのはどれか。",o:["GET * FROM users;","SELECT * FROM users;","EXPORT * FROM users;","FETCH * FROM users;"],a:"B",ex:"SELECT * FROM テーブル名; が基本形。GETやEXPORTはSQLには存在しない。"},
+{src:"建設FDE 3級",id:69,sec:"テクノロジ",cat:"データベース",type:"c",q:"関係データベースで「正規化」を行う主な目的はどれか。",o:["データを重複させる","データの冗長性を減らし、一貫性を高める","データを暗号化する","データの検索を遅くする"],a:"B",ex:"データの重複を減らし、一貫性と保守性を上げるための設計手法。"},
+{src:"建設FDE 3級",id:70,sec:"テクノロジ",cat:"IoT・AI",type:"c",q:"IoT（Internet of Things）の説明として最も適切なのはどれか。",o:["人の頭脳をネットにつなぐ","モノにセンサーや通信機能を持たせ、ネットワークに接続する","インターネットの速度を上げる仕組み","OSの一種"],a:"B",ex:"モノ＋センサー＋ネット接続。現場の温度・振動・位置などをリアルタイムに収集・活用。"},
+{src:"建設FDE 3級",id:71,sec:"テクノロジ",cat:"クラウド",type:"c",q:"クラウドサービスの代表的な利点として最も適切なのはどれか。",o:["災害時に必ず使えなくなる","自社でサーバ室を持たなくてよい","バックアップを取れない","インターネット接続が不要"],a:"B",ex:"自前でサーバ室・インフラを持たずに済み、スケールも柔軟。"},
+{src:"建設FDE 3級",id:72,sec:"テクノロジ",cat:"クラウド",type:"c",q:"KENZOの建設PADのようなサービスはクラウドサービス分類でどれに近いか。",o:["IaaS","PaaS","SaaS","FaaS"],a:"C",ex:"SaaS(Software as a Service)＝アプリケーションをサービスとして提供する層。建設PADはこれ。"},
+{src:"建設FDE 3級",id:73,sec:"テクノロジ",cat:"ソフトウェア・API",type:"c",q:"APIの説明として最も適切なのはどれか。",o:["OSの種類","アプリケーション同士が機能を呼び出すためのインターフェース","ハードウェア規格","ディスプレイの規格"],a:"B",ex:"API＝アプリ同士が「この機能ちょうだい」と呼び出すための窓口。"},
+{src:"建設FDE 3級",id:74,sec:"テクノロジ",cat:"ソフトウェア・API",type:"c",q:"JSONの説明として最も適切なのはどれか。",o:["画像形式","データ交換に使われるテキストベースのフォーマット","暗号方式","OSの一種"],a:"B",ex:"APIレスポンスでよく使われる構造化データのテキスト表現フォーマット。"},
+{src:"建設FDE 3級",id:75,sec:"テクノロジ",cat:"Web・セキュリティ",type:"c",q:"Cookieの用途として最も適切なのはどれか。",o:["利用者のブラウザに一時的な識別情報などを保存する","パスワードを暗号化する","画像を圧縮する","ネットワーク速度を上げる"],a:"A",ex:"ブラウザに小さな情報(セッションIDなど)を保存し「誰が誰か」を覚えておく仕組み。"},
+{src:"建設FDE 3級",id:76,sec:"テクノロジ",cat:"セキュリティ",type:"c",q:"マルウェア対策として適切な行動はどれか。",o:["OSやソフトウェアの更新プログラムを適用する","不審な添付ファイルをすぐ開く","無料の怪しいソフトを積極的に入れる","ウイルス対策ソフトを無効にする"],a:"A",ex:"パッチ適用・ウイルス対策ソフト・怪しいファイルを開かない、が三種の神器。"},
+{src:"建設FDE 3級",id:77,sec:"テクノロジ",cat:"セキュリティ",type:"c",q:"フィッシングメールの典型的な特徴として最も適切なのはどれか。",o:["送信者が自分のメールアドレス","緊急を装ってIDやパスワード入力を促す偽サイトへ誘導する","添付ファイルが必ずPDFである","必ずウイルスが含まれている"],a:"B",ex:"「至急！パスワード更新」みたいな文面で偽サイトへ誘導するのが定番パターン。"},
+{src:"建設FDE 3級",id:78,sec:"テクノロジ",cat:"暗号・認証",type:"c",q:"2要素認証（2FA）の例として最も適切なのはどれか。",o:["IDとパスワードの組み合わせ","パスワード＋ワンタイムコード（SMSなど）","ユーザー名のみ","メールアドレスのみ"],a:"B",ex:"「知っているもの(パスワード)」+「持っているもの(SMSコードなど)」の2要素で認証。"},
+{src:"建設FDE 3級",id:79,sec:"テクノロジ",cat:"Web・セキュリティ",type:"c",q:"HTTPS通信の主な役割として最も適切なのはどれか。",o:["通信を高速化する","通信内容を暗号化し、盗聴や改ざんを防ぐ","データを圧縮する","広告を非表示にする"],a:"B",ex:"HTTPSで通信を暗号化し、盗聴・改ざんを防ぐ。ブラウザの鍵マークの正体。"},
+{src:"建設FDE 3級",id:80,sec:"テクノロジ",cat:"セキュリティ",type:"c",q:"契約書PDFのセキュリティを高�る運用として最も適切なのはどれか。",o:["社内全員が閲覧・編集できる共有フォルダに置く","アクセス権限を登録ユーザーごとに最小限に設定する","ダウンロードしたファイルを個人PCのデスクトップに放置する","パスワードは全員で共用する"],a:"B",ex:"最小権限でアクセス制御。「みんなフル権限」はインシデントの温床。"},
+// コード Q81-90
+{src:"建設FDE 3級",id:81,sec:"コード",cat:"Pythonコード",type:"c",q:"次のコードの出力として正しいものはどれか。",code:"x = 3\ny = 4\nprint(x + y * 2)",o:["7","11","14","3"],a:"B",ex:"演算順序で掛け算が先：4×2=8 → 3+8=11。"},
+{src:"建設FDE 3級",id:82,sec:"コード",cat:"Pythonコード",type:"c",q:"次のコードの出力として正しいものはどれか。",code:"total = 0\nfor i in [1, 2, 3, 4]:\n    total = total + i\nprint(total)",o:["4","6","10","20"],a:"C",ex:"1+2+3+4=10。forループで全要素を順に加算する。"},
+{src:"建設FDE 3級",id:83,sec:"コード",cat:"Pythonコード",type:"c",q:"次のコードの出力として正しいものはどれか。",code:"a = 5\nif a >= 10:\n    print(\"big\")\nelif a >= 5:\n    print(\"middle\")\nelse:\n    print(\"small\")",o:["big","middle","small","エラー"],a:"B",ex:"a=5なのでa>=10は偽、a>=5が真。出力は\"middle\"。"},
+{src:"建設FDE 3級",id:84,sec:"コード",cat:"Pythonコード",type:"c",q:"次のコードの出力として正しいものはどれか。",code:"nums = [2, 4, 6]\nnums.append(8)\nprint(len(nums))",o:["2","3","4","5"],a:"C",ex:"2,4,6,8の4要素になる。len()は要素数を返す。"},
+{src:"建設FDE 3級",id:85,sec:"コード",cat:"Pythonコード",type:"c",q:"次のコードの出力として正しいものはどれか。",code:"count = 0\nfor i in range(3):  # 0,1,2\n    count += 2\nprint(count)",o:["2","4","6","8"],a:"C",ex:"2を3回足す：0→2→4→6。range(3)は0,1,2の3回ループ。"},
+{src:"建設FDE 3級",id:86,sec:"コード",cat:"Pythonコード",type:"c",q:"次の関数の出力として正しいものはどれか。",code:"def f(x):\n    return x * x - 1\nprint(f(3))",o:["6","8","9","10"],a:"B",ex:"3×3−1=9−1=8。"},
+{src:"建設FDE 3級",id:87,sec:"コード",cat:"Pythonコード",type:"c",q:"次のコードの出力として正しいものはどれか。",code:"def is_even(n):\n    if n % 2 == 0:\n        return True\n    else:\n        return False\nprint(is_even(5))",o:["True","False","0","エラー"],a:"B",ex:"5は奇数なのでFalse。5%2=1≠0なのでelseブランチへ。"},
+{src:"建設FDE 3級",id:88,sec:"コード",cat:"Pythonコード",type:"c",q:"次のコードの出力として正しいものはどれか。",code:"a = [1, 2, 3]\nb = a\nb[0] = 9\nprint(a[0])",o:["1","2","3","9"],a:"D",ex:"b=aは同じリストを指す参照代入。bを変えるとaも変わる。"},
+{src:"建設FDE 3級",id:89,sec:"コード",cat:"擬似コード",type:"c",q:"次の擬似コードの説明として最も適切なのはどれか。",code:"sum = 0\nfor each n in list:\n    if n > 0:\n        sum = sum + n",o:["list内のすべての値を掛け算する","list内の正の値だけを合計する","list内の負の値だけを合計する","list内の要素数を数える"],a:"B",ex:"リスト中の「正の値(n>0)だけ」を合計する処理。"},
+{src:"建設FDE 3級",id:90,sec:"コード",cat:"Pythonコード",type:"c",q:"次のコードの計算結果として最も適切なのはどれか。",code:"x = 10\ny = 3\nx = x // y   # 整数除算\nprint(x)",o:["3","3.3333","10","1"],a:"A",ex:"//は整数除算：10÷3の整数部分=3。小数は切り捨て。"},
+// テクノロジ応用 Q91-100
+{src:"建設FDE 3級",id:91,sec:"テクノロジ応用",cat:"IoT・現場DX",type:"c",q:"IoTセンサーを橋梁の点検に利用する主なメリットとして最も適切なのはどれか。",o:["点検報告書を自動で製本してくれる","変位や振動データを継続的に取得し、異常を早期に検知できる","コンクリートの色を変える","人手の点検を完全に不要にする"],a:"B",ex:"振動・変位などを常時計測して異常を早期検知するのがメインの狙い。"},
+{src:"建設FDE 3級",id:92,sec:"テクノロジ応用",cat:"AI・安全",type:"c",q:"AI画像認識を用いて重機の接近を検知し、アラートを出すシステムは、主にどのような効果を狙ったものか。",o:["工期短縮のみ","労働安全性の向上","設計変更の自動化","コスト削減のみ"],a:"B",ex:"人と機械の接触事故を減らす＝安全性向上が主目的。"},
+{src:"建設FDE 3級",id:93,sec:"テクノロジ応用",cat:"クラウド・セキュリティ",type:"c",q:"建設会社がクラウド型ストレージを利用する際、テナント管理で特に注意すべき点はどれか。",o:["他社テナントのデータにアクセスできるようにする","テナントを共有してコスト削減する","取引先ごとや部門ごとにアクセス権を分離し、不要な閲覧を防ぐ","全ユーザに全テナントの管理権限を与える"],a:"C",ex:"部門・取引先単位に権限を分離し「見なくてよい人には見せない」が基本。"},
+{src:"建設FDE 3級",id:94,sec:"テクノロジ応用",cat:"セキュリティ",type:"c",q:"「ゼロトラスト」の考え方として最も適切なのはどれか。",o:["社内ネットワークは完全に信頼してよい","一度認証したら永続的に信頼する","ネットワーク内外を問わず、すべてのアクセスを前提として信頼せず検証する","社外からのアクセスのみ検証する"],a:"C",ex:"「内も外も信用しないで毎回検証する」という前提。「社内は安全」の時代は終わっている。"},
+{src:"建設FDE 3級",id:95,sec:"テクノロジ応用",cat:"電子契約",type:"c",q:"電子契約サービスで付与される「タイムスタンプ」の主な役割として適切なのはどれか。",o:["文書のサイズを小さくする","ある時刻にその文書が存在し、改ざんされていないことを証明する","文書を暗号化する","文書のデザインを統一する"],a:"B",ex:"「この時刻にこのデータが存在し、その後改ざんされていない」ことの証明。"},
+{src:"建設FDE 3級",id:96,sec:"テクノロジ応用",cat:"現場DX",type:"c",q:"建設FDEが現場DXを企画する際、最初にやるべきこととして最も適切なのはどれか。",o:["最新のツールをカタログから選ぶ","まず現場・事務の業務フローと課題をヒアリングする","ベンダーやSIerの指示に従う","価格でツールを選ぶ"],a:"B",ex:"現状の業務フローと「本当の困りごと」を聞くところから。ツール選定はその後。"},
+{src:"建設FDE 3級",id:97,sec:"テクノロジ応用",cat:"モバイル・セキュリティ",type:"c",q:"モバイル端末を現場で活用する際のセキュリティ対策として最も適切なのはどれか。",o:["画面ロックを無効にする","公共Wi-Fiのみ使う","MDM（モバイルデバイス管理）などでリモートロック・ワイプを可能にする","パスワードを付箋に書いて貼る"],a:"C",ex:"MDMで紛失時のリモートロック・ワイプができるようにしておくと安心。"},
+{src:"建設FDE 3級",id:98,sec:"テクノロジ応用",cat:"API連携",type:"c",q:"建設PADと基幹システムをAPI連携する主な狙いとして最も適切なのはどれか。",o:["部署間の連携を効率化する","二重入力をなくし、システム間でデータ連携する","システム間でデータを共有しないようにする","エラーを減らす"],a:"B",ex:"二重入力をなくして整合性を保ち、現場と経理の世界をつなぐのがAPI連携の狙い。"},
+{src:"建設FDE 3級",id:99,sec:"テクノロジ応用",cat:"AI・チューニング",type:"c",q:"社内の問い合わせ対応にAIチャットボットを導入したところ、誤回答も多く発生した。このとき建設FDEがとるべき対応として最も適切なのはどれか。",o:["AIの回答を正しいとみなす","誤り事例を収集し、プロンプトやナレッジデータの改善・チューニングを行う","すぐにAIを廃止する","利用ログを一切取らない"],a:"B",ex:"どこで間違えているかをログから拾い、プロンプト・ナレッジ・設定を改善する。"},
+{src:"建設FDE 3級",id:100,sec:"テクノロジ応用",cat:"建設FDE",type:"c",q:"建設FDEとしてKENZOで活躍できるレベルの姿として最も適切なのはどれか。",o:["ITだけ詳しく、建設業務には携わらない","建設業務とITの両方を理解し、現場・事務・経営それぞれと会話しながら解決策を設計できる","コードだけ書ける","ツールの選定や導入のみで運用には関わらない"],a:"B",ex:"現場・事務・経営と会話しながらITで業務を再設計できる「通訳＋設計者」ポジション。"},];
+
+const OPT=["A","B","C","D"];
+const TLAB={c:"選択式",tf:"正誤式",f:"穴埋め",o:"記述式"};
+const SOURCES=[
+  {key:"KENZO 4級",label:"KENZO 4級",count:30,color:"#C8A96E"},
+  {key:"建設FDE 4級",label:"建設FDE 4級",count:30,color:"#5A6A7A"},
+  {key:"KENZO 3級",label:"KENZO 3級",count:35,color:"#C8A96E"},
+  {key:"KENZO 2級",label:"KENZO 2級",count:30,color:"#C8A96E"},
+  {key:"建設FDE 3級",label:"建設FDE 3級",count:100,color:"#3A6B8A"}
+];
+
+let state = {
+  screen: "top",
+  selected: new Set(["KENZO 4級","建設FDE 4級","KENZO 3級","KENZO 2級","建設FDE 3級"]),
+  questions: [],
+  idx: 0,
+  answered: false,
+  chosen: null,
+  textInput: "",
+  results: [],
+};
+
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function startStudy(){
+  const qs=shuffle(ALL_Q.filter(q=>state.selected.has(q.src)));
+  if(qs.length===0)return;
+  state.questions=qs;
+  state.idx=0;
+  state.answered=false;
+  state.chosen=null;
+  state.textInput="";
+  state.results=[];
+  state.screen="study";
+  render();
+}
+
+function answer(val){
+  if(state.answered)return;
+  const q=state.questions[state.idx];
+  const correct=q.a;
+  let isOk=false;
+  if(q.type==="o"){
+    // descriptive: always "pending"
+    state.chosen=val;
+    state.answered=true;
+    state.results.push({q,chosen:val,ok:null});
+  } else {
+    isOk=(val===correct);
+    state.chosen=val;
+    state.answered=true;
+    state.results.push({q,chosen:val,ok:isOk});
+  }
+  render();
+}
+
+function nextQ(){
+  state.idx++;
+  state.answered=false;
+  state.chosen=null;
+  state.textInput="";
+  if(state.idx>=state.questions.length){
+    state.screen="result";
+  }
+  render();
+}
+
+function el(tag,attrs,...children){
+  const e=document.createElement(tag);
+  if(attrs)for(const[k,v]of Object.entries(attrs)){
+    if(k==="style"&&typeof v==="object")Object.assign(e.style,v);
+    else if(k==="class")e.className=v;
+    else if(k.startsWith("on"))e[k]=v;
+    else e.setAttribute(k,v);
+  }
+  for(const c of children){
+    if(c==null)continue;
+    if(typeof c==="string"||typeof c==="number")e.appendChild(document.createTextNode(c));
+  2 else e.appendChild(c);
+  }
+  return e;
+}
+
+function renderTop(){
+  const wrap=el("div",{class:"top-wrap"});
+  wrap.append(
+    el("h1",{class:"top-title"},"📖 学習モード"),
+    el("p",{class:"top-sub"},"全問ランダム出題・即時フィードバック・制限時間なし")
+  );
+  
+  const filterBox=el("div",{class:"filter-box"});
+  filterBox.append(el("div",{class:"filter-title"},"出題範囲を選択"));
+  
+  const grid=el("div",{class:"check-grid"});
+  const counts={};
+  for(const q of ALL_Q)counts[q.src]=(counts[q.src]||0)+1;
+  
+  for(const src of SOURCES){
+    const isChecked=state.selected.has(src.key);
+    const item=el("label",{class:"check-item"+(isChecked?" checked":"")});
+    const ck=el("div",{class:"ckmark"},isChecked?"✓":"");
+    const lbl=el("span",{class:"ck-label"},src.label);
+    const cnt=el("span",{class:"ck-count"},(counts[src.key]||0)+"問");
+    item.append(ck,lbl,cnt);
+    item.onclick=()=>{
+      if(state.selected.has(src.key)){
+        if(state.selected.size>1)state.selected.delete(src.key);
+      }else{
+        state.selected.add(src.key);
+      }
+      render();
+    };
+    grid.append(item);
+  }
+  
+  const totalSelected=ALL_Q.filter(q=>state.selected.has(q.src)).length;
+  
+  const startArea=el("div",{class:"start-area"});
+  const info=el("div",{class:"q-count-info"});
+  info.innerHTML=`選択中: <strong>${totalSelected}</strong> 問`;
+  const btn=el("button",{class:"start-btn",onclick:startStudy},"学習を開始する →");
+  if(totalSelected===0)btn.disabled=true;
+  startArea.append(info,btn);
+  
+  filterBox.append(grid,startArea);
+  wrap.append(filterBox);
+  
+  const backLink=el("a",{href:"index.html",style:{fontSize:"11px",color:"var(--gr)",textDecoration:"none",marginTop:"4px"}},"← 検定試験に戻る");
+  wrap.append(backLink);
+  
+  return wrap;
+}
+
+function renderStudy(){
+  const q=state.questions[state.idx];
+  const total=state.questions.length;
+  const pct=((state.idx)/(total))*100;
+  
+  const wrap=el("div",{class:"main"});
+  
+  // progress bar
+  const ebar=el("div",{class:"ebar"});
+  const lvLabel=el("span",{class:"elv"},"学習モード");
+  const pbar=el("div",{class:"pbar"});
+  const pfill=el("div",{class:"pfill",style:{width:pct+"%"}});
+  pbar.append(pfill);
+  const ptxt=el("span",{class:"ptxt"},`${state.idx+1} / ${total}`);
+  ebar.append(lvLabel,pbar,ptxt);
+  wrap.append(ebar);
+  
+  // question card
+  const qcard=el("div",{class:"qcard"});
+  
+  // meta
+  const qmeta=el("div",{class:"qmeta"});
+  qmeta.append(
+    el("span",{class:"qsrc"},q.src),
+    el("span",{class:"qcat"},q.cat||""),
+    el("span",{class:"ttag"},TLAB[q.type]||q.type)
+  );
+  if(q.sec)qmeta.append(el("span",{class:"ttag"},q.sec));
+  qcard.append(qmeta);
+  
+  qcard.append(el("div",{class:"qtxt"},q.q));
+  
+  if(q.type==="c"||q.type==="f"){
+    const opts=el("div",{class:"opts"});
+    (q.o||[]).forEach((opt,i)=>{
+      const key=OPT[i];
+      const btn=el("button",{class:"obtn",onclick:()=>answer(key)});
+      if(state.answered){
+        if(key===q.a)btn.className="obtn sh";
+        if(key===state.chosen&&state.chosen!==q.a)btn.className="obtn ng";
+        if(key===state.chosen&&state.chosen===q.a)btn.className="obtn ok";
+        btn.disabled=true;
+      }
+      const okey=el("span",{class:"okey"},key);
+      btn.append(okey," ",opt);
+      opts.append(btn);
+    });
+    qcard.append(opts);
+  } else if(q.type==="tf"){
+    const tfrow=el("div",{class:"tfrow"});
+    [["true","○"],["false","×"]].forEach(([val,label])=>{
+      const btn=el("button",{class:"tfbtn",onclick:()=>answer(val)});
+      if(state.answered){
+        if(val===q.a)btn.className="tfbtn tf-sh";
+        if(val===state.chosen&&state.chosen!==q.a)btn.className="tfbtn tf-ng";
+        if(val===state.chosen&&state.chosen===q.a)btn.className="tfbtn tf-ok";
+        btn.disabled=true;
+      }
+      btn.textContent=label;
+      tfrow.append(btn);
+    });
+    qcard.append(tfrow);
+  } else if(q.type==="o"){
+    const ta=el("textarea",{class:"oarea",placeholder:"回答を記述してください..."});
+    ta.value=state.textInput||"";
+    ta.oninput=e=>state.textInput=e.target.value;
+    if(state.answered)ta.disabled=true;
+    const sbtn=el("button",{class:"osbtn",onclick:()=>answer(state.textInput||"")});
+    sbtn.textContent="回答する";
+    if(state.answered||!(state.textInput||"").trim())sbtn.disabled=true;
+    qcard.append(ta,sbtn);
+  }
+  
+  wrap.append(qcard);
+  
+  // feedback after answer
+  if(state.answered){
+    if(q.type==="o"){
+      // show model answer
+      if(q.ma){
+        const mans=el("div",{class:"mans"});
+        mans.append(el("div",{class:"mansl"},"模範解答"));
+        mans.append(document.createTextNode(q.ma));
+        wrap.append(mans);
+      }
+      const fb=el("div",{class:"fb pd-fb"},"📋 模範解答を確認してください");
+      wrap.append(fb);
+    } else {
+      const isOk=state.chosen===q.a;
+      const fb=el("div",{class:"fb "+(isOk?"ok-fb":"ng-fb")},isOk?"✓ 正解！":"✗ 不正解");
+      wrap.append(fb);
+    }
+    
+    if(q.ex){
+      const exp=el("div",{class:"exp"});
+      exp.append(el("span",{class:"expl"},"解説"));
+      exp.append(document.createTextNode(q.ex));
+      wrap.append(exp);
+    }
+    
+    const nxtLabel=state.idx+1>=state.questions.length?"結果を見る →":"次の問題 →";
+    const nxt=el("button",{class:"nxt",onclick:nextQ},nxtLabel);
+    wrap.append(nxt);
+  }
+  
+  return wrap;
+}
+
+function renderResult(){
+  const total=state.results.length;
+  const answered=state.results.filter(r=>r.ok!==null);
+  const correct=answered.filter(r=>r.ok===true).length;
+  const wrong=answered.filter(r=>r.ok===false).length;
+  const desc=state.results.filter(r=>r.ok===null).length;
+  const pct=answered.length>0?Math.round(correct/answered.length*100):0;
+  
+  let icon="🏆",msg="";
+  if(pct>=90){icon="🏆";msg="素晴らしい！";}
+  else if(pct>=70){icon="👍";msg="よくできました";}
+  else if(pct>=50){icon="📚";msg="復習しましょう";}
+  else{icon="💪";msg="もう一度挑戦！";}
+  if(desc>0){icon="📖";msg="お疲れさまでした";}
+  
+  const wrap=el("div",{class:"main"});
+  const rcard=el("div",{class:"rcard"});
+  rcard.append(
+    el("div",{class:"ricon"},icon),
+    el("div",{class:"rgold"}),
+    el("div",{class:"rtit"},msg)
+  );
+  
+  if(answered.length>0){
+    const sc=el("div",{class:"rscore"});
+    sc.innerHTML=`${correct}<span> / ${answered.length}問正解</span>`;
+    rcard.append(sc);
+    
+    const detail=el("div",{class:"score-detail"});
+    detail.append(
+      Object.assign(el("div",{class:"sd-card"}),{innerHTML:`<div class="sd-num ok-c">${correct}</div><div class="sd-lbl">正解</div>`}),
+      Object.assign(el("div",{class:"sd-card"}),{innerHTML:`<div class="sd-num ng-c">${wrong}</div><div class="sd-lbl">不正解</div>`}),
+      Object.assign(el("div",{class:"sd-card"}),{innerHTML:`<div class="sd-num" style="color:var(--pd)">${pct}%</div><div class="sd-lbl">正解率</div>`})
+    );
+    rcard.append(detail);
+  }
+  
+  if(desc>0){
+    rcard.append(el("p",{style:{fontSize:"11px",color:"var(--gr)",marginTop:"8px"}},`記述式 ${desc}問を含みます（自己採点）`));
+  }
+  
+  const racts=el("div",{class:"racts"});
+  
+  const restartBtn=el("button",{class:"pbtn",onclick:()=>{
+    state.idx=0;
+    state.answered=false;
+    state.chosen=null;
+    state.textInput="";
+    state.results=[];
+    state.questions=shuffle(state.questions);
+    state.screen="study";
+    render();
+  }},"🔄 もう一度（シャッフル）");
+  
+  const backBtn=el("button",{class:"sbtn2",onclick:()=>{
+    state.screen="top";
+    render();
+  }},"← 設定に戻る");
+  
+  const indexLink=el("a",{href:"index.html",style:{display:"inline-block",padding:"9px 20px",border:"1px solid var(--bd)",borderRadius:"2px",fontSize:"11px",color:"var(--dk)",textDecoration:"none",fontFamily:"Noto Sans JP,sans-serif"}},"検定試験へ →");
+  
+  racts.append(restartBtn,backBtn,indexLink);
+  rcard.append(racts);
+  wrap.append(rcard);
+  return wrap;
+}
+
+function render(){
+  const app=document.getElementById("app");
+  const hdr=el("header",{class:"hdr"});
+  const logoEl=el("div",{class:"logo"},"KENZO",el("span",null,"学習モード"));
+  const backLink=el("a",{href:"index.html",class:"back-link"},"← 検定試験");
+  hdr.append(logoEl,backLink);
+  
+  app.innerHTML="";
+  app.append(hdr);
+  
+  if(state.screen==="top")app.append(renderTop());
+  else if(state.screen==="study")app.append(renderStudy());
+  else if(state.screen==="result")app.append(renderResult());
+}
+
+render();
+</script>
+</body>
+</html>
