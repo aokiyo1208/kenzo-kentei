@@ -1507,7 +1507,8 @@ function scoreIt(pid){
 
 // ========== Main Render ==========
 function render(){
-  const app=document.getElementById("app");
+  let app=document.getElementById("app");
+  if(!app){app=document.createElement("div");app.id="app";document.body.appendChild(app);}
   app.innerHTML="";
   const am=state.authMode;
   if(am==="top"){app.append(renderTop());return;}
@@ -1540,7 +1541,29 @@ function render(){
   app.append(wrapper);
 }
 
-render();
+(function(){
+  function initApp(){
+    let app=document.getElementById("app");
+    if(!app){app=document.createElement("div");app.id="app";document.body.appendChild(app);}
+    render();
+  }
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",initApp);
+  } else {
+    initApp();
+  }
+  var obs=new MutationObserver(function(){
+    if(!document.getElementById("app")){
+      setTimeout(function(){
+        var a=document.createElement("div");
+        a.id="app";
+        document.body.appendChild(a);
+        render();
+      },50);
+    }
+  });
+  obs.observe(document.body,{childList:true});
+})();
 </script>
 </body>
 </html>
