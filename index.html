@@ -1541,20 +1541,7 @@ function render(){
   app.append(wrapper);
 }
 
-(function(){
-  function initApp(){
-    let app=document.getElementById("app");
-    if(!app){app=document.createElement("div");app.id="app";document.body.appendChild(app);}
-    render();
-  }
-  if(document.readyState==="loading"){
-    document.addEventListener("DOMContentLoaded",initApp);
-  } else {
-    initApp();
-  }
-  var obs=new MutationObserver(function(){
-    if(!document.getElementById("app")){
-      setTimeoutrender();
+render();
 var _obs=new MutationObserver(function(){
   if(!document.getElementById("app")){
     setTimeout(function(){
