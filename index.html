@@ -966,10 +966,7 @@ function renderExam(){
 
   // ケーススタディ（1級）シナリオ折りたたみ表示
   if(state.examKind==="kenzo"&&state.examLv===1&&q.case){
-    const toggle=el("button",{cls:"case-toggle"},
-      "📋 ケース1 シナリオを確認する ▼");
     const cbox=div("cbox");
-    cbox.style.display="none";
     cbox.append(div("cbox-title","ケース1：宮崎県内中堅ゼネコンA社のシステム選定"));
     const scenarioLines=CASE1_SCENARIO.split('\n');
     const bd=div("cbox-body");
@@ -977,13 +974,7 @@ function renderExam(){
       if(line.trim())bd.append(el("p",{style:{marginBottom:"5px"}},line));
     });
     cbox.append(bd);
-    let open=false;
-    toggle.onclick=()=>{
-      open=!open;
-      cbox.style.display=open?"block":"none";
-      toggle.textContent="📋 ケース1 シナリオを"+(open?"非表示にする ▲":"確認する ▼");
-    };
-    c.append(toggle,cbox);
+    c.append(cbox);
   }
 
   // 問題カード
