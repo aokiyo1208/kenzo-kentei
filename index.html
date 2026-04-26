@@ -658,24 +658,27 @@ function pCount(){return state.pending.filter(p=>!p.scored).length;}
 function autoGradeOpen(userAns, gradingAns){
   if(!userAns||!gradingAns)return false;
   const ua=userAns.trim();
-  // 採点用テキストからキーワードを抽出
-  // 単一アルファベット（a〜z）も対象に含める（選択肢番号対応）
+  const uaNorm=ua.replace(/[ぁ-ん]/g,s=>String.fromCharCode(s.charCodeAt(0)+0x60))
+                  .toLowerCase().replace(/\s+/g,"");
   const tokens=gradingAns.split(/[、,・。\n（）【】：「」『』,\s\/＋　]+/)
     .map(t=>t.trim()).filter(t=>t.length>=2||/^[a-zA-Z]$/.test(t));
   if(tokens.length===0)return false;
-  // ユーザー回答を単語に分割
   const uaWords=ua.split(/[、,・。\s\n（）【】：「」　]+/).map(w=>w.trim()).filter(w=>w.length>=1);
   const matched=tokens.filter(t=>{
-    // 1. 完全一致：ユーザー回答がキーワードを含む
-    if(ua.includes(t))return true;
-    // 2. 逆包含：ユーザーの単語がキーワードに含まれる（例:「労働基準法」→「労働基準法（36条）」）
-    if(uaWords.some(w=>w.length>=2&&t.includes(w)))return true;
-    // 3. 前方一致：キーワードの先頭60%がユーザー回答に含まれる（長いキーワード向け）
-    if(t.length>=4&&ua.includes(t.slice(0,Math.ceil(t.length*0.6))))return true;
+    const tNorm=t.replace(/[ぁ-ん]/g,s=>String.fromCharCode(s.charCodeAt(0)+0x60))
+                  .toLowerCase().replace(/\s+/g,"");
+    if(ua.includes(t)||uaNorm.includes(tNorm))return true;
+    if(uaWords.some(w=>w.length>=2&&(t.includes(w)||tNorm.includes(w.toLowerCase()))))return true;
+    if(t.length>=3&&(ua.includes(t.slice(0,Math.ceil(t.length*0.5)))||uaNorm.includes(tNorm.slice(0,Math.ceil(tNorm.length*0.5)))))return true;
+    if(t.length>=4){
+      const chars=[...t];
+      const charHits=chars.filter(c=>ua.includes(c)).length;
+      if(charHits/chars.length>=0.6)return true;
+    }
     return false;
   }).length;
-  // 80%以上のキーワードがマッチすれば正解
-  return matched/tokens.length>=0.8;
+  const threshold=tokens.length<=2?1/tokens.length:0.5;
+  return matched/tokens.length>=threshold;
 }
 
 // ========== DOM helpers ==========
