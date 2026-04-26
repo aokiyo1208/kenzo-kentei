@@ -629,6 +629,7 @@ function fmtTime(s){return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s
 function getQs(lv,wk){
   if(state.examKind==="fde"){
     if(lv===3)return Q3FDE;
+    if(lv===2)return Q2;
     return wk==="all"?Q5:Q5.filter(q=>q.wk===wk.replace("Week","W"));
   }
   if(lv===4)return Q4;
