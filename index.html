@@ -488,6 +488,18 @@ o:["元請ごとに協力会社が異なるシステムを使わなければな�
 q:"建設FDEが一般的なIT人材派遣より安価な価格設定となっている理由として、KENZOの事業戦略に最も近いものを1つ選んでください。",
 o:["FDE単体で高い利益率を確保する代わりに、短期契約に限定しているため","契約期間を長めに設定し、月々の利益は薄く取る一方で、将来的な建設PADやOUKAGAIへの導入につなげるため","人件費を抑えるため、経験の浅いエンジニアのみを配置しているため","開発や保守を顧客側に任せることで、FDEの費用を抑えているため"],a:"B"},
 ];
+const PAD3_Q=[
+{id:1,cat:"タイムスタンプ",type:"c",q:"建設PADにおける「タイムスタンプ」の説明として最も適切なものはどれか。",o:["UNIX時間を保存する仕組み","PDFを閲覧した時刻を保存する機能","電子帳簿保存法に対応した、法的有効性を担保する仕組み","社内の承認日時を表示する機能"],a:"C"},
+{id:2,cat:"出来高請求",type:"c",q:"出来高請求書とは何か。",o:["完工後に一括請求する請求書","工事の進捗率に応じて請求する請求書","発注前に提出する見積書","契約解除時に使用する書類"],a:"B"},
+{id:3,cat:"ワークフロー",type:"c",q:"ワークフローオプションを利用していない場合、正式な出来高請求書PDFが生成されるタイミングとして正しいものはどれか。",o:["協力会社が請求書を作成した時","元請が「承認ボタン」を押下した時","社長が社内承認した時","協力会社がPDFをダウンロードした時"],a:"B"},
+{id:4,cat:"ワークフロー",type:"c",q:"建設PADにおけるワークフローの役割として最も適切なものはどれか。",o:["電子契約を成立させること","タイムスタンプを発行すること","社内の承認・稟議を行うこと","協力会社へ自動入金すること"],a:"C"},
+{id:5,cat:"ワークフロー",type:"c",q:"ワークフロー承認時に付与される「社内承認印」の説明として正しいものはどれか。",o:["電子契約を成立させる電子署名","法的効力を持つタイムスタンプ","社内承認を示す画像データ","国土交通省が発行する認証情報"],a:"C"},
+{id:6,cat:"ワークフロー",type:"c",q:"ワークフローオプションを利用している場合、法的に有効な正式PDFが生成されるタイミングとして正しいものはどれか。",o:["最初の現場担当者の承認時","ワークフローの途中承認時","最終ワークフロー承認完了後","協力会社が確認した時"],a:"C"},
+{id:7,cat:"出来高請求",type:"c",q:"建設PADにおいて、「書類の承認」が意味するものとして最も適切なものはどれか。",o:["社内での閲覧確認","当事者間の合意","PDFの圧縮処理","データバックアップ"],a:"B"},
+{id:8,cat:"タイムスタンプ",type:"c",q:"元請・協力会社双方の許可を得ずに、システム会社が勝手に正式電子書類を再生成してはいけない理由として最も適切なものはどれか。",o:["PDF容量が増えるため","サーバー負荷が高くなるため","電子帳簿保存法や契約の成立要件に関わるため","ワークフローが停止するため"],a:"C"},
+{id:9,cat:"ワークフロー",type:"c",q:"注文書発行前にワークフロー承認を行う主な目的として最も適切なものはどれか。",o:["PDFデザインを整えるため","一般社員による無断契約を防ぐため","タイムスタンプ速度を向上させるため","協力会社のログインを不要にするため"],a:"B"},
+{id:10,cat:"ワークフロー",type:"c",q:"建設PADのワークフローオプションに関する説明として正しいものはどれか。",o:["ワークフローを使わないと建設PADは利用できない","ワークフローは電子契約そのものを意味する","ワークフローは中堅ゼネコンの商慣習に対応するための機能である","ワークフロー承認だけで法的に有効な契約が成立する"],a:"C"}
+];
 
 // KENZO検定：4級〜1級
 const KENZO_LEVELS=[
@@ -496,6 +508,7 @@ const KENZO_LEVELS=[
   {lv:2,label:"2級",color:"#6B7B8D",desc:"建設FDE・実務",ok:true},
   {lv:1,label:"1級",color:"#2C3E50",desc:"ケーススタディ",ok:true}
 ];
+const PAD_LEVELS=[{lv:3,label:"3級",color:"#4A7C59",desc:"出来高・ワークフロー",ok:true}];
 // 建設FDE検定：4級〜1級（4級=旧5級の問題）
 const FDE_LEVELS=[
   {lv:4,label:"4級",color:"#8B9467",desc:"現場理解・入門",ok:true},
@@ -503,11 +516,12 @@ const FDE_LEVELS=[
   {lv:2,label:"2級",color:"#6B7B8D",desc:"準備中",ok:true},
   {lv:1,label:"1級",color:"#2C3E50",desc:"準備中",ok:false}
 ];
-function getCurrentLevels(){return state.examKind==="fde"?FDE_LEVELS:KENZO_LEVELS;}
+function getCurrentLevels(){return state.examKind==="fde"?FDE_LEVELS:state.examKind==="pad"?PAD_LEVELS:KENZO_LEVELS;}
 const OPT=["A","B","C","D"];
 // 制限時間：kind別に管理
 function getTimeLimit(lv){
   if(state.examKind==="fde")return {3:40*60,4:30*60}[lv]||60*60;
+  if(state.examKind==="pad")return {3:20*60}[lv]||20*60;
   return {4:15*60,3:20*60,2:30*60}[lv]||30*60;
 }
 const TLAB={c:"選択式",tf:"正誤式",f:"穴埋め",o:"記述式"};
@@ -564,7 +578,7 @@ try{
 }catch(e){}
 
 // ===== 受験パスワード管理 =====
-let examPasswords={kenzo:"",fde:""};
+let examPasswords={kenzo:"",fde:"",pad:""};
 try{const ep=localStorage.getItem("kep");if(ep)examPasswords=JSON.parse(ep);}catch(e){}
 function saveExamPasswords(){try{localStorage.setItem("kep",JSON.stringify(examPasswords));}catch(e){}}
 
@@ -632,6 +646,7 @@ function getQs(lv,wk){
     if(lv===2)return Q2;
     return wk==="all"?Q5:Q5.filter(q=>q.wk===wk.replace("Week","W"));
   }
+  if(state.examKind==="pad"){if(lv===3)return PAD3_Q;return[];}
   if(lv===4)return Q4;
   if(lv===3)return Q3;
   if(lv===2)return Q2;
@@ -706,6 +721,8 @@ function renderTop(){
         div("tc-icon","📋"),div("tc-label","KENZO検定"),div("tc-desc","4級〜1級 ／ 建設PAD・KENZO")),
       el("div",{cls:"tc",onClick:()=>{state.examKind="fde";state.examPw="";state.examPwErr="";nav(examPasswords.fde?"exam-pw":"user-login");}},
         div("tc-icon","🏗"),div("tc-label","建設FDE検定"),div("tc-desc","4級〜1級 ／ 現場理解・DX")),
+el("div",{cls:"tc",onClick:()=>{state.examKind="pad";state.examPw="";state.examPwErr="";nav(examPasswords.pad?"exam-pw":"user-login");}},
+        div("tc-icon","📄"),div("tc-label","建設PAD検定"),div("tc-desc","3級 ／ 出来高・ワークフロー")),
       el("div",{cls:"tc",onClick:()=>nav("admin-login")},
         div("tc-icon","⚙️"),div("tc-label","管理者"),div("tc-desc","履歴管理"))
     )
