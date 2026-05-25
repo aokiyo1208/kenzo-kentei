@@ -507,7 +507,8 @@ const KENZO_LEVELS=[
   {lv:3,label:"3級",color:"#A0845C",desc:"KENZO会社理解",ok:true},
   {lv:2,label:"2級",color:"#6B7B8D",desc:"建設FDE・実務",ok:true},
   {lv:1,label:"1級",color:"#2C3E50",desc:"ケーススタディ",ok:true}
-];
+,
+  {lv:5,label:"建設PAD 3級",color:"#4A7C59",desc:"出来高・ワークフロー",ok:true}];
 const PAD_LEVELS=[{lv:3,label:"3級",color:"#4A7C59",desc:"出来高・ワークフロー",ok:true}];
 // 建設FDE検定：4級〜1級（4級=旧5級の問題）
 const FDE_LEVELS=[
@@ -522,7 +523,7 @@ const OPT=["A","B","C","D"];
 function getTimeLimit(lv){
   if(state.examKind==="fde")return {3:40*60,4:30*60}[lv]||60*60;
   if(state.examKind==="pad")return {3:20*60}[lv]||20*60;
-  return {4:15*60,3:20*60,2:30*60}[lv]||30*60;
+  return {4:15*60,3:20*60,2:30*60,5:20*60}[lv]||30*60;
 }
 const TLAB={c:"選択式",tf:"正誤式",f:"穴埋め",o:"記述式"};
 const ADMIN_PIN="kenzo0510";
@@ -647,6 +648,7 @@ function getQs(lv,wk){
     return wk==="all"?Q5:Q5.filter(q=>q.wk===wk.replace("Week","W"));
   }
   if(state.examKind==="pad"){if(lv===3)return PAD3_Q;return[];}
+  if(lv===5)return PAD3_Q;
   if(lv===4)return Q4;
   if(lv===3)return Q3;
   if(lv===2)return Q2;
@@ -721,9 +723,7 @@ function renderTop(){
         div("tc-icon","📋"),div("tc-label","KENZO検定"),div("tc-desc","4級〜1級 ／ 建設PAD・KENZO")),
       el("div",{cls:"tc",onClick:()=>{state.examKind="fde";state.examPw="";state.examPwErr="";nav(examPasswords.fde?"exam-pw":"user-login");}},
         div("tc-icon","🏗"),div("tc-label","建設FDE検定"),div("tc-desc","4級〜1級 ／ 現場理解・DX")),
-el("div",{cls:"tc",onClick:()=>{state.examKind="pad";state.examPw="";state.examPwErr="";nav(examPasswords.pad?"exam-pw":"user-login");}},
-        div("tc-icon","📄"),div("tc-label","建設PAD検定"),div("tc-desc","3級 ／ 出来高・ワークフロー")),
-      el("div",{cls:"tc",onClick:()=>nav("admin-login")},
+el("div",{cls:"tc",onClick:()=>nav("admin-login")},
         div("tc-icon","⚙️"),div("tc-label","管理者"),div("tc-desc","履歴管理"))
     )
   );
