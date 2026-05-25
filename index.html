@@ -507,8 +507,7 @@ const KENZO_LEVELS=[
   {lv:3,label:"3級",color:"#A0845C",desc:"KENZO会社理解",ok:true},
   {lv:2,label:"2級",color:"#6B7B8D",desc:"建設FDE・実務",ok:true},
   {lv:1,label:"1級",color:"#2C3E50",desc:"ケーススタディ",ok:true}
-,
-  {lv:5,label:"建設PAD 3級",color:"#4A7C59",desc:"出来高・ワークフロー",ok:true}];
+];
 const PAD_LEVELS=[{lv:3,label:"3級",color:"#4A7C59",desc:"出来高・ワークフロー",ok:true}];
 // 建設FDE検定：4級〜1級（4級=旧5級の問題）
 const FDE_LEVELS=[
@@ -648,8 +647,7 @@ function getQs(lv,wk){
     return wk==="all"?Q5:Q5.filter(q=>q.wk===wk.replace("Week","W"));
   }
   if(state.examKind==="pad"){if(lv===3)return PAD3_Q;return[];}
-  if(lv===5)return PAD3_Q;
-  if(lv===4)return Q4;
+if(lv===3)return [...Q3,...PAD3_Q]; Q4;
   if(lv===3)return Q3;
   if(lv===2)return Q2;
   if(lv===1)return CASE1_Q;
