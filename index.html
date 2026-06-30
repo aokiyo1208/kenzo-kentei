@@ -1042,6 +1042,15 @@ function renderL4Sel(){
 
 function renderL3Sel(){
   const c=div("main");
+  if(state.examKind==="cs"){
+    const _pt=String.fromCharCode(67,83,26908,23450,32,51,32026,32,9472,32,67,83,19978,32026,12539,35079,21512,21028,26029);
+    const _ps=String.fromCharCode(20840,55,56,21839,65372,21046,38480,26178,38291,65306,51,48,20998,65288,35430,39443,65289,65295,32,21512,26684,12521,12452,12531,56,48,37);
+    const _sb=btn("pbtn",String.fromCharCode(21463,39443,12434,38283,22987,12377,12427,32,8594),()=>startExam(3,"all"));
+    _sb.style.marginBottom="11px";
+    c.append(div("pt",_pt),div("ps",_ps));
+    c.append(_sb,btn("back-btn",String.fromCharCode(8592,32,25147,12427),()=>goPage("dash")));
+    return c;
+  }
   c.append(div("pt","KENZO検定 3級 ─ KENZO会社理解"),div("ps","全35問｜制限時間：40分（試験）／ 合格ライン80%"));
   const sb=btn("pbtn","受験を開始する →",()=>startExam(3,"all"));
   sb.style.marginBottom="11px";
