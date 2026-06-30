@@ -501,6 +501,39 @@ const PAD3_Q=[
 {id:10,cat:"ワークフロー",type:"c",q:"建設PADのワークフローオプションに関する説明として正しいものはどれか。",o:["ワークフローを使わないと建設PADは利用できない","ワークフローは電子契約そのものを意味する","ワークフローは中堅ゼネコンの商慣習に対応するための機能である","ワークフロー承認だけで法的に有効な契約が成立する"],a:"C"}
 ];
 
+
+const CSQ4=[
+{id:1,cat:"起票",type:"c",q:"CSで問い合わせを受けた際、一番最初に行うべきことは？",o:["開発へ相談","顧客へ回答","Asana起票","Slack投稿","上司へ報告","FAQ更新"],a:"C"},
+{id:2,cat:"起票",type:"c",q:"Asanaタスク名として正しいものは？",o:["問い合わせ対応","会社名のみ","問い合わせ内容のみ","日付／問い合わせ内容／会社名","担当者名／会社名","会社IDのみ"],a:"D"},
+{id:3,cat:"起票",type:"c",q:"問い合わせ内容をAsanaへ記載する際に最も望ましいものは？",o:["要約のみ","自分の解釈","原文を残す","結論のみ","URLのみ","顧客名のみ"],a:"C"},
+{id:4,cat:"対応姿勢",type:"c",q:"問い合わせ対応時に最初にしてはいけないことは？",o:["類似タスク検索","ヒアリング","不具合と決めつける","Asana起票","スクショ依頼","事実確認"],a:"C"},
+{id:5,cat:"優先度",type:"c",q:"業務停止に該当する可能性が最も高いものは？",o:["CSV出力できない","ログインできない","表示色が違う","PDFの余白が広い","メニュー配置変更","誤字"],a:"B"},
+{id:6,cat:"OTP",type:"c",q:"OTPが届かない場合に最初に確認することは？",o:["開発へ依頼","サーバーログ確認","迷惑メール確認","CTOへ相談","OTP無効化","再インストール"],a:"C"},
+{id:7,cat:"OTP",type:"c",q:"OTP未着時の次の確認として適切なのは？",o:["ドメイン許可設定","退会","契約変更","見積発行","CSV出力","削除依頼"],a:"A"},
+{id:8,cat:"対応姿勢",type:"c",q:"CS対応で必須の考え方は？",o:["自分で抱える","顧客を待たせる","開発へ丸投げ","お客様対応を止めない","全件電話対応","推測回答"],a:"D"},
+{id:9,cat:"メール",type:"c",q:"問い合わせフォーム返信時の送信元は？",o:["個人アドレス","開発アドレス","社長アドレス","CS共通アドレス","営業アドレス","CTOアドレス"],a:"D"},
+{id:10,cat:"メール",type:"c",q:"問い合わせフォーム返信時のBCCは？",o:["開発","自分","CS共通","営業","CTO","顧客"],a:"C"},
+{id:11,cat:"アカウント",type:"c",q:"メールアドレス変更依頼で最低限確認するものは？",o:["売上","請求書番号","変更後アドレス","OTP","物件名","注文書番号"],a:"C"},
+{id:12,cat:"アカウント",type:"c",q:"電話だけでメールアドレス変更依頼が来た場合は？",o:["即変更","開発へ依頼","メールで証跡取得","Slackで受付","放置","顧客へ再登録依頼"],a:"C"},
+{id:13,cat:"削除対応",type:"c",q:"請求書削除依頼で必須確認事項は？",o:["顧客年齢","両社合意","売上金額","社員数","ブラウザ","パスワード"],a:"B"},
+{id:14,cat:"削除対応",type:"c",q:"削除依頼の対応主体は？",o:["CS独断","顧客","営業","条件確認後に開発依頼","経理","CTO"],a:"D"},
+{id:15,cat:"削除対応",type:"c",q:"取引先削除依頼は？",o:["開発対応","CS対応（条件あり）","営業対応","社長承認","顧客自身","経理"],a:"B"},
+{id:16,cat:"対応姿勢",type:"c",q:"CSが最も避けるべき行動は？",o:["確認する","類似検索","記憶で仕様回答","ヒアリング","エビデンス取得","Asana記録"],a:"C"},
+{id:17,cat:"記録",type:"c",q:"Asanaで残すべきものは？",o:["完了結果のみ","スクショや対応履歴","担当者名のみ","URLのみ","感想","売上"],a:"B"},
+{id:18,cat:"調査",type:"c",q:"CSでわからない問い合わせが来たら？",o:["推測回答","開発丸投げ","CSダッシュボード・Asana確認","無視","FAQ削除","契約変更"],a:"C"},
+{id:19,cat:"マニュアル",type:"c",q:"お客様へマニュアルを案内する場合は？",o:["Slack","Notion","ヘルプセンター","開発環境","Figma","GitHub"],a:"C"},
+{id:20,cat:"マニュアル",type:"c",q:"元請と協力会社のマニュアルは？",o:["同じ","違う","PDFだけ違う","URLだけ違う","操作だけ違う","全く存在しない"],a:"B"},
+{id:21,cat:"クローズ",type:"c",q:"メール回答後クローズ判断は？",o:["当日","翌日","3日","5日","7日","14日"],a:"E"},
+{id:22,cat:"Slack",type:"c",q:"Slack問い合わせ受領時のスタンプは？",o:["DONE","WIP","TODO","CHECK","NG","STAR"],a:"C"},
+{id:23,cat:"Slack",type:"c",q:"対応開始時のスタンプは？",o:["TODO","WIP","DONE","NG","STAR","CS"],a:"B"},
+{id:24,cat:"エスカレーション",type:"c",q:"開発依頼時のメンションは？",o:["@channel","@everyone","@developer","@all","@cs","@here"],a:"C"},
+{id:25,cat:"クレーム",type:"c",q:"クレーム時に最初に行うことは？",o:["反論","開発転送","謝罪","契約解除案内","放置","FAQ送付"],a:"C"},
+{id:26,cat:"エスカレーション",type:"c",q:"開発から期日連絡が来ない場合は？",o:["放置","顧客へ延期連絡","状況確認","CTOへ通報","再起票","クローズ"],a:"C"},
+{id:27,cat:"リマインド",type:"c",q:"CSからの定期リマインドは？",o:["火曜","水曜","木曜","月曜・木曜","金曜","毎日"],a:"D"},
+{id:28,cat:"建設PAD",type:"c",q:"出来高請求書作成に必須なものは？",o:["契約書","見積書","注文書","一般請求書","CSV","印鑑"],a:"C"},
+{id:29,cat:"建設PAD",type:"c",q:"CSV出力機能は？",o:["標準","オプション","β版","管理者専用","非対応","開発専用"],a:"B"},
+{id:30,cat:"建設PAD",type:"c",q:"インボイス番号の先頭「T」は？",o:["不要","必要","半角のみ不要","全角のみ必要","会社次第","管理者のみ必要"],a:"B"}
+];
 // KENZO検定：4級〜1級
 const KENZO_LEVELS=[
   {lv:4,label:"4級",color:"#C8A96E",desc:"建設PAD基礎",ok:true},
@@ -509,6 +542,7 @@ const KENZO_LEVELS=[
   {lv:1,label:"1級",color:"#2C3E50",desc:"ケーススタディ",ok:true}
 ];
 const PAD_LEVELS=[{lv:3,label:"3級",color:"#4A7C59",desc:"出来高・ワークフロー",ok:true}];
+const CS_LEVELS=[{lv:4,label:"4級",color:"#1A5276",desc:"CS基礎知識・運用",ok:true}];
 // 建設FDE検定：4級〜1級（4級=旧5級の問題）
 const FDE_LEVELS=[
   {lv:4,label:"4級",color:"#8B9467",desc:"現場理解・入門",ok:true},
@@ -516,10 +550,11 @@ const FDE_LEVELS=[
   {lv:2,label:"2級",color:"#6B7B8D",desc:"準備中",ok:true},
   {lv:1,label:"1級",color:"#2C3E50",desc:"準備中",ok:false}
 ];
-function getCurrentLevels(){return state.examKind==="fde"?FDE_LEVELS:state.examKind==="pad"?PAD_LEVELS:KENZO_LEVELS;}
-const OPT=["A","B","C","D"];
+function getCurrentLevels(){return state.examKind==="fde"?FDE_LEVELS:state.examKind==="pad"?PAD_LEVELS:state.examKind==="cs"?CS_LEVELS:KENZO_LEVELS;}
+const OPT=["A","B","C","D","E","F"];
 // 制限時間：kind別に管理
 function getTimeLimit(lv){
+  if(state.examKind==="cs")return {4:20*60}[lv]||30*60;
   if(state.examKind==="fde")return {3:40*60,4:30*60}[lv]||60*60;
   if(state.examKind==="pad")return {3:20*60}[lv]||20*60;
   return {4:15*60,3:20*60,2:30*60,5:20*60}[lv]||30*60;
@@ -647,6 +682,7 @@ function getQs(lv,wk){
     return wk==="all"?Q5:Q5.filter(q=>q.wk===wk.replace("Week","W"));
   }
   if(state.examKind==="pad"){if(lv===3)return PAD3_Q;return[];}
+  if(state.examKind==="cs"){if(lv===4)return CSQ4;return[];}
 if(lv===3)return [...Q3,...PAD3_Q]; Q4;
   if(lv===3)return Q3;
   if(lv===2)return Q2;
@@ -721,6 +757,7 @@ function renderTop(){
         div("tc-icon","📋"),div("tc-label","KENZO検定"),div("tc-desc","4級〜1級 ／ 建設PAD・KENZO")),
       el("div",{cls:"tc",onClick:()=>{state.examKind="fde";state.examPw="";state.examPwErr="";nav(examPasswords.fde?"exam-pw":"user-login");}},
         div("tc-icon","🏗"),div("tc-label","建設FDE検定"),div("tc-desc","4級〜1級 ／ 現場理解・DX")),
+el("div",{cls:"tc",onClick:()=>{state.examKind="cs";nav("user-login");}},div("tc-icon","📋"),div("tc-label","CS検定"),div("tc-desc","4級 / 基礎知識・運用")),
 el("div",{cls:"tc",onClick:()=>nav("admin-login")},
         div("tc-icon","⚙️"),div("tc-label","管理者"),div("tc-desc","履歴管理"))
     )
