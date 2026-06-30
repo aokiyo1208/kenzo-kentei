@@ -1096,7 +1096,7 @@ function renderExam(){
   // プログレスバー
   const ebar=div("ebar");
   ebar.append(btn("back-btn","← 中断",()=>goPage("dash")));
-  const kindTag=state.examKind==="fde"?"FDE":"KENZO";
+  const kindTag=state.examKind==="fde"?"FDE":state.examKind==="cs"?"CS":"KENZO";
   ebar.append(el("div",{cls:"elv"},kindTag+" "+state.examLv+"級"));
   const pbar=div("pbar");
   const pct=((state.qIdx+(state.answered?1:0))/qs.length)*100;
