@@ -1574,7 +1574,7 @@ function startExam(lv,wk="all"){
     return;
   }
   state.examLv=lv;state.examWk=wk;
-  state.examQs=shuffleArray(getQs(lv,wk));
+  state.examQs=state.examKind==="cs"?getQs(lv,wk):shuffleArray(getQs(lv,wk));
   state.qIdx=0;state.sel=null;state.openTxt="";state.answered=false;
   state.session=[];state.done=false;state.timedOut=false;
   state.page="exam";
