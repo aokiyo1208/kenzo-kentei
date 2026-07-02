@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KENZO検定システム</title>
+<title>KENZO検定</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -417,7 +417,7 @@ const Q3FDE=[
 {id:100,sec:"テクノロジ応用",cat:"建設FDE",type:"c",q:"建設FDEとしてKENZOで活躍できるレベルの姿として最も適切なのはどれか。",o:["ITだけ詳しく、建設業務には携わらない","建設業務とITの両方を理解し、現場・事務・経営それぞれと会話しながら解決策を設計できる","コードだけ書ける","ツールの選定や導入のみで運用には関わらない"],a:"B",ex:"現場・事務・経営と会話しながらITで業務を再設計できる「通訳＋設計者」ポジション。"},
 ];
 
-// ========== KENZO検定 1級 ケーススタディ問題1 ==========
+// ========== 建設PAD検定 1級 ケーススタディ問題1 ==========
 const CASE1_SCENARIO=`宮崎県内の中堅ゼネコンA社は、請求書のデジタル化を検討している。地域では燈 Digital Billderの導入が進んでおり、同社にも導入圧力がある。一方で、建設PADも提案されている。
 
 A社の現状：
@@ -578,7 +578,7 @@ const CSQ1=[
 {id:99,type:"m",q:"\u9867\u5BA2\u304C\u6FC0\u6028\u3057\u300C\u4ECA\u65E5\u76F4\u3089\u306A\u3044\u306A\u3089\u89E3\u7D04\u300D\u3068\u767A\u8A00\u3002\u540C\u6642\u306B\u969C\u5BB3\u306F\u672A\u5FA9\u65E7\u3001\u958B\u767A\u304B\u3089\u306F\u300C\u8ABF\u67FB\u4E2D\u300D\u3057\u304B\u6765\u3066\u3044\u306A\u3044\u3002CS\u3068\u3057\u3066\u6B63\u3057\u3044\u884C\u52D5\u3092\u3059\u3079\u3066\u9078\u3079\u3002",o:["\u611F\u60C5\u5426\u5B9A\u305B\u305A\u53D7\u3051\u6B62\u3081\u308B","\u5373\u65AD\u3067\u5FA9\u65E7\u6642\u9593\u3092\u7D04\u675F\u3059\u308B","\u72B6\u6CC1\u6574\u7406\u3092\u884C\u3046","\u958B\u767A\u3078\u7DCA\u6025\u9023\u643A","\u6B21\u56DE\u9023\u7D61\u6642\u9593\u3092\u63D0\u793A\u3059\u308B"],a:["A","C","D","E"]},
 {id:100,type:"m",q:"CS\u3068\u3057\u3066\u6B63\u3057\u3044\u884C\u52D5\u30FB\u59FF\u52E2\u3092\u3059\u3079\u3066\u9078\u3079\u3002",o:["\u4ED5\u69D8\u3092\u6B63\u78BA\u306B\u7406\u89E3\u3059\u308B","\u305D\u306E\u5834\u3057\u306E\u304E\u3067\u56DE\u7B54\u3059\u308B","\u30C7\u30FC\u30BF\u7834\u58CA\u30EA\u30B9\u30AF\u3092\u5E38\u306B\u8003\u616E\u3059\u308B","\u30E6\u30FC\u30B6\u30FC\u306E\u8981\u671B\u3092\u305D\u306E\u307E\u307E\u5B9F\u884C\u3059\u308B","\u958B\u767A\u3068\u30E6\u30FC\u30B6\u30FC\u306E\u9593\u306E\u4EE3\u5F01\u8005\u306B\u306A\u308B","\u518D\u73FE\u6027\u3068\u4E8B\u5B9F\u30D9\u30FC\u30B9\u3067\u5224\u65AD\u3059\u308B","\u30B9\u30D4\u30FC\u30C9\u3060\u3051\u3092\u6700\u512A\u5148\u3059\u308B"],a:["A","C","E","F"]},
 ];
-// KENZO検定：4級〜1級
+// 建設PAD検定：4級〜1級
 const KENZO_LEVELS=[
   {lv:4,label:"4級",color:"#C8A96E",desc:"建設PAD基礎",ok:true},
   {lv:3,label:"3級",color:"#A0845C",desc:"KENZO会社理解",ok:true},
@@ -610,11 +610,11 @@ function openResultMailto(toEmail,toName,level,autoCorrect,autoTotal,opens,passe
   if(!toEmail)return;
   const rate=autoTotal>0?Math.round(autoCorrect/autoTotal*100):0;
   const passLabel=passed===true?"合格":passed===false?"不合格":"—";
-  const subject=encodeURIComponent("【KENZO検定】"+level+"級 受験結果");
+  const subject=encodeURIComponent("【建設PAD検定】"+level+"級 受験結果");
   const nl="\n";
   const body=encodeURIComponent(
     toName+" さん"+nl+nl+
-    "KENZO検定の受験結果をお知らせします。"+nl+nl+
+    "建設PAD検定の受験結果をお知らせします。"+nl+nl+
     "━━━━━━━━━━━━━━━━"+nl+
     "　級　　："+level+"級"+nl+
     "　得点　："+(autoTotal>0?autoCorrect+" / "+autoTotal+"問":"—")+nl+
@@ -624,7 +624,7 @@ function openResultMailto(toEmail,toName,level,autoCorrect,autoTotal,opens,passe
     "　受験日："+new Date().toLocaleDateString("ja-JP")+nl+
     "━━━━━━━━━━━━━━━━"+nl+nl+
     "引き続き学習を頑張ってください。"+nl+
-    "KENZO検定システム"
+    "KENZO検定"
   );
   window.location.href="mailto:"+toEmail+"?subject="+subject+"&body="+body;
 }
@@ -673,7 +673,7 @@ function saveSheetsUrl(url){
 }
 function sendToSheets(r){
   if(!state.sheetsUrl)return;
-  const kind=r.kind==="fde"?"建設FDE検定":"KENZO検定";
+  const kind=r.kind==="fde"?"建設FDE検定":"建設PAD検定";
   const rate=r.autoTotal>0?Math.round(r.autoCorrect/r.autoTotal*100):"";
   const passed=r.passed===true?"合格":r.passed===false?"不合格":"未採点";
   // 受験回数を計算
@@ -794,11 +794,11 @@ function passedBadge(passed,mode){
 // ========== Render: Top ==========
 function renderTop(){
   return div("top-s",
-    div("top-logo","KENZO"),
+    div("top-logo","KENZO検定"),
     div("top-sub","社内認定資格試験システム"),
     div("top-cards",
       el("div",{cls:"tc",onClick:()=>{state.examKind="kenzo";state.examPw="";state.examPwErr="";nav(examPasswords.kenzo?"exam-pw":"user-login");}},
-        div("tc-icon","📋"),div("tc-label","KENZO検定"),div("tc-desc","4級〜1級 ／ 建設PAD・KENZO")),
+        div("tc-icon","📋"),div("tc-label","建設PAD検定"),div("tc-desc","4級〜1級 ／ 建設PAD・KENZO")),
       el("div",{cls:"tc",onClick:()=>{state.examKind="fde";state.examPw="";state.examPwErr="";nav(examPasswords.fde?"exam-pw":"user-login");}},
         div("tc-icon","🏗"),div("tc-label","建設FDE検定"),div("tc-desc","4級〜1級 ／ 現場理解・DX")),
 el("div",{cls:"tc",onClick:()=>{state.examKind="cs";nav("user-login");}},div("tc-icon","📋"),div("tc-label","CS検定"),div("tc-desc","4級 / 基礎知識・運用")),
@@ -843,7 +843,7 @@ function renderAuth(mode){
 
 // ========== Render: Exam Password ==========
 function renderExamPwAuth(){
-  const kindLabel=state.examKind==="fde"?"建設FDE検定":"KENZO検定";
+  const kindLabel=state.examKind==="fde"?"建設FDE検定":"建設PAD検定";
   const icon=state.examKind==="fde"?"🏗":"📋";
   const box=div("auth-box");
   box.append(
@@ -865,8 +865,8 @@ function renderExamPwAuth(){
 // ========== Render: Header ==========
 function renderHeader(){
   const hdr=div("hdr");
-  const kindLabel=state.examKind==="fde"?"建設FDE検定":"KENZO検定";
-  const logo=div("logo","KENZO");logo.append(el("span",{},kindLabel));
+  const kindLabel=state.examKind==="fde"?"建設FDE検定":"建設PAD検定";
+  const logo=div("logo","KENZO検定");logo.append(el("span",{},kindLabel));
   const nav2=div("nav");
   if(state.authMode==="user"){
     nav2.append(
@@ -904,7 +904,7 @@ function renderDash(){
     wb.append(rb);content.append(wb);
   }
   const isFde=state.examKind==="fde";
-  const kindName=isFde?"建設FDE検定":"KENZO検定";
+  const kindName=isFde?"建設FDE検定":"建設PAD検定";
   content.append(div("pt","こんにちは、"+(state.currentUser?state.currentUser.name:"")+"さん"));
   content.append(div("ps",kindName+" ／ 4級〜1級"));
   const examResults=mr.filter(r=>r.kind===state.examKind);
@@ -1069,7 +1069,7 @@ function renderExam(){
   // プログレスバー
   const ebar=div("ebar");
   ebar.append(btn("back-btn","← 中断",()=>goPage("dash")));
-  const kindTag=state.examKind==="fde"?"FDE":state.examKind==="cs"?"CS":"KENZO";
+  const kindTag=state.examKind==="fde"?"FDE":state.examKind==="cs"?"CS":"建設PAD";
   ebar.append(el("div",{cls:"elv"},kindTag+" "+state.examLv+"級"));
   const pbar=div("pbar");
   const pct=((state.qIdx+(state.answered?1:0))/qs.length)*100;
@@ -1200,7 +1200,7 @@ function renderResult(){
     rcard.append(el("div",{style:{fontSize:"12px",color:"var(--gr)",marginBottom:"5px"}},"正答率 "+rate+"% ／ 合格ライン 80%"));
   }
   const racts=div("racts");
-  const kindTag2=state.examKind==="fde"?"FDE":"KENZO";
+  const kindTag2=state.examKind==="fde"?"FDE":"建設PAD";
   rcard.append(el("div",{style:{fontSize:"11px",color:"var(--gr)",marginBottom:"7px"}},kindTag2+" "+state.examLv+"級 検定試験"));
   racts.append(btn("pbtn","再挑戦",()=>startExam(state.examLv,state.examWk)));
   const studyLink=el("a",{href:"study.html",target:"_blank",style:{display:"block",textAlign:"center",margin:"6px 0",padding:"9px 16px",border:"1px solid var(--bd)",borderRadius:"2px",fontSize:"12px",color:"var(--st)",textDecoration:"none",background:"rgba(58,107,138,.06)"}},"📖 学習モードで練習する（別ページ）");
