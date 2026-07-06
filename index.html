@@ -691,7 +691,7 @@ try{
 
 // ===== 受験パスワード管理 =====
 let examPasswords={kenzo:"",fde:"",pad:"",cs:""};
-try{const ep=localStorage.getItem("kep");if(ep)examPasswords=JSON.parse(ep);}catch(e){}
+try{const ep=localStorage.getItem("kep");if(ep)examPasswords=Object.assign(examPasswords,JSON.parse(ep));}catch(e){}
 function saveExamPasswords(){try{localStorage.setItem("kep",JSON.stringify(examPasswords));}catch(e){}}
 
 function saveData(){
