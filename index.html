@@ -706,7 +706,7 @@ function saveSheetsUrl(url){
 }
 function sendToSheets(r){
   if(!state.sheetsUrl)return;
-  const kind=r.kind==="fde"?"建設FDE検定":"建設PAD検定";
+  const kind=r.kind==="fde"?"建設FDE検定":r.kind==="cs"?"CS検定":"建設PAD検定";
   const rate=r.autoTotal>0?Math.round(r.autoCorrect/r.autoTotal*100):"";
   const passed=r.passed===true?"合格":r.passed===false?"不合格":"未採点";
   // 受験回数を計算
@@ -760,8 +760,8 @@ function getQs(lv,wk){
   }
   if(state.examKind==="pad"){if(lv===4)return[];if(lv===3)return PAD3_Q;if(lv===2)return[];if(lv===1)return[];return[];}
   if(state.examKind==="cs"){if(lv===4)return CSQ4;if(lv===3)return CSQ3;if(lv===2)return CSQ2;if(lv===1)return CSQ1;return[];}
-if(lv===3)return [...Q3,...PAD3_Q]; Q4;
-  if(lv===3)return Q3;
+if(lv===3)return [...Q3,...PAD3_Q];
+  if(lv===4)return Q4;
   if(lv===2)return Q2;
   if(lv===1)return CASE1_Q;
   return[];
