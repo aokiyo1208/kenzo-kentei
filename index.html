@@ -615,11 +615,11 @@ const KENZO_LEVELS=[
   {lv:4,label:"4級",color:"#C8A96E",desc:"建設PAD基礎",ok:true},
   {lv:3,label:"3級",color:"#A0845C",desc:"KENZO会社理解",ok:true},
   {lv:2,label:"2級",color:"#6B7B8D",desc:"建設FDE・実務",ok:true},
-  {lv:2,label:"2\u7D1A",color:"#1F618D",desc:"CS\u5FDC\u7528\u30FB\u72B6\u6CC1\u5224\u65AD",ok:true},
   {lv:1,label:"1級",color:"#2C3E50",desc:"ケーススタディ",ok:true}
 ];
 const PAD_LEVELS=[{lv:3,label:"3級",color:"#4A7C59",desc:"出来高・ワークフロー",ok:true}];
-const CS_LEVELS=[{lv:4,label:"4\u7D1A",color:"#1A5276",desc:"CS\u57FA\u790E\u77E5\u8B58\u30FB\u904B\u7528",ok:true},{lv:3,label:"3\u7D1A",color:"#117A65",desc:"CS\u4E0A\u7D1A\u30FB\u8907\u5408\u5224\u65AD",ok:true},{lv:1,label:"1\u7D1A",color:"#641E16",desc:"CS\u6700\u7D42\u30FB\u7D71\u5408\u5224\u65AD",ok:true}];
+const CS_LEVELS=[{lv:4,label:"4\u7D1A",color:"#1A5276",desc:"CS\u57FA\u790E\u77E5\u8B58\u30FB\u904B\u7528",ok:true},{lv:3,label:"3\u7D1A",color:"#117A65",desc:"CS\u4E0A\u7D1A\u30FB\u8907\u5408\u5224\u65AD",ok:true},{lv:2,label:"2\u7D1A",color:"#1F618D",desc:"CS\u5FDC\u7528\u30FB\u72B6\u6CC1\u5224\u65AD",ok:true},
+  {lv:1,label:"1\u7D1A",color:"#641E16",desc:"CS\u6700\u7D42\u30FB\u7D71\u5408\u5224\u65AD",ok:true}];
 // 建設FDE検定：4級〜1級（4級=旧5級の問題）
 const FDE_LEVELS=[
   {lv:4,label:"4級",color:"#8B9467",desc:"現場理解・入門",ok:true},
@@ -834,7 +834,7 @@ function renderTop(){
         div("tc-icon","📋"),div("tc-label","建設PAD検定"),div("tc-desc","4級〜1級 ／ 建設PAD・KENZO")),
       el("div",{cls:"tc",onClick:()=>{state.examKind="fde";state.examPw="";state.examPwErr="";nav(examPasswords.fde?"exam-pw":"user-login");}},
         div("tc-icon","🏗"),div("tc-label","建設FDE検定"),div("tc-desc","4級〜1級 ／ 現場理解・DX")),
-el("div",{cls:"tc",onClick:()=>{state.examKind="cs";nav("user-login");}},div("tc-icon","📋"),div("tc-label","CS検定"),div("tc-desc","4級 / 基礎知識・運用")),
+el("div",{cls:"tc",onClick:()=>{state.examKind="cs";nav("user-login");}},div("tc-icon","📋"),div("tc-label","CS検定"),div("tc-desc",4級〜1級 ／ CS基礎〜最終用")),
 el("div",{cls:"tc",onClick:()=>nav("admin-login")},
         div("tc-icon","⚙️"),div("tc-label","管理者"),div("tc-desc","履歴管理"))
     )
