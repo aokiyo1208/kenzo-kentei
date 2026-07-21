@@ -837,8 +837,20 @@ function renderTop(){
 el("div",{cls:"tc",onClick:()=>{state.examKind="cs";state.examPw="";state.examPwErr="";nav(examPasswords.cs?"exam-pw":"user-login");}},div("tc-icon","📋"),div("tc-label","CS検定"),div("tc-desc","4級〜1級 ／ CS基礎〜最終用")),
 el("div",{cls:"tc",onClick:()=>nav("admin-login")},
         div("tc-icon","⚙️"),div("tc-label","管理者"),div("tc-desc","履歴管理"))
-    ),
-    el("a",{href:"study.html",target:"_blank",style:{display:"block",textAlign:"center",margin:"12px auto 4px",padding:"10px 20px",border:"1px solid var(--bd)",borderRadius:"4px",fontSize:"13px",color:"var(--st)",textDecoration:"none",background:"rgba(58,107,138,.06)",maxWidth:"280px"}},"\uD83D\uDCD6 \u5B66\u7FD2\u30E2\u30FC\u30C9\u3067\u78BA\u8A8D\u3059\u308B")
+    )
+function renderTop(){
+  return div("top-s",
+    div("top-logo","KENZO検定"),
+    div("top-sub","社内認定資格試験システム"),
+    div("top-cards",
+      el("div",{cls:"tc",onClick:()=>{state.examKind="kenzo";state.examPw="";state.examPwErr="";nav(examPasswords.kenzo?"exam-pw":"user-login");}},
+        div("tc-icon","📋"),div("tc-label","建設PAD検定"),div("tc-desc","4級〜1級 ／ 建設PAD・KENZO")),
+      el("div",{cls:"tc",onClick:()=>{state.examKind="fde";state.examPw="";state.examPwErr="";nav(examPasswords.fde?"exam-pw":"user-login");}},
+        div("tc-icon","🏗"),div("tc-label","建設FDE検定"),div("tc-desc","4級〜1級 ／ 現場理解・DX")),
+el("div",{cls:"tc",onClick:()=>{state.examKind="cs";state.examPw="";state.examPwErr="";nav(examPasswords.cs?"exam-pw":"user-login");}},div("tc-icon","📋"),div("tc-label","CS検定"),div("tc-desc","4級〜1級 ／ CS基礎〜最終用")),
+el("div",{cls:"tc",onClick:()=>nav("admin-login")},
+        div("tc-icon","⚙️"),div("tc-label","管理者"),div("tc-desc","履歴管理"))
+    )
   );
 }
 
@@ -1245,9 +1257,8 @@ function renderResult(){
   const kindTag2=state.examKind==="fde"?"FDE":"建設PAD";
   rcard.append(el("div",{style:{fontSize:"11px",color:"var(--gr)",marginBottom:"7px"}},kindTag2+" "+state.examLv+"級 検定試験"));
   racts.append(btn("pbtn","再挑戦",()=>startExam(state.examLv,state.examWk)));
-  const studyLink=el("a",{href:"study.html",target:"_blank",style:{display:"block",textAlign:"center",margin:"6px 0",padding:"9px 16px",border:"1px solid var(--bd)",borderRadius:"2px",fontSize:"12px",color:"var(--st)",textDecoration:"none",background:"rgba(58,107,138,.06)"}},"📖 学習モードで練習する（別ページ）");
-  racts.append(studyLink);
-  racts.append(btn("sbtn2","ダッシュボードへ",()=>goPage("dash")));
+  
+    racts.append(btn("sbtn2","ダッシュボードへ",()=>goPage("dash")));
   rcard.append(racts);
   if(state.currentUser&&state.currentUser.email){
     const mailBtn=btn("sbtn2","📧 結果をメールで受け取る",()=>{
