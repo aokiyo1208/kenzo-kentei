@@ -1076,7 +1076,7 @@ function renderExamPwAuth(){
 // ========== Render: Header ==========
 function renderHeader(){
   const hdr=div("hdr");
-  const kindLabel=state.examKind==="fde"?"建設FDE検定":"建設PAD検定";
+  const kindLabel=state.examKind==="fde"?"建設FDE検定":state.examKind==="kensetsu"?"建設業検定":"建設PAD検定";
   const logo=div("logo","KENZO検定");logo.append(el("span",{},kindLabel));
   const nav2=div("nav");
   if(state.authMode==="user"){
