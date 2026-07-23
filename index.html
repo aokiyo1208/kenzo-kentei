@@ -785,10 +785,10 @@ const KENSETSU_Q1 = [
   {id:30,cat:"積算部",type:"c",q:"「DXを活用した積算業務改革」として正しいものはどれか。",o:["積算はアナログ作業が最も正確なためDXは不要","BIMとの連携・AIによる数量算出・クラウド共有で積算の効率化・精度向上・リアルタイム情報共有を実現する","DXは設計部のみが担う","積算ソフトの導入だけで全て解決する","積算のDXは施工完了後に行う","AIが全て自動で行うため積算担当者は不要"],a:"B",ex:"積算DXはBIM連携による数量自動算出・クラウドでのリアルタイム共有・AIによる過去工事データ活用で積算効率・精度・スピードを向上させます。"}
 ];
 const KENSETSU_LEVELS=[
-  {lv:4,label:"4級",color:"#2E4057",desc:"建設業基礎（新入社員）"},
-  {lv:3,label:"3級",color:"#26547C",desc:"一般実務（1～3年目）"},
-  {lv:2,label:"2級",color:"#C0392B",desc:"専門知識（3～5年目）"},
-  {lv:1,label:"1級",color:"#1A7A4A",desc:"上級・管理職"}
+  {lv:4,label:"4級",color:"#2E4057",desc:"建設業基礎（新入社員）",ok:true},
+  {lv:3,label:"3級",color:"#26547C",desc:"一般実務（1～3年目）",ok:true},
+  {lv:2,label:"2級",color:"#C0392B",desc:"専門知識（3～5年目）",ok:true},
+  {lv:1,label:"1級",color:"#1A7A4A",desc:"上級・管理職",ok:true}
 ];
 
 
@@ -1054,7 +1054,7 @@ function renderAuth(mode){
 
 // ========== Render: Exam Password ==========
 function renderExamPwAuth(){
-  const kindLabel=state.examKind==="fde"?"建設FDE検定":"建設PAD検定";
+  const kindLabel=state.examKind==="fde"?"建設FDE検定":state.examKind==="kensetsu"?"建設業検定":"建設PAD検定";
   const icon=state.examKind==="fde"?"🏗":"📋";
   const box=div("auth-box");
   box.append(
@@ -1115,7 +1115,7 @@ function renderDash(){
     wb.append(rb);content.append(wb);
   }
   const isFde=state.examKind==="fde";
-  const kindName=isFde?"建設FDE検定":"建設PAD検定";
+  const kindName=isFde?"建設FDE検定":state.examKind==="kensetsu"?"建設業検定":"建設PAD検定";
   content.append(div("pt","こんにちは、"+(state.currentUser?state.currentUser.name:"")+"さん"));
   content.append(div("ps",kindName+" ／ 4級〜1級"));
   const examResults=mr.filter(r=>r.kind===state.examKind);
