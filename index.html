@@ -1326,7 +1326,7 @@ function renderExam(){
 
   if(q.type==="c"||q.type==="f"||q.type==="m"){
     const opts=div("opts");
-    (shuffleArray(q.o.map((opt,i)=>({opt,k:OPT[i]})))).forEach(({opt,k})=>{
+    (q.o.map((opt,i)=>({opt,k:OPT[i]}))).forEach(({opt,k})=>{
       let cls="obtn";
       if(state.answered){
         if(q.type==="m"){const inS=(state.sel||"").includes(k),inA=q.a.includes(k);if(inA&&inS)cls+=" ok";else if(!inA&&inS)cls+=" ng";else if(inA&&!inS)cls+=" sh";}else{if(k===q.a&&k===state.sel)cls+=" ok";else if(k===state.sel)cls+=" ng";else if(k===q.a)cls+=" sh";}
