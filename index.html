@@ -632,7 +632,7 @@ function renderTop(){
         div("tc-icon","📋"),div("tc-label","建設PAD検定"),div("tc-desc","4級〜1級 ／ 建設PAD・KENZO")),
       el("div",{cls:"tc",onClick:()=>{state.examKind="fde";state.examPw="";state.examPwErr="";nav(examPasswords.fde?"exam-pw":"user-login");}},
         div("tc-icon","🏗"),div("tc-label","建設FDE検定"),div("tc-desc","4級〜1級 ／ 現場理解・DX")),
-el("div",{cls:"tc",onClick:()=>{state.examKind="kensetsu";state.examPw="";state.examPwErr="";nav(examPasswords&&examPasswords.kensetsu?"exam-pw":"user-login");}},div("tc-icon","🏗️"),div("tc-label","建設業検定"),div("tc-desc","1級～4級 / 現場・経理・設計・総務・積算")),eel("div",{cls:"tc",onClick:()=>{state.examKind="cs";state.examPw="";state.examPwErr="";nav(examPasswords&&examPasswords.cs?"exam-pw":"user-login");}},div("tc-icon","📝"),div("tc-label","CS検定"),div("tc-desc","1〜3級/CS応用・複合・統合")),l("div",{cls:"tc",onClick:()=>nav("admin-login")},
+el("div",{cls:"tc",onClick:()=>{state.examKind="kensetsu";state.examPw="";state.examPwErr="";nav(examPasswords&&examPasswords.kensetsu?"exam-pw":"user-login");}},div("tc-icon","🏗️"),div("tc-label","建設業検定"),div("tc-desc","1級～4級 / 現場・経理・設計・総務・積算")),el("div",{cls:"tc",onClick:()=>{state.examKind="cs";state.examPw="";state.examPwErr="";nav(examPasswords&&examPasswords.cs?"exam-pw":"user-login");}},div("tc-icon","📝"),div("tc-label","CS検定"),div("tc-desc","1〜3級/CS応用・複合・統合")),el("div",{cls:"tc",onClick:()=>nav("admin-login")},
         div("tc-icon","⚙️"),div("tc-label","管理者"),div("tc-desc","履歴管理"))
     )
   );
