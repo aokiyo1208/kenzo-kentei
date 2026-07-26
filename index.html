@@ -871,6 +871,17 @@ function renderL1Sel(){
     c.append(_sb,btn("back-btn",String.fromCharCode(8592,32,25147,12427),()=>goPage("dash")));
     return c;
   }
+  if(state.examKind!=="kenzo"){
+    const ek=state.examKind;
+    const lv=(ek==="fde"?FDE_LEVELS:KENSETSU_LEVELS).find(l=>l.lv===1);
+    const kn=ek==="fde"?String.fromCharCode(24314,35373,70,68,69,26908,23450):String.fromCharCode(24314,35373,26989,26908,23450);
+    c.append(div("pt",kn+String.fromCharCode(32,49,32026)));
+    if(lv)c.append(div("ps",lv.desc));
+    const sb=btn("pbtn",String.fromCharCode(21463,39443,12434,24320,22987,12377,12427,32,8594),()=>startExam(1,"all"));
+    sb.style.marginBottom="11px";
+    c.append(sb,btn("back-btn",String.fromCharCode(8592,32,25147,12427),()=>goPage("dash")));
+    return c;
+  }
   c.append(div("pt","KENZO検定 1級 ─ ケーススタディ"),div("ps","全19問（論述式8問・選択式11問）｜制限時間：60分（試験）／ 論述式は管理者採点"));
   // シナリオ表示
   const cbox=div("cbox");
