@@ -168,7 +168,7 @@ textarea.oarea:focus{border-color:var(--gd)}
 .ctag{display:inline-block;background:rgba(44,62,80,.1);color:#2C3E50;font-size:9px;padding:2px 7px;border-radius:2px;font-weight:700;letter-spacing:.1em;margin-bottom:6px}
 .case-toggle{background:none;border:1px solid var(--bd);color:var(--gr);font-family:'Noto Sans JP',sans-serif;font-size:10px;padding:4px 10px;cursor:pointer;border-radius:2px;margin-bottom:12px}
 .case-toggle:hover{border-color:var(--gd);color:var(--gd)}
-</style>
+.top-admin{margin-top:20px;text-align:center;cursor:pointer;color:var(--mu);font-size:11px;opacity:.4;letter-spacing:.05em}.top-admin:hover{opacity:.8}</style>
 </head>
 <body>
 <div id="app"></div>
@@ -632,13 +632,11 @@ function renderTop(){
         div("tc-icon","📋"),div("tc-label","建設PAD検定"),div("tc-desc","4級〜1級 ／ 建設PAD・KENZO")),
       el("div",{cls:"tc",onClick:()=>{state.examKind="fde";state.examPw="";state.examPwErr="";nav(examPasswords.fde?"exam-pw":"user-login");}},
         div("tc-icon","🏗"),div("tc-label","建設FDE検定"),div("tc-desc","4級〜1級 ／ 現場理解・DX")),
-el("div",{cls:"tc",onClick:()=>{state.examKind="kensetsu";state.examPw="";state.examPwErr="";nav(examPasswords&&examPasswords.kensetsu?"exam-pw":"user-login");}},div("tc-icon","🏗️"),div("tc-label","建設業検定"),div("tc-desc","1級～4級 / 現場・経理・設計・総務・積算")),el("div",{cls:"tc",onClick:()=>{state.examKind="cs";state.examPw="";state.examPwErr="";nav(examPasswords&&examPasswords.cs?"exam-pw":"user-login");}},div("tc-icon","📝"),div("tc-label","CS検定"),div("tc-desc","1〜3級/CS応用・複合・統合")),el("div",{cls:"tc",onClick:()=>nav("admin-login")},
-        div("tc-icon","⚙️"),div("tc-label","管理者"),div("tc-desc","履歴管理"))
-    )
+el("div",{cls:"tc",onClick:()=>{state.examKind="kensetsu";state.examPw="";state.examPwErr="";nav(examPasswords&&examPasswords.kensetsu?"exam-pw":"user-login");}},div("tc-icon","🏗️"),div("tc-label","建設業検定"),div("tc-desc","1級～4級 / 現場・経理・設計・総務・積算")),el("div",{cls:"tc",onClick:()=>{state.examKind="cs";state.examPw="";state.examPwErr="";nav(examPasswords&&examPasswords.cs?"exam-pw":"user-login");}},div("tc-icon","📝"),div("tc-label","CS検定"),div("tc-desc","1〜3級/CS応用・複合・統合")),
+    ),
+  el("div",{cls:"top-admin",onClick:()=>nav("admin-login")},"⚙️ 管理者")
   );
 }
-
-// ========== Render: Auth ==========
 function renderAuth(mode){
   const box=div("auth-box");
   if(mode==="user-login"){
