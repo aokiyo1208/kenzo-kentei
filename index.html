@@ -427,7 +427,7 @@ const KENSETSU_LEVELS=[
 ];
 
 
-function getCurrentLevels(){return state.examKind==="fde"?FDE_LEVELS:state.examKind==="pad"?PAD_LEVELS:state.examKind==="kensetsu"?KENSETSU_LEVELS:KENZO_LEVELS;}
+function getCurrentLevels(){return state.examKind==="fde"?FDE_LEVELS:state.examKind==="pad"?PAD_LEVELS:state.examKind==="kensetsu"?KENSETSU_LEVELS:state.examKind==="dc"?DC_LEVELS:KENZO_LEVELS;}
 const OPT=["A","B","C","D","E","F"];
 // 制限時間：kind別に管理
 function getTimeLimit(lv){
@@ -549,6 +549,8 @@ function handleTimeout(){
   render();
 }
 function fmtTime(s){return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");}
+const DC_LEVELS=[{"lv":1,"label":"1級","color":"#1A3A4A","desc":"テクノロジ基礎","ok":true}];
+const DC_Q=[{"id":201,"cat":"データベース","type":"m","q":"関係データベースの別名として正しいものを全て選べ","o":["リレーショナルデータベース","リトライニングデータベース","レストアデータベース","RDB","リレーションデータベース","LDB"],"a":"AE"},{"id":202,"cat":"データベース","type":"m","q":"関係データベースの定義として正しいものを全て選べ","o":["データをキーと値のペアで管理しテーブル構造を持たないDB","全データを一つの大きな表に格納し重複を許容し検索速度を高めたDB","データを表の形で管理してテーブル同士を関連付けできるDB","データをJSON形式で保存しスキーマを固定しないDB","テーブル間を共通のキーで扱うDB"],"a":"CE"},{"id":203,"cat":"データベース","type":"m","q":"関係データベースに含まれるものを全て選べ","o":["PostgreSQL","MySQL","SQLite","Oracle Database","MongoDB","Redis","Cassandra・DynamoDB"],"a":"ABCD"},{"id":204,"cat":"データベース","type":"c","q":"MongoDB・Redis・Cassandra・DynamoDBを総称して何というか","o":["NoSQL","SQL","RDB","NewSQL"],"a":"A"},{"id":205,"cat":"データベース","type":"c","q":"学生表・科目表・成績表がある関係DBで学生表や科目表に未登録のデータは成績表に登録できないという制約を実現するとき外部キーとして適切なものはどれか","o":["学生表の学生番号と成績表の学生番号","学生表の学生名と科目表の科目名","成績表の学生番号と科目コード","成績表の成績"],"a":"C"},{"id":206,"cat":"UXデザイン","type":"c","q":"UXデザインで用いられる構造化シナリオ法の定義として最も適切なものはどれか","o":["価値・行動・操作の3シナリオで成果・機能要件・ビジュアルを定義し最終的にペルソナを設定する手法","利用シーンを行動・価値・操作の3段階に分け行動からその背後にある価値を導き出し最終的に画面操作に落とし込む手法","価値シナリオでユーザーが得たい体験を明確にし行動シナリオで画面操作や遷移を設計し操作シナリオでその行動が日常のどんな場面で発生するかを記述する手法","利用シーンを価値・行動・操作の3段階に分けて抽象的な価値から具体的な画面操作へと段階的に具体化していく手法"],"a":"D"},{"id":207,"cat":"UXデザイン","type":"c","q":"構造化シナリオ法における3つのシナリオの名称として正しいものはどれか","o":["アクティビティ・インタラクション・バリュー","アクティビティ・インタラクション・ペルソナ","アクティビティ・バリュー・ペルソナ","インタラクション・バリュー・ペルソナ"],"a":"A"},{"id":208,"cat":"ネットワーク","type":"c","q":"無線LANの正式名称として正しいものはどれか","o":["Local Assort Negociation","Local Acessment Network","Local Area Network","Local Attest Negociation"],"a":"C"},{"id":209,"cat":"ネットワーク","type":"c","q":"無線LANの説明として適切なものはどれか","o":["電波が届く範囲なら通信でき有線LANと異なり傍受される心配がない方式","ケーブル配線が困難な場所で一時的に利用され恒久的な接続方式としては採用されない","同一ネットワーク内の全機器が自動的に同じ暗号化方式を共有する接続形態","家庭やオフィスなど限られた範囲でコンピューター同士を繋ぐネットワーク。ケーブルを使わずに電波で接続する仕組み"],"a":"D"},{"id":210,"cat":"ネットワーク","type":"c","q":"無線LANで使用するWPA2の機能として適切なものはどれか","o":["2本のアンテナでデータ送受信を高速化する","アクセスポイントをステルス化する","通信データを暗号化する","登録されたMACアドレス以外の機器からのアクセスを拒否する"],"a":"C"},{"id":211,"cat":"ハードウェア","type":"c","q":"PCの画面表示に必要なデータを保持するのに使われる画面表示専用メモリはどれか","o":["EEPROM","VRAM","キャッシュメモリ","フラッシュメモリ"],"a":"B"},{"id":212,"cat":"セキュリティ","type":"c","q":"ランサムウェアの説明として最も適切なものはどれか","o":["PCのOSを削除し再起動不能にした後に復旧費用として金銭を要求するソフトウェア","ネットワーク上のサーバに過剰なアクセスを送りサービスを停止させる攻撃ツール","PC内のファイルを暗号化してアクセス不能にし復号と引き換えに身代金を要求する悪意あるソフトウェア","ユーザーの個人情報を収集して外部サーバに送信するソフトウェア"],"a":"C"},{"id":213,"cat":"セキュリティ","type":"m","q":"ランサムウェアの感染対策として適切なものを全て選べ（感染しないための対策）","o":["データの暗号化","セキュリティソフトを最新に保つ","OSやソフトウェアのアップデートをする","常時接続の外付けHDDに重要ファイルを自動同期バックアップする","重要ファイルに複雑なパスワードを設定して保存する","怪しいメールを開かない"],"a":"BCF"},{"id":214,"cat":"セキュリティ","type":"c","q":"ランサムウェア感染後の被害を最小限に抑えるための対策として適切なものはどれか","o":["感染したPCを他のPCとネットワーク接続しウイルス対策ソフトでスキャンする","UPSを導入しておく","日頃からログインパスワードを定期的に変更する","データのバックアップを日頃からとる"],"a":"D"},{"id":215,"cat":"ネットワーク","type":"c","q":"スマートフォンにおけるWi-Fiとモバイル通信(4G/5G)に関する説明のうち適切なものはどれか","o":["Wi-Fiは携帯電話会社が設置した基地局の電波を利用しモバイル通信は家庭やお店のルーターの電波を利用する仕組み","Wi-Fiは家庭やお店などに設置されたルーターの電波を利用しモバイル通信は携帯電話会社が設置した基地局の電波を利用する仕組み","Wi-Fiとモバイル通信は同一の基地局を共有し通信距離によって自動的に切り替わる仕組み","モバイル通信はWi-Fiの電波が届かない場所を補うための予備的な通信手段"],"a":"B"},{"id":216,"cat":"ネットワーク","type":"c","q":"キャリアアグリゲーションの説明として適切なものはどれか","o":["移動中に接続する基地局を切り替える技術","通信のセキュリティ機能を高める技術","複数の異なる周波数の電波を束ねることによって無線通信を高速化する技術","アクセスポイントを経由して端末同士が通信を行う技術","通信速度を犠牲にして消費電力を抑える技術"],"a":"C"},{"id":217,"cat":"ネットワーク","type":"c","q":"プロトコルの定義として適切なものはどれか","o":["特定のメーカーが自社製品専用に開発した他社製品とは互換性のない通信規格","通信速度を測定する指標で数値が高いほど通信品質が良いことを示すもの","コンピューター同士が通信する際にデータのやり取りの手順や形式についてあらかじめ定められた共通の規約","ハードウェア機器の物理的な形状や規格を指す用語"],"a":"C"},{"id":218,"cat":"ネットワーク","type":"c","q":"メールソフトが電子メールの送受信に用いるプロトコルの組み合わせとして適切なものはどれか","o":["送信:IMAP4　受信:POP3","送信:IMAP4　受信:SMTP","送信:POP3　受信:SMTP","送信:SMTP　受信:IMAP4"],"a":"D"},{"id":219,"cat":"データベース","type":"c","q":"関係DBの正規化に関する記述の空欄a・bに入る字句の組み合わせとして適切なものはどれか。「正規化の主な目的としてデータの重複を排除し（a）ことが挙げられる。正規化を進めていくと（b）」","o":["a:圧縮率を向上させる　b:一つの表が複数の表に分割される","a:圧縮率を向上させる　b:複数の表が一つの表に統合される","a:一貫性を保つ　b:一つの表が複数の表に分割される","a:一貫性を保つ　b:複数の表が一つの表に統合される"],"a":"C"},{"id":220,"cat":"セキュリティ","type":"c","q":"インターネットバンキングなどのWebサイトで利用されているリスクベース認証の例として適切なものはどれか","o":["利用者がいつもと異なるPCからのログインであったので本人しか知らない秘密の質問による追加認証を行った","利用者がログイン後一定時間操作がなかったので自動的にログアウトして再ログインを求めた","利用者がパスワードを連続して複数回間違って入力したのでアカウントをロックした","利用者のパスワードが長時間変更されていなかったのでパスワードの変更を促した"],"a":"A"},{"id":221,"cat":"AI・機械学習","type":"c","q":"ニューラルネットワークの定義として最も適切なものはどれか","o":["大量のデータをそのまま記憶し完全一致するデータが来たときにその答えを返す仕組み","人間の脳のニューロンの仕組みを模した数学的モデルでデータから重みを自動調整することでパターンを学習する機械学習の手法","決められた計算式に確定的な入力を与えると常に同じ出力を返す静的な数式","入力層・隠れ層・出力層からなる多層構造でディープラーニングに特化したモデル","誤差逆伝播法によって重みを更新する教師あり学習専用のアルゴリズム"],"a":"B"},{"id":222,"cat":"AI・機械学習","type":"c","q":"ニューラルネットワークの学習に用いられるバックプロパゲーションで行われていることはどれか","o":["各ノードの重みを調整して誤差を小さくする","各ノードの重みを調整して最適な活性化関数を選択する","ノードの数を変更して誤差を小さくする","ノードの数を変更して処理速度を高める"],"a":"A"},{"id":223,"cat":"セキュリティ","type":"m","q":"代表的なマルウェアの種類として正しいものを全て選べ","o":["ウイルス","ワーム","トロイの木馬","ランサムウェア","スパイウェア"],"a":"ABCDE"},{"id":224,"cat":"セキュリティ","type":"c","q":"ファイルに寄生し感染したファイルが実行されることで自己を複製し他のファイルにも感染を広げていくマルウェアはどれか","o":["ワーム","ウイルス","トロイの木馬","スパイウェア"],"a":"B"},{"id":225,"cat":"セキュリティ","type":"c","q":"単独のプログラムとして存在し他のファイルに寄生することなくネットワークを介して自己複製しながら拡散するマルウェアはどれか","o":["ウイルス","ランサムウェア","ワーム","トロイの木馬"],"a":"C"},{"id":226,"cat":"セキュリティ","type":"c","q":"一見便利なソフトウェアを装ってユーザーに自らインストールさせ実行後に裏でバックドアの設置や情報窃取などの不正な処理を行うマルウェアはどれか","o":["ワーム","トロイの木馬","ウイルス","ランサムウェア"],"a":"B"},{"id":227,"cat":"セキュリティ","type":"c","q":"感染したコンピュータ内のファイルを暗号化し復号と引き換えに金銭を要求するマルウェアはどれか","o":["スパイウェア","トロイの木馬","ランサムウェア","ワーム"],"a":"C"},{"id":228,"cat":"セキュリティ","type":"c","q":"ユーザーに気づかれないよう端末内に潜伏しキー入力履歴や個人情報・閲覧履歴などを収集して外部に送信するマルウェアはどれか","o":["ランサムウェア","ワーム","ウイルス","スパイウェア"],"a":"D"},{"id":229,"cat":"セキュリティ","type":"c","q":"マルウェア対策ソフトの導入の他にマルウェア感染を防止するための対策として適切なものだけを全て挙げたものはどれか。a:OSのセキュリティパッチの適用　b:起動ドライブのHDDへのパスワード設定　c:複雑なログインパスワードの導入","o":["aのみ","aとb","bのみ","cのみ"],"a":"A"},{"id":230,"cat":"ソフトウェア","type":"c","q":"OSSの正式名称として正しいものはどれか","o":["Open Source Software","Open Standard Software","Open System Software","Open Shared Software"],"a":"A"},{"id":231,"cat":"ソフトウェア","type":"c","q":"OSSの定義として最も適切なものはどれか","o":["ソースコードが公開されており利用・改変・再配布が誰にでも許可されているソフトウェア","無償で利用できるソフトウェアであり著作権が放棄されているもの","誰でもソースコードを閲覧できるが改変や再配布は元の著作権者の許可が個別に必要なソフトウェア","個人や非営利団体が開発した企業のライセンス管理を受けないソフトウェア"],"a":"A"},{"id":232,"cat":"ソフトウェア","type":"c","q":"OSSの取り扱いに関する記述のうち適切なものだけを全て挙げたものはどれか。a:OSSを集めた記録媒体を顧客に有償で提供する　b:改変したOSSを特定の利用分野に制限してOSSとして提供する　c:不具合を修正したOSSのソースコードを自分のWebサイトで提供する","o":["aのみ","aとc","bとc","cのみ"],"a":"B"}];
 function getQs(lv,wk){
   if(state.examKind==="fde"){
     if(lv===1)return FDE1_Q;
@@ -556,7 +558,8 @@ function getQs(lv,wk){
     if(lv===3)return FDE3_Q;
     return FDE4_Q;
   }
-  if(state.examKind==="pad"){if(lv===4)return PAD4_Q;if(lv===3)return PAD3_Q;if(lv===2)return PAD2_Q;if(lv===1)return PAD1_Q;return[];}
+  if(state.examKind==="pad"){if(lv===4)return PAD4_Q;if(lv===3)return PAD3_Q;if(lv===2)return PAD2_Q;if(lv===1)return PAD1_Q;
+  if(state.examKind==="dc")return DC_Q;return[];}
   if(state.examKind==="kensetsu"){if(lv===4)return KENSETSU_Q4;if(lv===3)return KENSETSU_Q3;if(lv===2)return KENSETSU_Q2;if(lv===1)return KENSETSU_Q1;return[];}
 if(lv===3)return [...Q3,...PAD3_Q];
   if(lv===4)return Q4;
@@ -633,6 +636,7 @@ function renderTop(){
       el("div",{cls:"tc",onClick:()=>{state.examKind="fde";state.examPw="";state.examPwErr="";nav(examPasswords.fde?"exam-pw":"user-login");}},
         div("tc-icon","🏗"),div("tc-label","建設FDE検定"),div("tc-desc","4級〜1級 ／ 現場理解・DX")),
 el("div",{cls:"tc",onClick:()=>{state.examKind="kensetsu";state.examPw="";state.examPwErr="";nav(examPasswords&&examPasswords.kensetsu?"exam-pw":"user-login");}},div("tc-icon","🏗️"),div("tc-label","建設業検定"),div("tc-desc","1級～4級 / 現場・経理・設計・総務・積算")),el("div",{cls:"tc",onClick:()=>{state.examKind="cs";state.examPw="";state.examPwErr="";nav(examPasswords&&examPasswords.cs?"exam-pw":"user-login");}},div("tc-icon","📝"),div("tc-label","CS検定"),div("tc-desc","1〜3級/CS応用・複合・統合")),
+      el("div",{cls:"tc",onClick:()=>{state.examKind="dc";state.examPw="";state.examPwErr="";nav("user-login");}},div("tc-icon","💻"),div("tc-label","DC検定"),div("tc-desc","テクノロジ基礎")),
     ),
   el("div",{cls:"top-admin",onClick:()=>nav("admin-login")},"⚙️ 管理者")
   );
@@ -671,7 +675,7 @@ function renderAuth(mode){
 
 // ========== Render: Exam Password ==========
 function renderExamPwAuth(){
-  const kindLabel=state.examKind==="fde"?"建設FDE検定":state.examKind==="kensetsu"?"建設業検定":"建設PAD検定";
+  const kindLabel=state.examKind==="dc"?"DC検定":state.examKind==="fde"?"建設FDE検定":state.examKind==="kensetsu"?"建設業検定":"建設PAD検定";
   const icon=state.examKind==="fde"?"🏗":"📋";
   const box=div("auth-box");
   box.append(
@@ -874,7 +878,7 @@ function renderL1Sel(){
   if(state.examKind!=="kenzo"){
     const ek=state.examKind;
     const lv=(ek==="fde"?FDE_LEVELS:KENSETSU_LEVELS).find(l=>l.lv===1);
-    const kn=ek==="fde"?String.fromCharCode(24314,35373,70,68,69,26908,23450):String.fromCharCode(24314,35373,26989,26908,23450);
+    const kn=ek==="fde"?String.fromCharCode(24314,35373,70,68,69,26908,23450):ek==="dc"?"DC"+String.fromCharCode(26908,23450):String.fromCharCode(24314,35373,26989,26908,23450);
     c.append(div("pt",kn+String.fromCharCode(32,49,32026)));
     if(lv)c.append(div("ps",lv.desc));
     const sb=btn("pbtn",String.fromCharCode(21463,39443,12434,24320,22987,12377,12427,32,8594),()=>startExam(1,"all"));
@@ -1393,7 +1397,7 @@ function startExam(lv,wk="all"){
     return;
   }
   state.examLv=lv;state.examWk=wk;
-  state.examQs=(state.examKind==="cs"?getQs(lv,wk):shuffleArray(getQs(lv,wk))).slice(0,30);
+  state.examQs=(["cs","dc"].includes(state.examKind)?getQs(lv,wk):shuffleArray(getQs(lv,wk))).slice(0,30);
   state.qIdx=0;state.sel=null;state.openTxt="";state.answered=false;
   state.session=[];state.done=false;state.timedOut=false;
   state.page="exam";
