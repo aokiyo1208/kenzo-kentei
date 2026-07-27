@@ -559,7 +559,8 @@ function getQs(lv,wk){
     return FDE4_Q;
   }
   if(state.examKind==="pad"){if(lv===4)return PAD4_Q;if(lv===3)return PAD3_Q;if(lv===2)return PAD2_Q;if(lv===1)return PAD1_Q;
-  if(state.examKind==="dc")return DC_Q;return[];}
+  return[];}if(state.examKind==="dc")return DC_Q;
+  
   if(state.examKind==="kensetsu"){if(lv===4)return KENSETSU_Q4;if(lv===3)return KENSETSU_Q3;if(lv===2)return KENSETSU_Q2;if(lv===1)return KENSETSU_Q1;return[];}
 if(lv===3)return [...Q3,...PAD3_Q];
   if(lv===4)return Q4;
