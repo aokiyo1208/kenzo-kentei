@@ -700,7 +700,7 @@ function getQs(lv,wk){
   }
   if(state.examKind==="pad"){if(lv===4)return R30(PAD4_Q);if(lv===3)return R30(PAD3_Q);if(lv===2)return R30(PAD2_Q);if(lv===1)return R30(PAD1_Q);}
   if(state.examKind==="dc")return R30(DC_Q);
-  if(state.examKind==="cs")return R30(CS_Q);
+  if(state.examKind==="cs"){if(lv===4)return CS_Q.slice(0,30);if(lv===3)return CS_Q.slice(30,60);if(lv===2)return CS_Q.slice(60,90);if(lv===1)return CS_Q.slice(90);return CS_Q;}
   if(state.examKind==="kensetsu"){if(lv===4)return R30(KENSETSU_Q4);if(lv===3)return R30(KENSETSU_Q3);if(lv===2)return R30(KENSETSU_Q2);if(lv===1)return R30(KENSETSU_Q1);return[];}
   if(lv===3)return [...Q3,...PAD3_Q];
   if(lv===4)return Q4;
