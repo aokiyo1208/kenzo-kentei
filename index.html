@@ -1145,7 +1145,7 @@ function renderExam(){
     const fb=div("fb "+(correct?"ok-fb":"ng-fb"));
     if(correct)fb.textContent="✓ 正解です！";
     else if(q.type==="tf")fb.textContent=`✗ 不正解。正解は「${q.a==="true"?"○ 正しい":"✕ 誤り"}」です。`;
-    else fb.textContent=`✗ 不正解。正解は「${OPT.indexOf(q.a)+1}. ${q.o[OPT.indexOf(q.a)]}」です。`;
+    else if(q.type==="m"){const correctStr=[...q.a].map(c=>`${c}. ${q.o[OPT.indexOf(c)]}`).join("、");fb.textContent=`✗ 不正解。正解は「${correctStr}」です。`;}else fb.textContent=`✗ 不正解。正解は「${OPT.indexOf(q.a)+1}. ${q.o[OPT.indexOf(q.a)]}」です。`;
     c.append(fb);
     if(q.ex){
       const exp=div("exp");
