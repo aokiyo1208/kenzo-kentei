@@ -624,7 +624,7 @@ try{
 }catch(e){}
 
 // ===== 受験パスワード管理 =====
-let examPasswords={kenzo:"",fde:"",pad:"",cs:""};
+let examPasswords={kenzo:"",fde:"",pad:"",cs:"",dc:""};
 try{const ep=localStorage.getItem("kep");if(ep)examPasswords=Object.assign(examPasswords,JSON.parse(ep));}catch(e){}
 function saveExamPasswords(){try{localStorage.setItem("kep",JSON.stringify(examPasswords));}catch(e){}}
 
@@ -1447,7 +1447,7 @@ function renderAdmin(){
   const pwNote=el("div",{style:{fontSize:"11px",color:"var(--gr)",marginBottom:"12px",lineHeight:"1.7"}});
   pwNote.textContent="各検定の受験開始時に必要なパスワードを設定します。空欄の場合はパスワードなしで受験できます。";
   c.append(pwNote);
-  for(const[kind,label]of[["kenzo","KENZO検定"],["fde","建設FDE検定"],["cs","CS検定"]]){
+  for(const[kind,label]of[["kenzo","KENZO検定"],["fde","建設FDE検定"],["cs","CS検定"],["dc","DC検定"]]){
     const row=el("div",{style:{display:"flex",gap:"8px",alignItems:"center",marginBottom:"10px"}});
     const lbl=el("div",{style:{width:"120px",fontSize:"11px",fontWeight:"700",flexShrink:"0",color:"var(--dk)"}},label);
     const inp=el("input",{type:"text",placeholder:"パスワード（空欄 = なし）",value:examPasswords[kind]||"",
