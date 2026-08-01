@@ -564,7 +564,7 @@ const KENSETSU_LEVELS=[
 ];
 
 
-function getCurrentLevels(){return state.examKind==="fde"?FDE_LEVELS:state.examKind==="pad"?PAD_LEVELS:state.examKind==="kensetsu"?KENSETSU_LEVELS:state.examKind==="dc"?DC_LEVELS:state.examKind==="cs"?CS_LEVELS:KENZO_LEVELS;}
+function getCurrentLevels(){return state.examKind==="fde"?FDE_LEVELS:state.examKind==="pad"?PAD_LEVELS:state.examKind==="kensetsu"?KENSETSU_LEVELS:state.examKind==="dc"?DC_LEVELS:state.examKind==="cs"?CS_LEVELS:PAD_LEVELS;}
 const OPT=["A","B","C","D","E","F"];
 // 制限時間：kind別に管理
 function getTimeLimit(lv){
