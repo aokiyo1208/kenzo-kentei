@@ -170,7 +170,99 @@ textarea.oarea:focus{border-color:var(--gd)}
 .ctag{display:inline-block;background:rgba(44,62,80,.1);color:#2C3E50;font-size:9px;padding:2px 7px;border-radius:2px;font-weight:700;letter-spacing:.1em;margin-bottom:6px}
 .case-toggle{background:none;border:1px solid var(--bd);color:var(--gr);font-family:'Noto Sans JP',sans-serif;font-size:10px;padding:4px 10px;cursor:pointer;border-radius:2px;margin-bottom:12px}
 .case-toggle:hover{border-color:var(--gd);color:var(--gd)}
-.top-admin{margin-top:20px;text-align:center;cursor:pointer;color:var(--mu);font-size:11px;opacity:.4;letter-spacing:.05em}.top-admin:hover{opacity:.8}</style>
+.top-admin{margin-top:20px;text-align:center;cursor:pointer;color:var(--mu);font-size:11px;opacity:.4;letter-spacing:.05em}.top-admin:hover{opacity:.8}
+/* ===== スマホ対応 (max-width:640px) ===== */
+@media(max-width:640px){
+  /* トップページ */
+  .top-s{padding:32px 0}
+  .top-logo{font-size:26px;letter-spacing:.08em}
+  .top-sub{font-size:10px;margin-bottom:28px;letter-spacing:.15em}
+  .top-cards{flex-direction:column;align-items:stretch;width:100%;padding:0 16px;gap:10px}
+  .tc{padding:14px 18px;min-width:unset;display:flex;align-items:center;gap:14px;text-align:left}
+  .tc-icon{font-size:22px;margin-bottom:0;flex-shrink:0}
+  .tc-label{font-size:14px;margin-bottom:1px}
+  .tc-desc{font-size:9px}
+
+  /* ヘッダー */
+  .hdr{padding:0 12px;height:48px}
+  .logo{font-size:13px;letter-spacing:.05em}
+  .nb{font-size:10px;padding:4px 7px}
+  .act{font-size:10px;padding:4px 9px}
+  .tmr{font-size:11px;padding:3px 8px}
+  .utag{font-size:10px;padding:3px 8px;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+  /* メインコンテンツ */
+  .main{padding:14px 12px}
+
+  /* 統計カード */
+  .stats{grid-template-columns:repeat(3,1fr);gap:6px}
+  .sc{padding:12px 10px}
+  .sv{font-size:22px}
+  .sl{font-size:8px}
+  .su{font-size:10px}
+  .stit{font-size:12px;margin-bottom:8px}
+
+  /* レベルグリッド */
+  .lgrid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .lcard{padding:14px 8px}
+
+  /* 試験進行バー */
+  .ebar{gap:8px;margin-bottom:14px}
+  .ptxt{font-size:9px}
+  .elv{font-size:13px}
+  .back-btn{font-size:9px;padding:5px 10px}
+
+  /* 問題カード */
+  .qcard{padding:16px 14px}
+  .qtxt{font-size:14px;line-height:1.7}
+  .obtn{padding:9px 12px;font-size:11px;gap:8px}
+  .okey{width:22px;height:22px;font-size:10px;flex-shrink:0}
+  .opts{gap:7px}
+
+  /* 記述式 */
+  .oarea{font-size:12px;padding:10px}
+
+  /* フィードバック・解説 */
+  .fb{padding:10px 14px;font-size:11px}
+  .exp{padding:10px 14px}
+  .expl{font-size:11px;line-height:1.7}
+
+  /* 次の問題ボタン */
+  .nxt{font-size:11px;padding:10px 20px;margin-top:8px}
+
+  /* 結果カード */
+  .rcard{padding:24px 16px}
+  .ricon{font-size:36px}
+  .rtit{font-size:16px}
+  .rscore{font-size:32px}
+  .racts{flex-direction:column;align-items:stretch;gap:8px}
+  .pbtn{font-size:11px;padding:11px 16px;text-align:center}
+  .sbtn2{font-size:11px;padding:11px 16px;text-align:center}
+
+  /* 認証ボックス */
+  .auth-box{padding:24px 18px;margin:0 16px;width:calc(100% - 32px)}
+  .auth-title{font-size:16px}
+  .auth-input{font-size:14px;padding:10px 12px}
+  .auth-btn{font-size:13px;padding:12px}
+
+  /* 受験履歴テーブル */
+  .tbl{font-size:10px}
+
+  /* スコア行 */
+  .score-row{flex-wrap:wrap;gap:4px}
+
+  /* ページング */
+  .prow{flex-direction:column;gap:8px;align-items:flex-start}
+}
+
+/* タブレット対応 (max-width:900px) */
+@media(max-width:900px){
+  .lgrid{grid-template-columns:repeat(3,1fr)}
+  .top-cards{flex-wrap:wrap;justify-content:center}
+  .tc{min-width:140px}
+  .main{padding:24px 16px}
+}
+</style>
 </head>
 <body>
 <div id="app"></div>
